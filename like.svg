@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="91.44mm" height="91.44mm" clip-rule="evenodd" fill-rule="evenodd" image-rendering="optimizeQuality" shape-rendering="geometricPrecision" text-rendering="geometricPrecision" version="1.1" viewBox="0 0 9144 9144" xmlns="http://www.w3.org/2000/svg">
+ <defs>
+  <style type="text/css">.str0 {stroke:white;stroke-width:176.38;stroke-linecap:round;stroke-linejoin:round} .fil1 {fill:none} .fil2 {fill:white;fill-rule:nonzero} .fil0 {fill:url(#a)}</style>
+  <linearGradient id="a" x1="8595.4" x2="548.64" y1="8595.4" y2="548.63" gradientUnits="userSpaceOnUse">
+   <stop stop-color="#48CFAE" offset="0"/>
+   <stop stop-color="#4FC0E8" offset="1"/>
+  </linearGradient>
+ </defs>
+ <polygon class="fil0" points="0 0 9144 0 9144 9144 0 9144"/>
+ <path class="fil1 str0" d="m6364 5771v494h-2180l-521-324v324h-1361l-1-2391h1362v238l1028-1072 219-1008c136 83 273 165 409 248l166 851-223 747 1581-2v661h-691m569 0v658h-573m385 0v576h-385"/>
+ <line class="fil1 str0" x1="3663" x2="3663" y1="4112" y2="5941"/>
+ <path class="fil2" d="m3205 5760c47 0 85 39 85 86s-38 85-85 85-86-38-86-85 39-86 86-86z"/>
+</svg>

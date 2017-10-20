@@ -6,6 +6,20 @@ body {
   background-color: #F5F5F5;
 }
 
+.mdl-layout__tab-bar {
+  width: calc(100% - 120px);
+}
+
+.mdl-layout__drawer-button {
+  color: white !important;
+}
+
+.mdl-layout__tab-bar-container,
+.mdl-layout__tab-bar,
+.mdl-layout__tab-bar-button {
+  background-color: white;
+}
+
 .mdl-list__item-primary-content {
   min-height: 40px;
 }

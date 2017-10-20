@@ -8799,6 +8799,128 @@ var _elm_lang$navigation$Navigation$onEffects = F4(
 	});
 _elm_lang$core$Native_Platform.effectManagers['Navigation'] = {pkg: 'elm-lang/navigation', init: _elm_lang$navigation$Navigation$init, onEffects: _elm_lang$navigation$Navigation$onEffects, onSelfMsg: _elm_lang$navigation$Navigation$onSelfMsg, tag: 'fx', cmdMap: _elm_lang$navigation$Navigation$cmdMap, subMap: _elm_lang$navigation$Navigation$subMap};
 
+var _elm_lang$window$Native_Window = function()
+{
+
+var size = _elm_lang$core$Native_Scheduler.nativeBinding(function(callback)	{
+	callback(_elm_lang$core$Native_Scheduler.succeed({
+		width: window.innerWidth,
+		height: window.innerHeight
+	}));
+});
+
+return {
+	size: size
+};
+
+}();
+var _elm_lang$window$Window_ops = _elm_lang$window$Window_ops || {};
+_elm_lang$window$Window_ops['&>'] = F2(
+	function (task1, task2) {
+		return A2(
+			_elm_lang$core$Task$andThen,
+			function (_p0) {
+				return task2;
+			},
+			task1);
+	});
+var _elm_lang$window$Window$onSelfMsg = F3(
+	function (router, dimensions, state) {
+		var _p1 = state;
+		if (_p1.ctor === 'Nothing') {
+			return _elm_lang$core$Task$succeed(state);
+		} else {
+			var send = function (_p2) {
+				var _p3 = _p2;
+				return A2(
+					_elm_lang$core$Platform$sendToApp,
+					router,
+					_p3._0(dimensions));
+			};
+			return A2(
+				_elm_lang$window$Window_ops['&>'],
+				_elm_lang$core$Task$sequence(
+					A2(_elm_lang$core$List$map, send, _p1._0.subs)),
+				_elm_lang$core$Task$succeed(state));
+		}
+	});
+var _elm_lang$window$Window$init = _elm_lang$core$Task$succeed(_elm_lang$core$Maybe$Nothing);
+var _elm_lang$window$Window$size = _elm_lang$window$Native_Window.size;
+var _elm_lang$window$Window$width = A2(
+	_elm_lang$core$Task$map,
+	function (_) {
+		return _.width;
+	},
+	_elm_lang$window$Window$size);
+var _elm_lang$window$Window$height = A2(
+	_elm_lang$core$Task$map,
+	function (_) {
+		return _.height;
+	},
+	_elm_lang$window$Window$size);
+var _elm_lang$window$Window$onEffects = F3(
+	function (router, newSubs, oldState) {
+		var _p4 = {ctor: '_Tuple2', _0: oldState, _1: newSubs};
+		if (_p4._0.ctor === 'Nothing') {
+			if (_p4._1.ctor === '[]') {
+				return _elm_lang$core$Task$succeed(_elm_lang$core$Maybe$Nothing);
+			} else {
+				return A2(
+					_elm_lang$core$Task$andThen,
+					function (pid) {
+						return _elm_lang$core$Task$succeed(
+							_elm_lang$core$Maybe$Just(
+								{subs: newSubs, pid: pid}));
+					},
+					_elm_lang$core$Process$spawn(
+						A3(
+							_elm_lang$dom$Dom_LowLevel$onWindow,
+							'resize',
+							_elm_lang$core$Json_Decode$succeed(
+								{ctor: '_Tuple0'}),
+							function (_p5) {
+								return A2(
+									_elm_lang$core$Task$andThen,
+									_elm_lang$core$Platform$sendToSelf(router),
+									_elm_lang$window$Window$size);
+							})));
+			}
+		} else {
+			if (_p4._1.ctor === '[]') {
+				return A2(
+					_elm_lang$window$Window_ops['&>'],
+					_elm_lang$core$Process$kill(_p4._0._0.pid),
+					_elm_lang$core$Task$succeed(_elm_lang$core$Maybe$Nothing));
+			} else {
+				return _elm_lang$core$Task$succeed(
+					_elm_lang$core$Maybe$Just(
+						{subs: newSubs, pid: _p4._0._0.pid}));
+			}
+		}
+	});
+var _elm_lang$window$Window$subscription = _elm_lang$core$Native_Platform.leaf('Window');
+var _elm_lang$window$Window$Size = F2(
+	function (a, b) {
+		return {width: a, height: b};
+	});
+var _elm_lang$window$Window$MySub = function (a) {
+	return {ctor: 'MySub', _0: a};
+};
+var _elm_lang$window$Window$resizes = function (tagger) {
+	return _elm_lang$window$Window$subscription(
+		_elm_lang$window$Window$MySub(tagger));
+};
+var _elm_lang$window$Window$subMap = F2(
+	function (func, _p6) {
+		var _p7 = _p6;
+		return _elm_lang$window$Window$MySub(
+			function (_p8) {
+				return func(
+					_p7._0(_p8));
+			});
+	});
+_elm_lang$core$Native_Platform.effectManagers['Window'] = {pkg: 'elm-lang/window', init: _elm_lang$window$Window$init, onEffects: _elm_lang$window$Window$onEffects, onSelfMsg: _elm_lang$window$Window$onSelfMsg, tag: 'sub', subMap: _elm_lang$window$Window$subMap};
+
 var _elm_lang$html$Html_Attributes$map = _elm_lang$virtual_dom$VirtualDom$mapProperty;
 var _elm_lang$html$Html_Attributes$attribute = _elm_lang$virtual_dom$VirtualDom$attribute;
 var _elm_lang$html$Html_Attributes$contextmenu = function (value) {
@@ -13323,128 +13445,6 @@ var _debois$elm_mdl$Material_Menu$Config = F2(
 		return {dropdown: a, icon: b};
 	});
 
-var _elm_lang$window$Native_Window = function()
-{
-
-var size = _elm_lang$core$Native_Scheduler.nativeBinding(function(callback)	{
-	callback(_elm_lang$core$Native_Scheduler.succeed({
-		width: window.innerWidth,
-		height: window.innerHeight
-	}));
-});
-
-return {
-	size: size
-};
-
-}();
-var _elm_lang$window$Window_ops = _elm_lang$window$Window_ops || {};
-_elm_lang$window$Window_ops['&>'] = F2(
-	function (task1, task2) {
-		return A2(
-			_elm_lang$core$Task$andThen,
-			function (_p0) {
-				return task2;
-			},
-			task1);
-	});
-var _elm_lang$window$Window$onSelfMsg = F3(
-	function (router, dimensions, state) {
-		var _p1 = state;
-		if (_p1.ctor === 'Nothing') {
-			return _elm_lang$core$Task$succeed(state);
-		} else {
-			var send = function (_p2) {
-				var _p3 = _p2;
-				return A2(
-					_elm_lang$core$Platform$sendToApp,
-					router,
-					_p3._0(dimensions));
-			};
-			return A2(
-				_elm_lang$window$Window_ops['&>'],
-				_elm_lang$core$Task$sequence(
-					A2(_elm_lang$core$List$map, send, _p1._0.subs)),
-				_elm_lang$core$Task$succeed(state));
-		}
-	});
-var _elm_lang$window$Window$init = _elm_lang$core$Task$succeed(_elm_lang$core$Maybe$Nothing);
-var _elm_lang$window$Window$size = _elm_lang$window$Native_Window.size;
-var _elm_lang$window$Window$width = A2(
-	_elm_lang$core$Task$map,
-	function (_) {
-		return _.width;
-	},
-	_elm_lang$window$Window$size);
-var _elm_lang$window$Window$height = A2(
-	_elm_lang$core$Task$map,
-	function (_) {
-		return _.height;
-	},
-	_elm_lang$window$Window$size);
-var _elm_lang$window$Window$onEffects = F3(
-	function (router, newSubs, oldState) {
-		var _p4 = {ctor: '_Tuple2', _0: oldState, _1: newSubs};
-		if (_p4._0.ctor === 'Nothing') {
-			if (_p4._1.ctor === '[]') {
-				return _elm_lang$core$Task$succeed(_elm_lang$core$Maybe$Nothing);
-			} else {
-				return A2(
-					_elm_lang$core$Task$andThen,
-					function (pid) {
-						return _elm_lang$core$Task$succeed(
-							_elm_lang$core$Maybe$Just(
-								{subs: newSubs, pid: pid}));
-					},
-					_elm_lang$core$Process$spawn(
-						A3(
-							_elm_lang$dom$Dom_LowLevel$onWindow,
-							'resize',
-							_elm_lang$core$Json_Decode$succeed(
-								{ctor: '_Tuple0'}),
-							function (_p5) {
-								return A2(
-									_elm_lang$core$Task$andThen,
-									_elm_lang$core$Platform$sendToSelf(router),
-									_elm_lang$window$Window$size);
-							})));
-			}
-		} else {
-			if (_p4._1.ctor === '[]') {
-				return A2(
-					_elm_lang$window$Window_ops['&>'],
-					_elm_lang$core$Process$kill(_p4._0._0.pid),
-					_elm_lang$core$Task$succeed(_elm_lang$core$Maybe$Nothing));
-			} else {
-				return _elm_lang$core$Task$succeed(
-					_elm_lang$core$Maybe$Just(
-						{subs: newSubs, pid: _p4._0._0.pid}));
-			}
-		}
-	});
-var _elm_lang$window$Window$subscription = _elm_lang$core$Native_Platform.leaf('Window');
-var _elm_lang$window$Window$Size = F2(
-	function (a, b) {
-		return {width: a, height: b};
-	});
-var _elm_lang$window$Window$MySub = function (a) {
-	return {ctor: 'MySub', _0: a};
-};
-var _elm_lang$window$Window$resizes = function (tagger) {
-	return _elm_lang$window$Window$subscription(
-		_elm_lang$window$Window$MySub(tagger));
-};
-var _elm_lang$window$Window$subMap = F2(
-	function (func, _p6) {
-		var _p7 = _p6;
-		return _elm_lang$window$Window$MySub(
-			function (_p8) {
-				return func(
-					_p7._0(_p8));
-			});
-	});
-_elm_lang$core$Native_Platform.effectManagers['Window'] = {pkg: 'elm-lang/window', init: _elm_lang$window$Window$init, onEffects: _elm_lang$window$Window$onEffects, onSelfMsg: _elm_lang$window$Window$onSelfMsg, tag: 'sub', subMap: _elm_lang$window$Window$subMap};
-
 var _debois$elm_mdl$Material_Layout$toggleDrawer = function (lift) {
 	return function (_p0) {
 		return lift(
@@ -16129,11 +16129,198 @@ var _debois$elm_mdl$Material$Model = F8(
 		return {button: a, textfield: b, menu: c, layout: d, toggles: e, tooltip: f, tabs: g, select: h};
 	});
 
-var _comjeito$comjeito$Types$Model = F2(
-	function (a, b) {
-		return {currentPage: a, mdl: b};
+var _debois$elm_mdl$Material_Grid$clip = F3(
+	function (lower, upper, k) {
+		return A2(
+			_elm_lang$core$Basics$max,
+			lower,
+			A2(_elm_lang$core$Basics$min, k, upper));
 	});
+var _debois$elm_mdl$Material_Grid$stretch = _debois$elm_mdl$Material_Options$cs('mdl-cell--stretch');
+var _debois$elm_mdl$Material_Grid$align = function (a) {
+	var _p0 = a;
+	switch (_p0.ctor) {
+		case 'Top':
+			return _debois$elm_mdl$Material_Options$cs('mdl-cell--top');
+		case 'Middle':
+			return _debois$elm_mdl$Material_Options$cs('mdl-cell--middle');
+		default:
+			return _debois$elm_mdl$Material_Options$cs('mdl-cell--bottom');
+	}
+};
+var _debois$elm_mdl$Material_Grid$suffix = function (device) {
+	var _p1 = device;
+	switch (_p1.ctor) {
+		case 'All':
+			return '';
+		case 'Desktop':
+			return '-desktop';
+		case 'Tablet':
+			return '-tablet';
+		default:
+			return '-phone';
+	}
+};
+var _debois$elm_mdl$Material_Grid$size = F2(
+	function (device, k) {
+		var c = function () {
+			var _p2 = device;
+			switch (_p2.ctor) {
+				case 'All':
+					return A3(_debois$elm_mdl$Material_Grid$clip, 1, 12, k);
+				case 'Desktop':
+					return A3(_debois$elm_mdl$Material_Grid$clip, 1, 12, k);
+				case 'Tablet':
+					return A3(_debois$elm_mdl$Material_Grid$clip, 1, 8, k);
+				default:
+					return A3(_debois$elm_mdl$Material_Grid$clip, 1, 4, k);
+			}
+		}();
+		return _debois$elm_mdl$Material_Options$cs(
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				'mdl-cell--',
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					_elm_lang$core$Basics$toString(c),
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						'-col',
+						_debois$elm_mdl$Material_Grid$suffix(device)))));
+	});
+var _debois$elm_mdl$Material_Grid$offset = F2(
+	function (device, k) {
+		var c = function () {
+			var _p3 = device;
+			switch (_p3.ctor) {
+				case 'All':
+					return A3(_debois$elm_mdl$Material_Grid$clip, 0, 11, k);
+				case 'Desktop':
+					return A3(_debois$elm_mdl$Material_Grid$clip, 0, 11, k);
+				case 'Tablet':
+					return A3(_debois$elm_mdl$Material_Grid$clip, 0, 7, k);
+				default:
+					return A3(_debois$elm_mdl$Material_Grid$clip, 0, 3, k);
+			}
+		}();
+		return _debois$elm_mdl$Material_Options$cs(
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				'mdl-cell--',
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					_elm_lang$core$Basics$toString(c),
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						'-offset',
+						_debois$elm_mdl$Material_Grid$suffix(device)))));
+	});
+var _debois$elm_mdl$Material_Grid$classForHide = function (device) {
+	return A2(
+		_elm_lang$core$Basics_ops['++'],
+		'mdl-cell--hide',
+		_debois$elm_mdl$Material_Grid$suffix(device));
+};
+var _debois$elm_mdl$Material_Grid$order = F2(
+	function (device, n) {
+		return _debois$elm_mdl$Material_Options$cs(
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				'mdl-cell--order-',
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					_elm_lang$core$Basics$toString(
+						A3(_debois$elm_mdl$Material_Grid$clip, 1, 12, n)),
+					_debois$elm_mdl$Material_Grid$suffix(device))));
+	});
+var _debois$elm_mdl$Material_Grid$grid = F2(
+	function (styling, cells) {
+		return A2(
+			_debois$elm_mdl$Material_Options$div,
+			{
+				ctor: '::',
+				_0: _debois$elm_mdl$Material_Options$cs('mdl-grid'),
+				_1: styling
+			},
+			A2(
+				_elm_lang$core$List$map,
+				function (_p4) {
+					var _p5 = _p4;
+					return _p5._0;
+				},
+				cells));
+	});
+var _debois$elm_mdl$Material_Grid$maxWidth = function (w) {
+	return A2(_debois$elm_mdl$Material_Options$css, 'max-width', w);
+};
+var _debois$elm_mdl$Material_Grid$noSpacing = _debois$elm_mdl$Material_Options$cs('mdl-grid--no-spacing');
+var _debois$elm_mdl$Material_Grid$Phone = {ctor: 'Phone'};
+var _debois$elm_mdl$Material_Grid$Tablet = {ctor: 'Tablet'};
+var _debois$elm_mdl$Material_Grid$Desktop = {ctor: 'Desktop'};
+var _debois$elm_mdl$Material_Grid$hide = function (device) {
+	return _debois$elm_mdl$Material_Options$cs(
+		function () {
+			var _p6 = device;
+			if (_p6.ctor === 'All') {
+				return A2(
+					_elm_lang$core$String$join,
+					' ',
+					A2(
+						_elm_lang$core$List$map,
+						_debois$elm_mdl$Material_Grid$classForHide,
+						{
+							ctor: '::',
+							_0: _debois$elm_mdl$Material_Grid$Desktop,
+							_1: {
+								ctor: '::',
+								_0: _debois$elm_mdl$Material_Grid$Tablet,
+								_1: {
+									ctor: '::',
+									_0: _debois$elm_mdl$Material_Grid$Phone,
+									_1: {ctor: '[]'}
+								}
+							}
+						}));
+			} else {
+				return _debois$elm_mdl$Material_Grid$classForHide(device);
+			}
+		}());
+};
+var _debois$elm_mdl$Material_Grid$All = {ctor: 'All'};
+var _debois$elm_mdl$Material_Grid$Cell = function (a) {
+	return {ctor: 'Cell', _0: a};
+};
+var _debois$elm_mdl$Material_Grid$cell = F2(
+	function (styling, elms) {
+		return _debois$elm_mdl$Material_Grid$Cell(
+			A2(
+				_debois$elm_mdl$Material_Options$div,
+				{
+					ctor: '::',
+					_0: _debois$elm_mdl$Material_Options$cs('mdl-cell'),
+					_1: styling
+				},
+				elms));
+	});
+var _debois$elm_mdl$Material_Grid$Bottom = {ctor: 'Bottom'};
+var _debois$elm_mdl$Material_Grid$Middle = {ctor: 'Middle'};
+var _debois$elm_mdl$Material_Grid$Top = {ctor: 'Top'};
+
+var _comjeito$comjeito$Types$Model = F4(
+	function (a, b, c, d) {
+		return {currentPage: a, selectedTab: b, viewport: c, mdl: d};
+	});
+var _comjeito$comjeito$Types$Showroom = {ctor: 'Showroom'};
+var _comjeito$comjeito$Types$Products = {ctor: 'Products'};
+var _comjeito$comjeito$Types$Services = {ctor: 'Services'};
+var _comjeito$comjeito$Types$About = {ctor: 'About'};
 var _comjeito$comjeito$Types$Home = {ctor: 'Home'};
+var _comjeito$comjeito$Types$SelectTab = function (a) {
+	return {ctor: 'SelectTab', _0: a};
+};
+var _comjeito$comjeito$Types$UpdateViewport = function (a) {
+	return {ctor: 'UpdateViewport', _0: a};
+};
 var _comjeito$comjeito$Types$CloseDrawer = {ctor: 'CloseDrawer'};
 var _comjeito$comjeito$Types$Mdl = function (a) {
 	return {ctor: 'Mdl', _0: a};
@@ -16144,33 +16331,77 @@ var _comjeito$comjeito$Types$GoTo = function (a) {
 
 var _comjeito$comjeito$Route$lookFor = function (location) {
 	var _p0 = location.hash;
-	if (_p0 === '#/home') {
-		return _comjeito$comjeito$Types$GoTo(_comjeito$comjeito$Types$Home);
-	} else {
-		return _comjeito$comjeito$Types$GoTo(_comjeito$comjeito$Types$Home);
+	switch (_p0) {
+		case '#/home':
+			return _comjeito$comjeito$Types$GoTo(_comjeito$comjeito$Types$Home);
+		case '#/sobre':
+			return _comjeito$comjeito$Types$GoTo(_comjeito$comjeito$Types$About);
+		case '#/produtos':
+			return _comjeito$comjeito$Types$GoTo(_comjeito$comjeito$Types$Products);
+		case '#/servicos':
+			return _comjeito$comjeito$Types$GoTo(_comjeito$comjeito$Types$Services);
+		case '#/showroom':
+			return _comjeito$comjeito$Types$GoTo(_comjeito$comjeito$Types$Showroom);
+		default:
+			return _comjeito$comjeito$Types$GoTo(_comjeito$comjeito$Types$Home);
 	}
 };
 
-var _comjeito$comjeito$Model$model = {mdl: _debois$elm_mdl$Material$model, currentPage: _comjeito$comjeito$Types$Home};
+var _comjeito$comjeito$Model$model = {mdl: _debois$elm_mdl$Material$model, currentPage: _comjeito$comjeito$Types$Home, selectedTab: 0, viewport: _debois$elm_mdl$Material_Grid$Phone};
 var _comjeito$comjeito$Model$init = function (location) {
 	var page = function () {
 		var _p0 = location.hash;
-		if (_p0 === '#/home') {
-			return _comjeito$comjeito$Types$Home;
-		} else {
-			return _comjeito$comjeito$Types$Home;
+		switch (_p0) {
+			case '#/home':
+				return _comjeito$comjeito$Types$Home;
+			case '#/sobre':
+				return _comjeito$comjeito$Types$About;
+			case '#/produtos':
+				return _comjeito$comjeito$Types$Products;
+			case '#/servicos':
+				return _comjeito$comjeito$Types$Services;
+			case '#/showroom':
+				return _comjeito$comjeito$Types$Showroom;
+			default:
+				return _comjeito$comjeito$Types$Home;
 		}
 	}();
+	var tab = function () {
+		var _p1 = page;
+		switch (_p1.ctor) {
+			case 'Home':
+				return 0;
+			case 'Showroom':
+				return 1;
+			case 'Services':
+				return 2;
+			case 'Products':
+				return 3;
+			default:
+				return 4;
+		}
+	}();
+	var model_ = _elm_lang$core$Native_Utils.update(
+		_comjeito$comjeito$Model$model,
+		{selectedTab: tab});
 	return {
 		ctor: '_Tuple2',
 		_0: _elm_lang$core$Native_Utils.update(
-			_comjeito$comjeito$Model$model,
+			model_,
 			{currentPage: page}),
 		_1: _elm_lang$core$Platform_Cmd$batch(
 			{
 				ctor: '::',
 				_0: _debois$elm_mdl$Material$init(_comjeito$comjeito$Types$Mdl),
-				_1: {ctor: '[]'}
+				_1: {
+					ctor: '::',
+					_0: _debois$elm_mdl$Material_Layout$sub0(_comjeito$comjeito$Types$Mdl),
+					_1: {
+						ctor: '::',
+						_0: A2(_elm_lang$core$Task$perform, _comjeito$comjeito$Types$UpdateViewport, _elm_lang$window$Window$size),
+						_1: {ctor: '[]'}
+					}
+				}
 			})
 	};
 };
@@ -16180,15 +16411,70 @@ var _comjeito$comjeito$Update$update = F2(
 		var _p0 = msg;
 		switch (_p0.ctor) {
 			case 'GoTo':
+				var _p2 = _p0._0;
+				var tab = function () {
+					var _p1 = _p2;
+					switch (_p1.ctor) {
+						case 'Home':
+							return 0;
+						case 'Showroom':
+							return 1;
+						case 'Services':
+							return 2;
+						case 'Products':
+							return 3;
+						default:
+							return 4;
+					}
+				}();
+				var model_ = _elm_lang$core$Native_Utils.update(
+					model,
+					{selectedTab: tab});
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model_,
+						{currentPage: _p2}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'SelectTab':
+				var _p4 = _p0._0;
+				var page = function () {
+					var _p3 = _p4;
+					switch (_p3) {
+						case 0:
+							return '#/home';
+						case 1:
+							return '#/showroom';
+						case 2:
+							return '#/servicos';
+						case 3:
+							return '#/produtos';
+						case 4:
+							return '#/sobre';
+						default:
+							return '#/home';
+					}
+				}();
 				return {
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
-						{currentPage: _p0._0}),
-					_1: _elm_lang$core$Platform_Cmd$none
+						{selectedTab: _p4}),
+					_1: _elm_lang$navigation$Navigation$newUrl(page)
 				};
 			case 'Mdl':
 				return A3(_debois$elm_mdl$Material$update, _comjeito$comjeito$Types$Mdl, _p0._0, model);
+			case 'UpdateViewport':
+				var _p5 = _p0._0;
+				var viewport_ = (_elm_lang$core$Native_Utils.cmp(_p5.width, 840) > -1) ? _debois$elm_mdl$Material_Grid$Desktop : ((_elm_lang$core$Native_Utils.cmp(_p5.width, 480) > -1) ? _debois$elm_mdl$Material_Grid$Tablet : _debois$elm_mdl$Material_Grid$Phone);
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{viewport: viewport_}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
 			default:
 				var layout = model.mdl.layout;
 				var mdl_ = model.mdl;
@@ -16211,18 +16497,446 @@ var _comjeito$comjeito$Update$update = F2(
 	});
 
 var _comjeito$comjeito$Subscriptions$subscriptions = function (model) {
-	return _elm_lang$core$Platform_Sub$none;
+	return _elm_lang$core$Platform_Sub$batch(
+		{
+			ctor: '::',
+			_0: A2(_debois$elm_mdl$Material$subscriptions, _comjeito$comjeito$Types$Mdl, model),
+			_1: {
+				ctor: '::',
+				_0: A2(_debois$elm_mdl$Material_Layout$subs, _comjeito$comjeito$Types$Mdl, model.mdl),
+				_1: {
+					ctor: '::',
+					_0: A2(_debois$elm_mdl$Material_Menu$subs, _comjeito$comjeito$Types$Mdl, model.mdl),
+					_1: {
+						ctor: '::',
+						_0: _elm_lang$window$Window$resizes(_comjeito$comjeito$Types$UpdateViewport),
+						_1: {ctor: '[]'}
+					}
+				}
+			}
+		});
 };
+
+var _debois$elm_mdl$Material_Color$text = function (_p0) {
+	var _p1 = _p0;
+	return _debois$elm_mdl$Material_Options$cs(
+		A2(_elm_lang$core$Basics_ops['++'], 'mdl-color-text--', _p1._0));
+};
+var _debois$elm_mdl$Material_Color$background = function (_p2) {
+	var _p3 = _p2;
+	return _debois$elm_mdl$Material_Options$cs(
+		A2(_elm_lang$core$Basics_ops['++'], 'mdl-color--', _p3._0));
+};
+var _debois$elm_mdl$Material_Color$shadeName = function (shade) {
+	var _p4 = shade;
+	switch (_p4.ctor) {
+		case 'S50':
+			return '50';
+		case 'S100':
+			return '100';
+		case 'S200':
+			return '200';
+		case 'S300':
+			return '300';
+		case 'S400':
+			return '400';
+		case 'S500':
+			return '500';
+		case 'S600':
+			return '600';
+		case 'S700':
+			return '700';
+		case 'S800':
+			return '800';
+		case 'S900':
+			return '900';
+		case 'A100':
+			return 'A100';
+		case 'A200':
+			return 'A200';
+		case 'A400':
+			return 'A400';
+		default:
+			return 'A700';
+	}
+};
+var _debois$elm_mdl$Material_Color$hueName = function (color) {
+	var _p5 = color;
+	switch (_p5.ctor) {
+		case 'Indigo':
+			return 'indigo';
+		case 'Blue':
+			return 'blue';
+		case 'LightBlue':
+			return 'light-blue';
+		case 'Cyan':
+			return 'cyan';
+		case 'Teal':
+			return 'teal';
+		case 'Green':
+			return 'green';
+		case 'LightGreen':
+			return 'light-green';
+		case 'Lime':
+			return 'lime';
+		case 'Yellow':
+			return 'yellow';
+		case 'Amber':
+			return 'amber';
+		case 'Orange':
+			return 'orange';
+		case 'Brown':
+			return 'brown';
+		case 'BlueGrey':
+			return 'blue-grey';
+		case 'Grey':
+			return 'grey';
+		case 'DeepOrange':
+			return 'deep-orange';
+		case 'Red':
+			return 'red';
+		case 'Pink':
+			return 'pink';
+		case 'Purple':
+			return 'purple';
+		default:
+			return 'deep-purple';
+	}
+};
+var _debois$elm_mdl$Material_Color$scheme = F2(
+	function (primary, accent) {
+		var q = _elm_lang$core$String$map(
+			function (x) {
+				return _elm_lang$core$Native_Utils.eq(
+					x,
+					_elm_lang$core$Native_Utils.chr('-')) ? _elm_lang$core$Native_Utils.chr('_') : x;
+			});
+		var cssFile = function () {
+			var _p6 = accent;
+			switch (_p6.ctor) {
+				case 'Grey':
+					return '';
+				case 'Brown':
+					return '';
+				case 'BlueGrey':
+					return '';
+				default:
+					return A2(
+						_elm_lang$core$Basics_ops['++'],
+						'.',
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							q(
+								_debois$elm_mdl$Material_Color$hueName(primary)),
+							A2(
+								_elm_lang$core$Basics_ops['++'],
+								'-',
+								q(
+									_debois$elm_mdl$Material_Color$hueName(accent)))));
+			}
+		}();
+		return A2(
+			_elm_lang$core$Basics_ops['++'],
+			'material',
+			A2(_elm_lang$core$Basics_ops['++'], cssFile, '.min.css'));
+	});
+var _debois$elm_mdl$Material_Color$DeepPurple = {ctor: 'DeepPurple'};
+var _debois$elm_mdl$Material_Color$Purple = {ctor: 'Purple'};
+var _debois$elm_mdl$Material_Color$Pink = {ctor: 'Pink'};
+var _debois$elm_mdl$Material_Color$Red = {ctor: 'Red'};
+var _debois$elm_mdl$Material_Color$DeepOrange = {ctor: 'DeepOrange'};
+var _debois$elm_mdl$Material_Color$Grey = {ctor: 'Grey'};
+var _debois$elm_mdl$Material_Color$BlueGrey = {ctor: 'BlueGrey'};
+var _debois$elm_mdl$Material_Color$Brown = {ctor: 'Brown'};
+var _debois$elm_mdl$Material_Color$Orange = {ctor: 'Orange'};
+var _debois$elm_mdl$Material_Color$Amber = {ctor: 'Amber'};
+var _debois$elm_mdl$Material_Color$Yellow = {ctor: 'Yellow'};
+var _debois$elm_mdl$Material_Color$Lime = {ctor: 'Lime'};
+var _debois$elm_mdl$Material_Color$LightGreen = {ctor: 'LightGreen'};
+var _debois$elm_mdl$Material_Color$Green = {ctor: 'Green'};
+var _debois$elm_mdl$Material_Color$Teal = {ctor: 'Teal'};
+var _debois$elm_mdl$Material_Color$Cyan = {ctor: 'Cyan'};
+var _debois$elm_mdl$Material_Color$LightBlue = {ctor: 'LightBlue'};
+var _debois$elm_mdl$Material_Color$Blue = {ctor: 'Blue'};
+var _debois$elm_mdl$Material_Color$Indigo = {ctor: 'Indigo'};
+var _debois$elm_mdl$Material_Color$hues = _elm_lang$core$Array$fromList(
+	{
+		ctor: '::',
+		_0: _debois$elm_mdl$Material_Color$Indigo,
+		_1: {
+			ctor: '::',
+			_0: _debois$elm_mdl$Material_Color$Blue,
+			_1: {
+				ctor: '::',
+				_0: _debois$elm_mdl$Material_Color$LightBlue,
+				_1: {
+					ctor: '::',
+					_0: _debois$elm_mdl$Material_Color$Cyan,
+					_1: {
+						ctor: '::',
+						_0: _debois$elm_mdl$Material_Color$Teal,
+						_1: {
+							ctor: '::',
+							_0: _debois$elm_mdl$Material_Color$Green,
+							_1: {
+								ctor: '::',
+								_0: _debois$elm_mdl$Material_Color$LightGreen,
+								_1: {
+									ctor: '::',
+									_0: _debois$elm_mdl$Material_Color$Lime,
+									_1: {
+										ctor: '::',
+										_0: _debois$elm_mdl$Material_Color$Yellow,
+										_1: {
+											ctor: '::',
+											_0: _debois$elm_mdl$Material_Color$Amber,
+											_1: {
+												ctor: '::',
+												_0: _debois$elm_mdl$Material_Color$Orange,
+												_1: {
+													ctor: '::',
+													_0: _debois$elm_mdl$Material_Color$Brown,
+													_1: {
+														ctor: '::',
+														_0: _debois$elm_mdl$Material_Color$BlueGrey,
+														_1: {
+															ctor: '::',
+															_0: _debois$elm_mdl$Material_Color$Grey,
+															_1: {
+																ctor: '::',
+																_0: _debois$elm_mdl$Material_Color$DeepOrange,
+																_1: {
+																	ctor: '::',
+																	_0: _debois$elm_mdl$Material_Color$Red,
+																	_1: {
+																		ctor: '::',
+																		_0: _debois$elm_mdl$Material_Color$Pink,
+																		_1: {
+																			ctor: '::',
+																			_0: _debois$elm_mdl$Material_Color$Purple,
+																			_1: {
+																				ctor: '::',
+																				_0: _debois$elm_mdl$Material_Color$DeepPurple,
+																				_1: {ctor: '[]'}
+																			}
+																		}
+																	}
+																}
+															}
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	});
+var _debois$elm_mdl$Material_Color$accentHues = _elm_lang$core$Array$fromList(
+	{
+		ctor: '::',
+		_0: _debois$elm_mdl$Material_Color$Indigo,
+		_1: {
+			ctor: '::',
+			_0: _debois$elm_mdl$Material_Color$Blue,
+			_1: {
+				ctor: '::',
+				_0: _debois$elm_mdl$Material_Color$LightBlue,
+				_1: {
+					ctor: '::',
+					_0: _debois$elm_mdl$Material_Color$Cyan,
+					_1: {
+						ctor: '::',
+						_0: _debois$elm_mdl$Material_Color$Teal,
+						_1: {
+							ctor: '::',
+							_0: _debois$elm_mdl$Material_Color$Green,
+							_1: {
+								ctor: '::',
+								_0: _debois$elm_mdl$Material_Color$LightGreen,
+								_1: {
+									ctor: '::',
+									_0: _debois$elm_mdl$Material_Color$Lime,
+									_1: {
+										ctor: '::',
+										_0: _debois$elm_mdl$Material_Color$Yellow,
+										_1: {
+											ctor: '::',
+											_0: _debois$elm_mdl$Material_Color$Amber,
+											_1: {
+												ctor: '::',
+												_0: _debois$elm_mdl$Material_Color$Orange,
+												_1: {
+													ctor: '::',
+													_0: _debois$elm_mdl$Material_Color$DeepOrange,
+													_1: {
+														ctor: '::',
+														_0: _debois$elm_mdl$Material_Color$Red,
+														_1: {
+															ctor: '::',
+															_0: _debois$elm_mdl$Material_Color$Pink,
+															_1: {
+																ctor: '::',
+																_0: _debois$elm_mdl$Material_Color$Purple,
+																_1: {
+																	ctor: '::',
+																	_0: _debois$elm_mdl$Material_Color$DeepPurple,
+																	_1: {ctor: '[]'}
+																}
+															}
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	});
+var _debois$elm_mdl$Material_Color$A700 = {ctor: 'A700'};
+var _debois$elm_mdl$Material_Color$A400 = {ctor: 'A400'};
+var _debois$elm_mdl$Material_Color$A200 = {ctor: 'A200'};
+var _debois$elm_mdl$Material_Color$A100 = {ctor: 'A100'};
+var _debois$elm_mdl$Material_Color$S900 = {ctor: 'S900'};
+var _debois$elm_mdl$Material_Color$S800 = {ctor: 'S800'};
+var _debois$elm_mdl$Material_Color$S700 = {ctor: 'S700'};
+var _debois$elm_mdl$Material_Color$S600 = {ctor: 'S600'};
+var _debois$elm_mdl$Material_Color$S500 = {ctor: 'S500'};
+var _debois$elm_mdl$Material_Color$S400 = {ctor: 'S400'};
+var _debois$elm_mdl$Material_Color$S300 = {ctor: 'S300'};
+var _debois$elm_mdl$Material_Color$S200 = {ctor: 'S200'};
+var _debois$elm_mdl$Material_Color$S100 = {ctor: 'S100'};
+var _debois$elm_mdl$Material_Color$S50 = {ctor: 'S50'};
+var _debois$elm_mdl$Material_Color$shades = _elm_lang$core$Array$fromList(
+	{
+		ctor: '::',
+		_0: _debois$elm_mdl$Material_Color$S50,
+		_1: {
+			ctor: '::',
+			_0: _debois$elm_mdl$Material_Color$S100,
+			_1: {
+				ctor: '::',
+				_0: _debois$elm_mdl$Material_Color$S200,
+				_1: {
+					ctor: '::',
+					_0: _debois$elm_mdl$Material_Color$S300,
+					_1: {
+						ctor: '::',
+						_0: _debois$elm_mdl$Material_Color$S400,
+						_1: {
+							ctor: '::',
+							_0: _debois$elm_mdl$Material_Color$S500,
+							_1: {
+								ctor: '::',
+								_0: _debois$elm_mdl$Material_Color$S600,
+								_1: {
+									ctor: '::',
+									_0: _debois$elm_mdl$Material_Color$S700,
+									_1: {
+										ctor: '::',
+										_0: _debois$elm_mdl$Material_Color$S800,
+										_1: {
+											ctor: '::',
+											_0: _debois$elm_mdl$Material_Color$S900,
+											_1: {
+												ctor: '::',
+												_0: _debois$elm_mdl$Material_Color$A100,
+												_1: {
+													ctor: '::',
+													_0: _debois$elm_mdl$Material_Color$A200,
+													_1: {
+														ctor: '::',
+														_0: _debois$elm_mdl$Material_Color$A400,
+														_1: {
+															ctor: '::',
+															_0: _debois$elm_mdl$Material_Color$A700,
+															_1: {ctor: '[]'}
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	});
+var _debois$elm_mdl$Material_Color$C = function (a) {
+	return {ctor: 'C', _0: a};
+};
+var _debois$elm_mdl$Material_Color$color = F2(
+	function (hue, shade) {
+		return _debois$elm_mdl$Material_Color$C(
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				_debois$elm_mdl$Material_Color$hueName(hue),
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					'-',
+					_debois$elm_mdl$Material_Color$shadeName(shade))));
+	});
+var _debois$elm_mdl$Material_Color$white = _debois$elm_mdl$Material_Color$C('white');
+var _debois$elm_mdl$Material_Color$black = _debois$elm_mdl$Material_Color$C('black');
+var _debois$elm_mdl$Material_Color$primary = _debois$elm_mdl$Material_Color$C('primary');
+var _debois$elm_mdl$Material_Color$primaryDark = _debois$elm_mdl$Material_Color$C('primary-dark');
+var _debois$elm_mdl$Material_Color$primaryContrast = _debois$elm_mdl$Material_Color$C('primary-contrast');
+var _debois$elm_mdl$Material_Color$accent = _debois$elm_mdl$Material_Color$C('accent');
+var _debois$elm_mdl$Material_Color$accentContrast = _debois$elm_mdl$Material_Color$C('accent-contrast');
 
 var _comjeito$comjeito$Misc_Header$render = function (model) {
 	return {
 		ctor: '::',
 		_0: A2(
 			_debois$elm_mdl$Material_Layout$row,
-			{ctor: '[]'},
 			{
 				ctor: '::',
-				_0: _elm_lang$html$Html$text('ComJeito'),
+				_0: _debois$elm_mdl$Material_Color$background(_debois$elm_mdl$Material_Color$black),
+				_1: {
+					ctor: '::',
+					_0: _debois$elm_mdl$Material_Color$text(_debois$elm_mdl$Material_Color$white),
+					_1: {ctor: '[]'}
+				}
+			},
+			{
+				ctor: '::',
+				_0: A2(
+					_debois$elm_mdl$Material_Options$div,
+					{ctor: '[]'},
+					{
+						ctor: '::',
+						_0: A2(
+							_debois$elm_mdl$Material_Options$img,
+							{
+								ctor: '::',
+								_0: A2(_debois$elm_mdl$Material_Options$css, 'height', '24px'),
+								_1: {
+									ctor: '::',
+									_0: A2(_debois$elm_mdl$Material_Options$css, 'margin-top', '5px'),
+									_1: {
+										ctor: '::',
+										_0: _debois$elm_mdl$Material_Options$attribute(
+											_elm_lang$html$Html_Attributes$src('logo-text-white.svg')),
+										_1: {ctor: '[]'}
+									}
+								}
+							},
+							{ctor: '[]'}),
+						_1: {ctor: '[]'}
+					}),
 				_1: {ctor: '[]'}
 			}),
 		_1: {ctor: '[]'}
@@ -16259,10 +16973,30 @@ var _comjeito$comjeito$Misc_Drawer$render = function (model) {
 		ctor: '::',
 		_0: A2(
 			_debois$elm_mdl$Material_Layout$title,
-			{ctor: '[]'},
 			{
 				ctor: '::',
-				_0: _elm_lang$html$Html$text('ComJeito'),
+				_0: _debois$elm_mdl$Material_Options$center,
+				_1: {
+					ctor: '::',
+					_0: A2(_debois$elm_mdl$Material_Options$css, 'padding', '16px 0'),
+					_1: {ctor: '[]'}
+				}
+			},
+			{
+				ctor: '::',
+				_0: A2(
+					_debois$elm_mdl$Material_Options$img,
+					{
+						ctor: '::',
+						_0: A2(_debois$elm_mdl$Material_Options$css, 'height', '96px'),
+						_1: {
+							ctor: '::',
+							_0: _debois$elm_mdl$Material_Options$attribute(
+								_elm_lang$html$Html_Attributes$src('logo-alt-black.svg')),
+							_1: {ctor: '[]'}
+						}
+					},
+					{ctor: '[]'}),
 				_1: {ctor: '[]'}
 			}),
 		_1: {
@@ -16276,7 +17010,15 @@ var _comjeito$comjeito$Misc_Drawer$render = function (model) {
 					_1: {
 						ctor: '::',
 						_0: A3(_comjeito$comjeito$Misc_Drawer$item, 'Home', '#/home', model),
-						_1: {ctor: '[]'}
+						_1: {
+							ctor: '::',
+							_0: A3(_comjeito$comjeito$Misc_Drawer$item, 'Conheça nossos produtos', '#/produtos', model),
+							_1: {
+								ctor: '::',
+								_0: A3(_comjeito$comjeito$Misc_Drawer$item, 'Acesse o showroom', '#/showroom', model),
+								_1: {ctor: '[]'}
+							}
+						}
 					}
 				}),
 			_1: {ctor: '[]'}
@@ -16284,14 +17026,2074 @@ var _comjeito$comjeito$Misc_Drawer$render = function (model) {
 	};
 };
 
+var _comjeito$comjeito$Misc_Tabs$render = function (model) {
+	return {
+		ctor: '_Tuple2',
+		_0: {
+			ctor: '::',
+			_0: _elm_lang$html$Html$text('Home'),
+			_1: {
+				ctor: '::',
+				_0: _elm_lang$html$Html$text('Showroom'),
+				_1: {
+					ctor: '::',
+					_0: _elm_lang$html$Html$text('Serviços'),
+					_1: {
+						ctor: '::',
+						_0: _elm_lang$html$Html$text('Produtos'),
+						_1: {
+							ctor: '::',
+							_0: _elm_lang$html$Html$text('Sobre'),
+							_1: {ctor: '[]'}
+						}
+					}
+				}
+			}
+		},
+		_1: {ctor: '[]'}
+	};
+};
+
+var _debois$elm_mdl$Material_Typography$uppercase = _debois$elm_mdl$Material_Options$cs('mdl-typography--text-uppercase');
+var _debois$elm_mdl$Material_Typography$lowercase = _debois$elm_mdl$Material_Options$cs('mdl-typography--text-lowercase');
+var _debois$elm_mdl$Material_Typography$capitalize = _debois$elm_mdl$Material_Options$cs('mdl-typography--text-capitalize');
+var _debois$elm_mdl$Material_Typography$justify = _debois$elm_mdl$Material_Options$cs('mdl-typography--text-justify');
+var _debois$elm_mdl$Material_Typography$right = _debois$elm_mdl$Material_Options$cs('mdl-typography--text-right');
+var _debois$elm_mdl$Material_Typography$left = _debois$elm_mdl$Material_Options$cs('mdl-typography--text-left');
+var _debois$elm_mdl$Material_Typography$center = _debois$elm_mdl$Material_Options$cs('mdl-typography--text-center');
+var _debois$elm_mdl$Material_Typography$tableStriped = _debois$elm_mdl$Material_Options$cs('mdl-typography--table-striped');
+var _debois$elm_mdl$Material_Typography$nowrap = _debois$elm_mdl$Material_Options$cs('mdl-typography--text-nowrap');
+var _debois$elm_mdl$Material_Typography$contrast = function (x) {
+	return A2(
+		_debois$elm_mdl$Material_Options$css,
+		'opacity',
+		_elm_lang$core$Basics$toString(x));
+};
+var _debois$elm_mdl$Material_Typography$menu = _debois$elm_mdl$Material_Options$cs('mdl-typography--menu-color-contrast');
+var _debois$elm_mdl$Material_Typography$button = _debois$elm_mdl$Material_Options$cs('mdl-typography--button-color-contrast');
+var _debois$elm_mdl$Material_Typography$caption = _debois$elm_mdl$Material_Options$cs('mdl-typography--caption-force-preferred-font-color-contrast');
+var _debois$elm_mdl$Material_Typography$body2 = _debois$elm_mdl$Material_Options$cs('mdl-typography--body-2-force-preferred-font-color-contrast');
+var _debois$elm_mdl$Material_Typography$body1 = _debois$elm_mdl$Material_Options$cs('mdl-typography--body-1-force-preferred-font-color-contrast');
+var _debois$elm_mdl$Material_Typography$subhead = _debois$elm_mdl$Material_Options$cs('mdl-typography--subhead-color-contrast');
+var _debois$elm_mdl$Material_Typography$title = _debois$elm_mdl$Material_Options$cs('mdl-typography--title-color-contrast');
+var _debois$elm_mdl$Material_Typography$headline = _debois$elm_mdl$Material_Options$cs('mdl-typography--headline-color-contrast');
+var _debois$elm_mdl$Material_Typography$display4 = _debois$elm_mdl$Material_Options$cs('mdl-typography--display-4-color-contrast');
+var _debois$elm_mdl$Material_Typography$display3 = _debois$elm_mdl$Material_Options$cs('mdl-typography--display-3-color-contrast');
+var _debois$elm_mdl$Material_Typography$display2 = _debois$elm_mdl$Material_Options$cs('mdl-typography--display-2-color-contrast');
+var _debois$elm_mdl$Material_Typography$display1 = _debois$elm_mdl$Material_Options$cs('mdl-typography--display-1-color-contrast');
+
+//import Maybe, Native.List //
+
+var _elm_lang$core$Native_Regex = function() {
+
+function escape(str)
+{
+	return str.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+}
+function caseInsensitive(re)
+{
+	return new RegExp(re.source, 'gi');
+}
+function regex(raw)
+{
+	return new RegExp(raw, 'g');
+}
+
+function contains(re, string)
+{
+	return string.match(re) !== null;
+}
+
+function find(n, re, str)
+{
+	n = n.ctor === 'All' ? Infinity : n._0;
+	var out = [];
+	var number = 0;
+	var string = str;
+	var lastIndex = re.lastIndex;
+	var prevLastIndex = -1;
+	var result;
+	while (number++ < n && (result = re.exec(string)))
+	{
+		if (prevLastIndex === re.lastIndex) break;
+		var i = result.length - 1;
+		var subs = new Array(i);
+		while (i > 0)
+		{
+			var submatch = result[i];
+			subs[--i] = submatch === undefined
+				? _elm_lang$core$Maybe$Nothing
+				: _elm_lang$core$Maybe$Just(submatch);
+		}
+		out.push({
+			match: result[0],
+			submatches: _elm_lang$core$Native_List.fromArray(subs),
+			index: result.index,
+			number: number
+		});
+		prevLastIndex = re.lastIndex;
+	}
+	re.lastIndex = lastIndex;
+	return _elm_lang$core$Native_List.fromArray(out);
+}
+
+function replace(n, re, replacer, string)
+{
+	n = n.ctor === 'All' ? Infinity : n._0;
+	var count = 0;
+	function jsReplacer(match)
+	{
+		if (count++ >= n)
+		{
+			return match;
+		}
+		var i = arguments.length - 3;
+		var submatches = new Array(i);
+		while (i > 0)
+		{
+			var submatch = arguments[i];
+			submatches[--i] = submatch === undefined
+				? _elm_lang$core$Maybe$Nothing
+				: _elm_lang$core$Maybe$Just(submatch);
+		}
+		return replacer({
+			match: match,
+			submatches: _elm_lang$core$Native_List.fromArray(submatches),
+			index: arguments[arguments.length - 2],
+			number: count
+		});
+	}
+	return string.replace(re, jsReplacer);
+}
+
+function split(n, re, str)
+{
+	n = n.ctor === 'All' ? Infinity : n._0;
+	if (n === Infinity)
+	{
+		return _elm_lang$core$Native_List.fromArray(str.split(re));
+	}
+	var string = str;
+	var result;
+	var out = [];
+	var start = re.lastIndex;
+	var restoreLastIndex = re.lastIndex;
+	while (n--)
+	{
+		if (!(result = re.exec(string))) break;
+		out.push(string.slice(start, result.index));
+		start = re.lastIndex;
+	}
+	out.push(string.slice(start));
+	re.lastIndex = restoreLastIndex;
+	return _elm_lang$core$Native_List.fromArray(out);
+}
+
+return {
+	regex: regex,
+	caseInsensitive: caseInsensitive,
+	escape: escape,
+
+	contains: F2(contains),
+	find: F3(find),
+	replace: F4(replace),
+	split: F3(split)
+};
+
+}();
+
+var _elm_lang$core$Regex$split = _elm_lang$core$Native_Regex.split;
+var _elm_lang$core$Regex$replace = _elm_lang$core$Native_Regex.replace;
+var _elm_lang$core$Regex$find = _elm_lang$core$Native_Regex.find;
+var _elm_lang$core$Regex$contains = _elm_lang$core$Native_Regex.contains;
+var _elm_lang$core$Regex$caseInsensitive = _elm_lang$core$Native_Regex.caseInsensitive;
+var _elm_lang$core$Regex$regex = _elm_lang$core$Native_Regex.regex;
+var _elm_lang$core$Regex$escape = _elm_lang$core$Native_Regex.escape;
+var _elm_lang$core$Regex$Match = F4(
+	function (a, b, c, d) {
+		return {match: a, submatches: b, index: c, number: d};
+	});
+var _elm_lang$core$Regex$Regex = {ctor: 'Regex'};
+var _elm_lang$core$Regex$AtMost = function (a) {
+	return {ctor: 'AtMost', _0: a};
+};
+var _elm_lang$core$Regex$All = {ctor: 'All'};
+
+var _debois$elm_mdl$Material_Footer$tempPrefix = '{{prefix}}';
+var _debois$elm_mdl$Material_Footer$prefixRegex = _elm_lang$core$Regex$regex(_debois$elm_mdl$Material_Footer$tempPrefix);
+var _debois$elm_mdl$Material_Footer$removePrefix = A3(
+	_elm_lang$core$Regex$replace,
+	_elm_lang$core$Regex$All,
+	_debois$elm_mdl$Material_Footer$prefixRegex,
+	function (_p0) {
+		return '';
+	});
+var _debois$elm_mdl$Material_Footer$prefixedClass = function (cls) {
+	return _debois$elm_mdl$Material_Options$cs(
+		A2(_elm_lang$core$Basics_ops['++'], _debois$elm_mdl$Material_Footer$tempPrefix, cls));
+};
+var _debois$elm_mdl$Material_Footer$socialBtn = _debois$elm_mdl$Material_Footer$prefixedClass('social-btn');
+var _debois$elm_mdl$Material_Footer$headingClass = _debois$elm_mdl$Material_Footer$prefixedClass('heading');
+var _debois$elm_mdl$Material_Footer$href = function (_p1) {
+	return _debois$elm_mdl$Material_Internal_Options$attribute(
+		_elm_lang$html$Html_Attributes$href(_p1));
+};
+var _debois$elm_mdl$Material_Footer$separator = '__';
+var _debois$elm_mdl$Material_Footer$prefix = function (tp) {
+	var _p2 = tp;
+	if (_p2.ctor === 'Mini') {
+		return 'mdl-mini-footer';
+	} else {
+		return 'mdl-mega-footer';
+	}
+};
+var _debois$elm_mdl$Material_Footer$applyPrefix = F2(
+	function (tp, prop) {
+		var sep = _debois$elm_mdl$Material_Footer$separator;
+		var pref = _debois$elm_mdl$Material_Footer$prefix(tp);
+		var _p3 = prop;
+		switch (_p3.ctor) {
+			case 'Class':
+				var _p4 = _p3._0;
+				return A2(_elm_lang$core$String$startsWith, _debois$elm_mdl$Material_Footer$tempPrefix, _p4) ? _debois$elm_mdl$Material_Options$cs(
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						pref,
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							sep,
+							_debois$elm_mdl$Material_Footer$removePrefix(_p4)))) : prop;
+			case 'Many':
+				return _debois$elm_mdl$Material_Options$many(
+					A2(
+						_elm_lang$core$List$map,
+						_debois$elm_mdl$Material_Footer$applyPrefix(tp),
+						_p3._0));
+			default:
+				return prop;
+		}
+	});
+var _debois$elm_mdl$Material_Footer$toHtml = F2(
+	function (tp, _p5) {
+		var _p6 = _p5;
+		var styles_ = A2(
+			_elm_lang$core$List$map,
+			_debois$elm_mdl$Material_Footer$applyPrefix(tp),
+			_p6.styles);
+		return A3(
+			_debois$elm_mdl$Material_Options$styled,
+			_p6.elem,
+			styles_,
+			A2(
+				_elm_lang$core$List$map,
+				_debois$elm_mdl$Material_Footer$contentToHtml(tp),
+				_p6.content));
+	});
+var _debois$elm_mdl$Material_Footer$contentToHtml = F2(
+	function (tp, content) {
+		var _p7 = content;
+		if (_p7.ctor === 'HtmlContent') {
+			return _p7._0;
+		} else {
+			return A2(_debois$elm_mdl$Material_Footer$toHtml, tp, _p7._0);
+		}
+	});
+var _debois$elm_mdl$Material_Footer$sectionContent = F3(
+	function (tp, section, content) {
+		var sep = _debois$elm_mdl$Material_Footer$separator;
+		var pref = _debois$elm_mdl$Material_Footer$prefix(tp);
+		var _p8 = content;
+		if (_p8.ctor === 'HtmlContent') {
+			return A3(
+				_debois$elm_mdl$Material_Options$styled,
+				_elm_lang$html$Html$div,
+				{
+					ctor: '::',
+					_0: _debois$elm_mdl$Material_Options$cs(
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							pref,
+							A2(_elm_lang$core$Basics_ops['++'], sep, section))),
+					_1: {ctor: '[]'}
+				},
+				{
+					ctor: '::',
+					_0: _p8._0,
+					_1: {ctor: '[]'}
+				});
+		} else {
+			return A3(
+				_debois$elm_mdl$Material_Options$styled,
+				_p8._0.elem,
+				{
+					ctor: '::',
+					_0: _debois$elm_mdl$Material_Options$cs(
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							pref,
+							A2(_elm_lang$core$Basics_ops['++'], sep, section))),
+					_1: _p8._0.styles
+				},
+				A2(
+					_elm_lang$core$List$map,
+					_debois$elm_mdl$Material_Footer$contentToHtml(tp),
+					_p8._0.content));
+		}
+	});
+var _debois$elm_mdl$Material_Footer$leftHtml = F2(
+	function (tp, left) {
+		var _p9 = left;
+		if (_p9.ctor === 'Just') {
+			return {
+				ctor: '::',
+				_0: A3(_debois$elm_mdl$Material_Footer$sectionContent, tp, 'left-section', _p9._0._0),
+				_1: {ctor: '[]'}
+			};
+		} else {
+			return {ctor: '[]'};
+		}
+	});
+var _debois$elm_mdl$Material_Footer$rightHtml = F2(
+	function (tp, right) {
+		var _p10 = right;
+		if (_p10.ctor === 'Just') {
+			return {
+				ctor: '::',
+				_0: A3(_debois$elm_mdl$Material_Footer$sectionContent, tp, 'right-section', _p10._0._0),
+				_1: {ctor: '[]'}
+			};
+		} else {
+			return {ctor: '[]'};
+		}
+	});
+var _debois$elm_mdl$Material_Footer$Footer = F3(
+	function (a, b, c) {
+		return {styles: a, content: b, elem: c};
+	});
+var _debois$elm_mdl$Material_Footer$MiniFooter = F2(
+	function (a, b) {
+		return {left: a, right: b};
+	});
+var _debois$elm_mdl$Material_Footer$MegaFooter = F3(
+	function (a, b, c) {
+		return {top: a, bottom: b, middle: c};
+	});
+var _debois$elm_mdl$Material_Footer$Mega = {ctor: 'Mega'};
+var _debois$elm_mdl$Material_Footer$mega = F2(
+	function (props, _p11) {
+		var _p12 = _p11;
+		var sep = _debois$elm_mdl$Material_Footer$separator;
+		var tp = _debois$elm_mdl$Material_Footer$Mega;
+		var pref = _debois$elm_mdl$Material_Footer$prefix(tp);
+		var topContent = function () {
+			var _p13 = _p12.top;
+			if (_p13.ctor === 'Nothing') {
+				return {ctor: '[]'};
+			} else {
+				return {
+					ctor: '::',
+					_0: A3(
+						_debois$elm_mdl$Material_Options$styled,
+						_elm_lang$html$Html$div,
+						{
+							ctor: '::',
+							_0: _debois$elm_mdl$Material_Options$cs(
+								A2(
+									_elm_lang$core$Basics_ops['++'],
+									pref,
+									A2(_elm_lang$core$Basics_ops['++'], sep, 'top-section'))),
+							_1: _p13._0._0.props
+						},
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							A2(_debois$elm_mdl$Material_Footer$leftHtml, tp, _p13._0._0.left),
+							A2(_debois$elm_mdl$Material_Footer$rightHtml, tp, _p13._0._0.right))),
+					_1: {ctor: '[]'}
+				};
+			}
+		}();
+		var middleContent = function () {
+			var _p14 = _p12.middle;
+			if (_p14.ctor === 'Nothing') {
+				return {ctor: '[]'};
+			} else {
+				return {
+					ctor: '::',
+					_0: A3(
+						_debois$elm_mdl$Material_Options$styled,
+						_elm_lang$html$Html$div,
+						{
+							ctor: '::',
+							_0: _debois$elm_mdl$Material_Options$cs(
+								A2(
+									_elm_lang$core$Basics_ops['++'],
+									pref,
+									A2(_elm_lang$core$Basics_ops['++'], sep, 'middle-section'))),
+							_1: _p14._0._0.props
+						},
+						A2(
+							_elm_lang$core$List$map,
+							_debois$elm_mdl$Material_Footer$contentToHtml(tp),
+							_p14._0._0.content)),
+					_1: {ctor: '[]'}
+				};
+			}
+		}();
+		var bottomContent = function () {
+			var _p15 = _p12.bottom;
+			if (_p15.ctor === 'Nothing') {
+				return {ctor: '[]'};
+			} else {
+				return {
+					ctor: '::',
+					_0: A3(
+						_debois$elm_mdl$Material_Options$styled,
+						_elm_lang$html$Html$div,
+						{
+							ctor: '::',
+							_0: _debois$elm_mdl$Material_Options$cs(
+								A2(
+									_elm_lang$core$Basics_ops['++'],
+									pref,
+									A2(_elm_lang$core$Basics_ops['++'], sep, 'bottom-section'))),
+							_1: _p15._0._0.props
+						},
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							{ctor: '[]'},
+							A2(
+								_elm_lang$core$List$map,
+								_debois$elm_mdl$Material_Footer$contentToHtml(tp),
+								_p15._0._0.content))),
+					_1: {ctor: '[]'}
+				};
+			}
+		}();
+		return A3(
+			_debois$elm_mdl$Material_Options$styled,
+			_elm_lang$html$Html$footer,
+			{
+				ctor: '::',
+				_0: _debois$elm_mdl$Material_Options$cs(pref),
+				_1: props
+			},
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				topContent,
+				A2(_elm_lang$core$Basics_ops['++'], middleContent, bottomContent)));
+	});
+var _debois$elm_mdl$Material_Footer$Mini = {ctor: 'Mini'};
+var _debois$elm_mdl$Material_Footer$mini = F2(
+	function (props, _p16) {
+		var _p17 = _p16;
+		var tp = _debois$elm_mdl$Material_Footer$Mini;
+		var pref = _debois$elm_mdl$Material_Footer$prefix(tp);
+		var leftContent = A2(_debois$elm_mdl$Material_Footer$leftHtml, tp, _p17.left);
+		var rightContent = A2(_debois$elm_mdl$Material_Footer$rightHtml, tp, _p17.right);
+		return A3(
+			_debois$elm_mdl$Material_Options$styled,
+			_elm_lang$html$Html$footer,
+			{
+				ctor: '::',
+				_0: _debois$elm_mdl$Material_Options$cs(pref),
+				_1: props
+			},
+			A2(_elm_lang$core$Basics_ops['++'], leftContent, rightContent));
+	});
+var _debois$elm_mdl$Material_Footer$FooterProperty = {ctor: 'FooterProperty'};
+var _debois$elm_mdl$Material_Footer$Content = function (a) {
+	return {ctor: 'Content', _0: a};
+};
+var _debois$elm_mdl$Material_Footer$logo = F2(
+	function (styles, content) {
+		return _debois$elm_mdl$Material_Footer$Content(
+			{
+				styles: {
+					ctor: '::',
+					_0: _debois$elm_mdl$Material_Options$cs('mdl-logo'),
+					_1: styles
+				},
+				content: content,
+				elem: _elm_lang$html$Html$div
+			});
+	});
+var _debois$elm_mdl$Material_Footer$links = F2(
+	function (styles, content) {
+		return _debois$elm_mdl$Material_Footer$Content(
+			{
+				styles: {
+					ctor: '::',
+					_0: _debois$elm_mdl$Material_Footer$prefixedClass('link-list'),
+					_1: styles
+				},
+				content: content,
+				elem: _elm_lang$html$Html$ul
+			});
+	});
+var _debois$elm_mdl$Material_Footer$linkItem = F2(
+	function (styles, content) {
+		return _debois$elm_mdl$Material_Footer$Content(
+			{
+				styles: {ctor: '[]'},
+				content: {
+					ctor: '::',
+					_0: _debois$elm_mdl$Material_Footer$Content(
+						{styles: styles, content: content, elem: _elm_lang$html$Html$a}),
+					_1: {ctor: '[]'}
+				},
+				elem: _elm_lang$html$Html$li
+			});
+	});
+var _debois$elm_mdl$Material_Footer$heading = F2(
+	function (styles, content) {
+		return _debois$elm_mdl$Material_Footer$Content(
+			{
+				styles: {ctor: '::', _0: _debois$elm_mdl$Material_Footer$headingClass, _1: styles},
+				content: content,
+				elem: _elm_lang$html$Html$h1
+			});
+	});
+var _debois$elm_mdl$Material_Footer$socialButton = F2(
+	function (styles, content) {
+		return _debois$elm_mdl$Material_Footer$Content(
+			{
+				styles: {ctor: '::', _0: _debois$elm_mdl$Material_Footer$socialBtn, _1: styles},
+				content: content,
+				elem: _elm_lang$html$Html$button
+			});
+	});
+var _debois$elm_mdl$Material_Footer$HtmlContent = function (a) {
+	return {ctor: 'HtmlContent', _0: a};
+};
+var _debois$elm_mdl$Material_Footer$checkbox = _debois$elm_mdl$Material_Footer$HtmlContent(
+	A2(
+		_elm_lang$html$Html$input,
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$class('mdl-mega-footer__heading-checkbox'),
+			_1: {
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$type_('checkbox'),
+				_1: {
+					ctor: '::',
+					_0: A2(_elm_lang$html$Html_Attributes$attribute, 'checked', ''),
+					_1: {ctor: '[]'}
+				}
+			}
+		},
+		{ctor: '[]'}));
+var _debois$elm_mdl$Material_Footer$dropdown = F2(
+	function (props, content) {
+		return _debois$elm_mdl$Material_Footer$Content(
+			{
+				styles: {
+					ctor: '::',
+					_0: _debois$elm_mdl$Material_Options$cs('mdl-mega-footer__drop-down-section'),
+					_1: props
+				},
+				content: {ctor: '::', _0: _debois$elm_mdl$Material_Footer$checkbox, _1: content},
+				elem: _elm_lang$html$Html$div
+			});
+	});
+var _debois$elm_mdl$Material_Footer$html = _debois$elm_mdl$Material_Footer$HtmlContent;
+var _debois$elm_mdl$Material_Footer$link = F2(
+	function (styles, contents) {
+		return _debois$elm_mdl$Material_Footer$html(
+			A3(_debois$elm_mdl$Material_Options$styled, _elm_lang$html$Html$a, styles, contents));
+	});
+var _debois$elm_mdl$Material_Footer$li = F2(
+	function (styles, content) {
+		return _debois$elm_mdl$Material_Footer$html(
+			A3(_debois$elm_mdl$Material_Options$styled, _elm_lang$html$Html$li, styles, content));
+	});
+var _debois$elm_mdl$Material_Footer$Section = function (a) {
+	return {ctor: 'Section', _0: a};
+};
+var _debois$elm_mdl$Material_Footer$left = F2(
+	function (styles, content) {
+		return function (_p18) {
+			return _elm_lang$core$Maybe$Just(
+				_debois$elm_mdl$Material_Footer$Section(_p18));
+		}(
+			_debois$elm_mdl$Material_Footer$Content(
+				{styles: styles, content: content, elem: _elm_lang$html$Html$div}));
+	});
+var _debois$elm_mdl$Material_Footer$right = F2(
+	function (styles, content) {
+		return function (_p19) {
+			return _elm_lang$core$Maybe$Just(
+				_debois$elm_mdl$Material_Footer$Section(_p19));
+		}(
+			_debois$elm_mdl$Material_Footer$Content(
+				{styles: styles, content: content, elem: _elm_lang$html$Html$div}));
+	});
+var _debois$elm_mdl$Material_Footer$TopSection = function (a) {
+	return {ctor: 'TopSection', _0: a};
+};
+var _debois$elm_mdl$Material_Footer$top = F2(
+	function (props, _p20) {
+		var _p21 = _p20;
+		return _elm_lang$core$Maybe$Just(
+			_debois$elm_mdl$Material_Footer$TopSection(
+				{left: _p21.left, right: _p21.right, props: props}));
+	});
+var _debois$elm_mdl$Material_Footer$BottomSection = function (a) {
+	return {ctor: 'BottomSection', _0: a};
+};
+var _debois$elm_mdl$Material_Footer$bottom = F2(
+	function (props, content) {
+		return _elm_lang$core$Maybe$Just(
+			_debois$elm_mdl$Material_Footer$BottomSection(
+				{props: props, content: content}));
+	});
+var _debois$elm_mdl$Material_Footer$MiddleSection = function (a) {
+	return {ctor: 'MiddleSection', _0: a};
+};
+var _debois$elm_mdl$Material_Footer$middle = F2(
+	function (props, content) {
+		return _elm_lang$core$Maybe$Just(
+			_debois$elm_mdl$Material_Footer$MiddleSection(
+				{props: props, content: content}));
+	});
+
+var _comjeito$comjeito$Misc_Footer$render = function (model) {
+	return A2(
+		_debois$elm_mdl$Material_Footer$mini,
+		{
+			ctor: '::',
+			_0: _debois$elm_mdl$Material_Color$background(_debois$elm_mdl$Material_Color$black),
+			_1: {ctor: '[]'}
+		},
+		{
+			left: A2(
+				_debois$elm_mdl$Material_Footer$left,
+				{
+					ctor: '::',
+					_0: A2(_debois$elm_mdl$Material_Options$css, 'width', '100%'),
+					_1: {ctor: '[]'}
+				},
+				{
+					ctor: '::',
+					_0: A2(
+						_debois$elm_mdl$Material_Footer$heading,
+						{ctor: '[]'},
+						{
+							ctor: '::',
+							_0: _debois$elm_mdl$Material_Footer$html(
+								A3(
+									_debois$elm_mdl$Material_Options$styled,
+									_elm_lang$html$Html$p,
+									{
+										ctor: '::',
+										_0: _debois$elm_mdl$Material_Color$text(_debois$elm_mdl$Material_Color$accent),
+										_1: {ctor: '[]'}
+									},
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html$text('ComJeito Ambientes'),
+										_1: {ctor: '[]'}
+									})),
+							_1: {ctor: '[]'}
+						}),
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_debois$elm_mdl$Material_Footer$logo,
+							{ctor: '[]'},
+							{
+								ctor: '::',
+								_0: _debois$elm_mdl$Material_Footer$html(
+									_elm_lang$html$Html$text('Rua Caxambú, 427 - Vila Nova, Novo Hamburgo - RS')),
+								_1: {ctor: '[]'}
+							}),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_debois$elm_mdl$Material_Footer$links,
+								{
+									ctor: '::',
+									_0: _debois$elm_mdl$Material_Color$text(_debois$elm_mdl$Material_Color$white),
+									_1: {ctor: '[]'}
+								},
+								{
+									ctor: '::',
+									_0: A2(
+										_debois$elm_mdl$Material_Footer$linkItem,
+										{
+											ctor: '::',
+											_0: _debois$elm_mdl$Material_Footer$href('whatsapp.com'),
+											_1: {ctor: '[]'}
+										},
+										{
+											ctor: '::',
+											_0: _debois$elm_mdl$Material_Footer$html(
+												A2(
+													_debois$elm_mdl$Material_Options$div,
+													{ctor: '[]'},
+													{
+														ctor: '::',
+														_0: A2(
+															_debois$elm_mdl$Material_Options$img,
+															{
+																ctor: '::',
+																_0: A2(_debois$elm_mdl$Material_Options$css, 'height', '24px'),
+																_1: {
+																	ctor: '::',
+																	_0: A2(_debois$elm_mdl$Material_Options$css, 'padding', '8px'),
+																	_1: {
+																		ctor: '::',
+																		_0: _debois$elm_mdl$Material_Options$attribute(
+																			_elm_lang$html$Html_Attributes$src('whatsapp.svg')),
+																		_1: {ctor: '[]'}
+																	}
+																}
+															},
+															{ctor: '[]'}),
+														_1: {
+															ctor: '::',
+															_0: _elm_lang$html$Html$text('(51) 99131-4453'),
+															_1: {ctor: '[]'}
+														}
+													})),
+											_1: {ctor: '[]'}
+										}),
+									_1: {
+										ctor: '::',
+										_0: A2(
+											_debois$elm_mdl$Material_Footer$linkItem,
+											{
+												ctor: '::',
+												_0: _debois$elm_mdl$Material_Footer$href('facebook.com'),
+												_1: {ctor: '[]'}
+											},
+											{
+												ctor: '::',
+												_0: _debois$elm_mdl$Material_Footer$html(
+													A2(
+														_debois$elm_mdl$Material_Options$div,
+														{ctor: '[]'},
+														{
+															ctor: '::',
+															_0: A2(
+																_debois$elm_mdl$Material_Options$img,
+																{
+																	ctor: '::',
+																	_0: A2(_debois$elm_mdl$Material_Options$css, 'height', '24px'),
+																	_1: {
+																		ctor: '::',
+																		_0: A2(_debois$elm_mdl$Material_Options$css, 'padding', '8px'),
+																		_1: {
+																			ctor: '::',
+																			_0: _debois$elm_mdl$Material_Options$attribute(
+																				_elm_lang$html$Html_Attributes$src('facebook.svg')),
+																			_1: {ctor: '[]'}
+																		}
+																	}
+																},
+																{ctor: '[]'}),
+															_1: {
+																ctor: '::',
+																_0: _elm_lang$html$Html$text('/ComJeito'),
+																_1: {ctor: '[]'}
+															}
+														})),
+												_1: {ctor: '[]'}
+											}),
+										_1: {ctor: '[]'}
+									}
+								}),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_debois$elm_mdl$Material_Footer$logo,
+									{
+										ctor: '::',
+										_0: _debois$elm_mdl$Material_Options$center,
+										_1: {ctor: '[]'}
+									},
+									{
+										ctor: '::',
+										_0: _debois$elm_mdl$Material_Footer$html(
+											A2(
+												_debois$elm_mdl$Material_Options$img,
+												{
+													ctor: '::',
+													_0: A2(_debois$elm_mdl$Material_Options$css, 'height', '64px'),
+													_1: {
+														ctor: '::',
+														_0: A2(_debois$elm_mdl$Material_Options$css, 'margin', '16px 0'),
+														_1: {
+															ctor: '::',
+															_0: _debois$elm_mdl$Material_Options$attribute(
+																_elm_lang$html$Html_Attributes$src('logo-simple-white.svg')),
+															_1: {ctor: '[]'}
+														}
+													}
+												},
+												{ctor: '[]'})),
+										_1: {ctor: '[]'}
+									}),
+								_1: {ctor: '[]'}
+							}
+						}
+					}
+				}),
+			right: A2(
+				_debois$elm_mdl$Material_Footer$right,
+				{ctor: '[]'},
+				{ctor: '[]'})
+		});
+};
+
+var _evancz$elm_markdown$Native_Markdown = function() {
+
+
+// VIRTUAL-DOM WIDGETS
+
+function toHtml(options, factList, rawMarkdown)
+{
+	var model = {
+		options: options,
+		markdown: rawMarkdown
+	};
+	return _elm_lang$virtual_dom$Native_VirtualDom.custom(factList, model, implementation);
+}
+
+
+// WIDGET IMPLEMENTATION
+
+var implementation = {
+	render: render,
+	diff: diff
+};
+
+function render(model)
+{
+	var html = marked(model.markdown, formatOptions(model.options));
+	var div = document.createElement('div');
+	div.innerHTML = html;
+	return div;
+}
+
+function diff(a, b)
+{
+	
+	if (a.model.markdown === b.model.markdown && a.model.options === b.model.options)
+	{
+		return null;
+	}
+
+	return {
+		applyPatch: applyPatch,
+		data: marked(b.model.markdown, formatOptions(b.model.options))
+	};
+}
+
+function applyPatch(domNode, data)
+{
+	domNode.innerHTML = data;
+	return domNode;
+}
+
+
+// ACTUAL MARKDOWN PARSER
+
+var marked = function() {
+	// catch the `marked` object regardless of the outer environment.
+	// (ex. a CommonJS module compatible environment.)
+	// note that this depends on marked's implementation of environment detection.
+	var module = {};
+	var exports = module.exports = {};
+
+	/**
+	 * marked - a markdown parser
+	 * Copyright (c) 2011-2014, Christopher Jeffrey. (MIT Licensed)
+	 * https://github.com/chjj/marked
+	 * commit cd2f6f5b7091154c5526e79b5f3bfb4d15995a51
+	 */
+	(function(){var block={newline:/^\n+/,code:/^( {4}[^\n]+\n*)+/,fences:noop,hr:/^( *[-*_]){3,} *(?:\n+|$)/,heading:/^ *(#{1,6}) *([^\n]+?) *#* *(?:\n+|$)/,nptable:noop,lheading:/^([^\n]+)\n *(=|-){2,} *(?:\n+|$)/,blockquote:/^( *>[^\n]+(\n(?!def)[^\n]+)*\n*)+/,list:/^( *)(bull) [\s\S]+?(?:hr|def|\n{2,}(?! )(?!\1bull )\n*|\s*$)/,html:/^ *(?:comment *(?:\n|\s*$)|closed *(?:\n{2,}|\s*$)|closing *(?:\n{2,}|\s*$))/,def:/^ *\[([^\]]+)\]: *<?([^\s>]+)>?(?: +["(]([^\n]+)[")])? *(?:\n+|$)/,table:noop,paragraph:/^((?:[^\n]+\n?(?!hr|heading|lheading|blockquote|tag|def))+)\n*/,text:/^[^\n]+/};block.bullet=/(?:[*+-]|\d+\.)/;block.item=/^( *)(bull) [^\n]*(?:\n(?!\1bull )[^\n]*)*/;block.item=replace(block.item,"gm")(/bull/g,block.bullet)();block.list=replace(block.list)(/bull/g,block.bullet)("hr","\\n+(?=\\1?(?:[-*_] *){3,}(?:\\n+|$))")("def","\\n+(?="+block.def.source+")")();block.blockquote=replace(block.blockquote)("def",block.def)();block._tag="(?!(?:"+"a|em|strong|small|s|cite|q|dfn|abbr|data|time|code"+"|var|samp|kbd|sub|sup|i|b|u|mark|ruby|rt|rp|bdi|bdo"+"|span|br|wbr|ins|del|img)\\b)\\w+(?!:/|[^\\w\\s@]*@)\\b";block.html=replace(block.html)("comment",/<!--[\s\S]*?-->/)("closed",/<(tag)[\s\S]+?<\/\1>/)("closing",/<tag(?:"[^"]*"|'[^']*'|[^'">])*?>/)(/tag/g,block._tag)();block.paragraph=replace(block.paragraph)("hr",block.hr)("heading",block.heading)("lheading",block.lheading)("blockquote",block.blockquote)("tag","<"+block._tag)("def",block.def)();block.normal=merge({},block);block.gfm=merge({},block.normal,{fences:/^ *(`{3,}|~{3,})[ \.]*(\S+)? *\n([\s\S]*?)\s*\1 *(?:\n+|$)/,paragraph:/^/,heading:/^ *(#{1,6}) +([^\n]+?) *#* *(?:\n+|$)/});block.gfm.paragraph=replace(block.paragraph)("(?!","(?!"+block.gfm.fences.source.replace("\\1","\\2")+"|"+block.list.source.replace("\\1","\\3")+"|")();block.tables=merge({},block.gfm,{nptable:/^ *(\S.*\|.*)\n *([-:]+ *\|[-| :]*)\n((?:.*\|.*(?:\n|$))*)\n*/,table:/^ *\|(.+)\n *\|( *[-:]+[-| :]*)\n((?: *\|.*(?:\n|$))*)\n*/});function Lexer(options){this.tokens=[];this.tokens.links={};this.options=options||marked.defaults;this.rules=block.normal;if(this.options.gfm){if(this.options.tables){this.rules=block.tables}else{this.rules=block.gfm}}}Lexer.rules=block;Lexer.lex=function(src,options){var lexer=new Lexer(options);return lexer.lex(src)};Lexer.prototype.lex=function(src){src=src.replace(/\r\n|\r/g,"\n").replace(/\t/g,"    ").replace(/\u00a0/g," ").replace(/\u2424/g,"\n");return this.token(src,true)};Lexer.prototype.token=function(src,top,bq){var src=src.replace(/^ +$/gm,""),next,loose,cap,bull,b,item,space,i,l;while(src){if(cap=this.rules.newline.exec(src)){src=src.substring(cap[0].length);if(cap[0].length>1){this.tokens.push({type:"space"})}}if(cap=this.rules.code.exec(src)){src=src.substring(cap[0].length);cap=cap[0].replace(/^ {4}/gm,"");this.tokens.push({type:"code",text:!this.options.pedantic?cap.replace(/\n+$/,""):cap});continue}if(cap=this.rules.fences.exec(src)){src=src.substring(cap[0].length);this.tokens.push({type:"code",lang:cap[2],text:cap[3]||""});continue}if(cap=this.rules.heading.exec(src)){src=src.substring(cap[0].length);this.tokens.push({type:"heading",depth:cap[1].length,text:cap[2]});continue}if(top&&(cap=this.rules.nptable.exec(src))){src=src.substring(cap[0].length);item={type:"table",header:cap[1].replace(/^ *| *\| *$/g,"").split(/ *\| */),align:cap[2].replace(/^ *|\| *$/g,"").split(/ *\| */),cells:cap[3].replace(/\n$/,"").split("\n")};for(i=0;i<item.align.length;i++){if(/^ *-+: *$/.test(item.align[i])){item.align[i]="right"}else if(/^ *:-+: *$/.test(item.align[i])){item.align[i]="center"}else if(/^ *:-+ *$/.test(item.align[i])){item.align[i]="left"}else{item.align[i]=null}}for(i=0;i<item.cells.length;i++){item.cells[i]=item.cells[i].split(/ *\| */)}this.tokens.push(item);continue}if(cap=this.rules.lheading.exec(src)){src=src.substring(cap[0].length);this.tokens.push({type:"heading",depth:cap[2]==="="?1:2,text:cap[1]});continue}if(cap=this.rules.hr.exec(src)){src=src.substring(cap[0].length);this.tokens.push({type:"hr"});continue}if(cap=this.rules.blockquote.exec(src)){src=src.substring(cap[0].length);this.tokens.push({type:"blockquote_start"});cap=cap[0].replace(/^ *> ?/gm,"");this.token(cap,top,true);this.tokens.push({type:"blockquote_end"});continue}if(cap=this.rules.list.exec(src)){src=src.substring(cap[0].length);bull=cap[2];this.tokens.push({type:"list_start",ordered:bull.length>1});cap=cap[0].match(this.rules.item);next=false;l=cap.length;i=0;for(;i<l;i++){item=cap[i];space=item.length;item=item.replace(/^ *([*+-]|\d+\.) +/,"");if(~item.indexOf("\n ")){space-=item.length;item=!this.options.pedantic?item.replace(new RegExp("^ {1,"+space+"}","gm"),""):item.replace(/^ {1,4}/gm,"")}if(this.options.smartLists&&i!==l-1){b=block.bullet.exec(cap[i+1])[0];if(bull!==b&&!(bull.length>1&&b.length>1)){src=cap.slice(i+1).join("\n")+src;i=l-1}}loose=next||/\n\n(?!\s*$)/.test(item);if(i!==l-1){next=item.charAt(item.length-1)==="\n";if(!loose)loose=next}this.tokens.push({type:loose?"loose_item_start":"list_item_start"});this.token(item,false,bq);this.tokens.push({type:"list_item_end"})}this.tokens.push({type:"list_end"});continue}if(cap=this.rules.html.exec(src)){src=src.substring(cap[0].length);this.tokens.push({type:this.options.sanitize?"paragraph":"html",pre:!this.options.sanitizer&&(cap[1]==="pre"||cap[1]==="script"||cap[1]==="style"),text:cap[0]});continue}if(!bq&&top&&(cap=this.rules.def.exec(src))){src=src.substring(cap[0].length);this.tokens.links[cap[1].toLowerCase()]={href:cap[2],title:cap[3]};continue}if(top&&(cap=this.rules.table.exec(src))){src=src.substring(cap[0].length);item={type:"table",header:cap[1].replace(/^ *| *\| *$/g,"").split(/ *\| */),align:cap[2].replace(/^ *|\| *$/g,"").split(/ *\| */),cells:cap[3].replace(/(?: *\| *)?\n$/,"").split("\n")};for(i=0;i<item.align.length;i++){if(/^ *-+: *$/.test(item.align[i])){item.align[i]="right"}else if(/^ *:-+: *$/.test(item.align[i])){item.align[i]="center"}else if(/^ *:-+ *$/.test(item.align[i])){item.align[i]="left"}else{item.align[i]=null}}for(i=0;i<item.cells.length;i++){item.cells[i]=item.cells[i].replace(/^ *\| *| *\| *$/g,"").split(/ *\| */)}this.tokens.push(item);continue}if(top&&(cap=this.rules.paragraph.exec(src))){src=src.substring(cap[0].length);this.tokens.push({type:"paragraph",text:cap[1].charAt(cap[1].length-1)==="\n"?cap[1].slice(0,-1):cap[1]});continue}if(cap=this.rules.text.exec(src)){src=src.substring(cap[0].length);this.tokens.push({type:"text",text:cap[0]});continue}if(src){throw new Error("Infinite loop on byte: "+src.charCodeAt(0))}}return this.tokens};var inline={escape:/^\\([\\`*{}\[\]()#+\-.!_>])/,autolink:/^<([^ >]+(@|:\/)[^ >]+)>/,url:noop,tag:/^<!--[\s\S]*?-->|^<\/?\w+(?:"[^"]*"|'[^']*'|[^'">])*?>/,link:/^!?\[(inside)\]\(href\)/,reflink:/^!?\[(inside)\]\s*\[([^\]]*)\]/,nolink:/^!?\[((?:\[[^\]]*\]|[^\[\]])*)\]/,strong:/^__([\s\S]+?)__(?!_)|^\*\*([\s\S]+?)\*\*(?!\*)/,em:/^\b_((?:[^_]|__)+?)_\b|^\*((?:\*\*|[\s\S])+?)\*(?!\*)/,code:/^(`+)\s*([\s\S]*?[^`])\s*\1(?!`)/,br:/^ {2,}\n(?!\s*$)/,del:noop,text:/^[\s\S]+?(?=[\\<!\[_*`]| {2,}\n|$)/};inline._inside=/(?:\[[^\]]*\]|[^\[\]]|\](?=[^\[]*\]))*/;inline._href=/\s*<?([\s\S]*?)>?(?:\s+['"]([\s\S]*?)['"])?\s*/;inline.link=replace(inline.link)("inside",inline._inside)("href",inline._href)();inline.reflink=replace(inline.reflink)("inside",inline._inside)();inline.normal=merge({},inline);inline.pedantic=merge({},inline.normal,{strong:/^__(?=\S)([\s\S]*?\S)__(?!_)|^\*\*(?=\S)([\s\S]*?\S)\*\*(?!\*)/,em:/^_(?=\S)([\s\S]*?\S)_(?!_)|^\*(?=\S)([\s\S]*?\S)\*(?!\*)/});inline.gfm=merge({},inline.normal,{escape:replace(inline.escape)("])","~|])")(),url:/^(https?:\/\/[^\s<]+[^<.,:;"')\]\s])/,del:/^~~(?=\S)([\s\S]*?\S)~~/,text:replace(inline.text)("]|","~]|")("|","|https?://|")()});inline.breaks=merge({},inline.gfm,{br:replace(inline.br)("{2,}","*")(),text:replace(inline.gfm.text)("{2,}","*")()});function InlineLexer(links,options){this.options=options||marked.defaults;this.links=links;this.rules=inline.normal;this.renderer=this.options.renderer||new Renderer;this.renderer.options=this.options;if(!this.links){throw new Error("Tokens array requires a `links` property.")}if(this.options.gfm){if(this.options.breaks){this.rules=inline.breaks}else{this.rules=inline.gfm}}else if(this.options.pedantic){this.rules=inline.pedantic}}InlineLexer.rules=inline;InlineLexer.output=function(src,links,options){var inline=new InlineLexer(links,options);return inline.output(src)};InlineLexer.prototype.output=function(src){var out="",link,text,href,cap;while(src){if(cap=this.rules.escape.exec(src)){src=src.substring(cap[0].length);out+=cap[1];continue}if(cap=this.rules.autolink.exec(src)){src=src.substring(cap[0].length);if(cap[2]==="@"){text=cap[1].charAt(6)===":"?this.mangle(cap[1].substring(7)):this.mangle(cap[1]);href=this.mangle("mailto:")+text}else{text=escape(cap[1]);href=text}out+=this.renderer.link(href,null,text);continue}if(!this.inLink&&(cap=this.rules.url.exec(src))){src=src.substring(cap[0].length);text=escape(cap[1]);href=text;out+=this.renderer.link(href,null,text);continue}if(cap=this.rules.tag.exec(src)){if(!this.inLink&&/^<a /i.test(cap[0])){this.inLink=true}else if(this.inLink&&/^<\/a>/i.test(cap[0])){this.inLink=false}src=src.substring(cap[0].length);out+=this.options.sanitize?this.options.sanitizer?this.options.sanitizer(cap[0]):escape(cap[0]):cap[0];continue}if(cap=this.rules.link.exec(src)){src=src.substring(cap[0].length);this.inLink=true;out+=this.outputLink(cap,{href:cap[2],title:cap[3]});this.inLink=false;continue}if((cap=this.rules.reflink.exec(src))||(cap=this.rules.nolink.exec(src))){src=src.substring(cap[0].length);link=(cap[2]||cap[1]).replace(/\s+/g," ");link=this.links[link.toLowerCase()];if(!link||!link.href){out+=cap[0].charAt(0);src=cap[0].substring(1)+src;continue}this.inLink=true;out+=this.outputLink(cap,link);this.inLink=false;continue}if(cap=this.rules.strong.exec(src)){src=src.substring(cap[0].length);out+=this.renderer.strong(this.output(cap[2]||cap[1]));continue}if(cap=this.rules.em.exec(src)){src=src.substring(cap[0].length);out+=this.renderer.em(this.output(cap[2]||cap[1]));continue}if(cap=this.rules.code.exec(src)){src=src.substring(cap[0].length);out+=this.renderer.codespan(escape(cap[2],true));continue}if(cap=this.rules.br.exec(src)){src=src.substring(cap[0].length);out+=this.renderer.br();continue}if(cap=this.rules.del.exec(src)){src=src.substring(cap[0].length);out+=this.renderer.del(this.output(cap[1]));continue}if(cap=this.rules.text.exec(src)){src=src.substring(cap[0].length);out+=this.renderer.text(escape(this.smartypants(cap[0])));continue}if(src){throw new Error("Infinite loop on byte: "+src.charCodeAt(0))}}return out};InlineLexer.prototype.outputLink=function(cap,link){var href=escape(link.href),title=link.title?escape(link.title):null;return cap[0].charAt(0)!=="!"?this.renderer.link(href,title,this.output(cap[1])):this.renderer.image(href,title,escape(cap[1]))};InlineLexer.prototype.smartypants=function(text){if(!this.options.smartypants)return text;return text.replace(/---/g,"—").replace(/--/g,"–").replace(/(^|[-\u2014\/(\[{"\s])'/g,"$1‘").replace(/'/g,"’").replace(/(^|[-\u2014\/(\[{\u2018\s])"/g,"$1“").replace(/"/g,"”").replace(/\.{3}/g,"…")};InlineLexer.prototype.mangle=function(text){if(!this.options.mangle)return text;var out="",l=text.length,i=0,ch;for(;i<l;i++){ch=text.charCodeAt(i);if(Math.random()>.5){ch="x"+ch.toString(16)}out+="&#"+ch+";"}return out};function Renderer(options){this.options=options||{}}Renderer.prototype.code=function(code,lang,escaped){if(this.options.highlight){var out=this.options.highlight(code,lang);if(out!=null&&out!==code){escaped=true;code=out}}if(!lang){return"<pre><code>"+(escaped?code:escape(code,true))+"\n</code></pre>"}return'<pre><code class="'+this.options.langPrefix+escape(lang,true)+'">'+(escaped?code:escape(code,true))+"\n</code></pre>\n"};Renderer.prototype.blockquote=function(quote){return"<blockquote>\n"+quote+"</blockquote>\n"};Renderer.prototype.html=function(html){return html};Renderer.prototype.heading=function(text,level,raw){return"<h"+level+' id="'+this.options.headerPrefix+raw.toLowerCase().replace(/[^\w]+/g,"-")+'">'+text+"</h"+level+">\n"};Renderer.prototype.hr=function(){return this.options.xhtml?"<hr/>\n":"<hr>\n"};Renderer.prototype.list=function(body,ordered){var type=ordered?"ol":"ul";return"<"+type+">\n"+body+"</"+type+">\n"};Renderer.prototype.listitem=function(text){return"<li>"+text+"</li>\n"};Renderer.prototype.paragraph=function(text){return"<p>"+text+"</p>\n"};Renderer.prototype.table=function(header,body){return"<table>\n"+"<thead>\n"+header+"</thead>\n"+"<tbody>\n"+body+"</tbody>\n"+"</table>\n"};Renderer.prototype.tablerow=function(content){return"<tr>\n"+content+"</tr>\n"};Renderer.prototype.tablecell=function(content,flags){var type=flags.header?"th":"td";var tag=flags.align?"<"+type+' style="text-align:'+flags.align+'">':"<"+type+">";return tag+content+"</"+type+">\n"};Renderer.prototype.strong=function(text){return"<strong>"+text+"</strong>"};Renderer.prototype.em=function(text){return"<em>"+text+"</em>"};Renderer.prototype.codespan=function(text){return"<code>"+text+"</code>"};Renderer.prototype.br=function(){return this.options.xhtml?"<br/>":"<br>"};Renderer.prototype.del=function(text){return"<del>"+text+"</del>"};Renderer.prototype.link=function(href,title,text){if(this.options.sanitize){try{var prot=decodeURIComponent(unescape(href)).replace(/[^\w:]/g,"").toLowerCase()}catch(e){return""}if(prot.indexOf("javascript:")===0||prot.indexOf("vbscript:")===0||prot.indexOf("data:")===0){return""}}var out='<a href="'+href+'"';if(title){out+=' title="'+title+'"'}out+=">"+text+"</a>";return out};Renderer.prototype.image=function(href,title,text){var out='<img src="'+href+'" alt="'+text+'"';if(title){out+=' title="'+title+'"'}out+=this.options.xhtml?"/>":">";return out};Renderer.prototype.text=function(text){return text};function Parser(options){this.tokens=[];this.token=null;this.options=options||marked.defaults;this.options.renderer=this.options.renderer||new Renderer;this.renderer=this.options.renderer;this.renderer.options=this.options}Parser.parse=function(src,options,renderer){var parser=new Parser(options,renderer);return parser.parse(src)};Parser.prototype.parse=function(src){this.inline=new InlineLexer(src.links,this.options,this.renderer);this.tokens=src.reverse();var out="";while(this.next()){out+=this.tok()}return out};Parser.prototype.next=function(){return this.token=this.tokens.pop()};Parser.prototype.peek=function(){return this.tokens[this.tokens.length-1]||0};Parser.prototype.parseText=function(){var body=this.token.text;while(this.peek().type==="text"){body+="\n"+this.next().text}return this.inline.output(body)};Parser.prototype.tok=function(){switch(this.token.type){case"space":{return""}case"hr":{return this.renderer.hr()}case"heading":{return this.renderer.heading(this.inline.output(this.token.text),this.token.depth,this.token.text)}case"code":{return this.renderer.code(this.token.text,this.token.lang,this.token.escaped)}case"table":{var header="",body="",i,row,cell,flags,j;cell="";for(i=0;i<this.token.header.length;i++){flags={header:true,align:this.token.align[i]};cell+=this.renderer.tablecell(this.inline.output(this.token.header[i]),{header:true,align:this.token.align[i]})}header+=this.renderer.tablerow(cell);for(i=0;i<this.token.cells.length;i++){row=this.token.cells[i];cell="";for(j=0;j<row.length;j++){cell+=this.renderer.tablecell(this.inline.output(row[j]),{header:false,align:this.token.align[j]})}body+=this.renderer.tablerow(cell)}return this.renderer.table(header,body)}case"blockquote_start":{var body="";while(this.next().type!=="blockquote_end"){body+=this.tok()}return this.renderer.blockquote(body)}case"list_start":{var body="",ordered=this.token.ordered;while(this.next().type!=="list_end"){body+=this.tok()}return this.renderer.list(body,ordered)}case"list_item_start":{var body="";while(this.next().type!=="list_item_end"){body+=this.token.type==="text"?this.parseText():this.tok()}return this.renderer.listitem(body)}case"loose_item_start":{var body="";while(this.next().type!=="list_item_end"){body+=this.tok()}return this.renderer.listitem(body)}case"html":{var html=!this.token.pre&&!this.options.pedantic?this.inline.output(this.token.text):this.token.text;return this.renderer.html(html)}case"paragraph":{return this.renderer.paragraph(this.inline.output(this.token.text))}case"text":{return this.renderer.paragraph(this.parseText())}}};function escape(html,encode){return html.replace(!encode?/&(?!#?\w+;)/g:/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;")}function unescape(html){return html.replace(/&(#(?:\d+)|(?:#x[0-9A-Fa-f]+)|(?:\w+));?/g,function(_,n){n=n.toLowerCase();if(n==="colon")return":";if(n.charAt(0)==="#"){return n.charAt(1)==="x"?String.fromCharCode(parseInt(n.substring(2),16)):String.fromCharCode(+n.substring(1))}return""})}function replace(regex,opt){regex=regex.source;opt=opt||"";return function self(name,val){if(!name)return new RegExp(regex,opt);val=val.source||val;val=val.replace(/(^|[^\[])\^/g,"$1");regex=regex.replace(name,val);return self}}function noop(){}noop.exec=noop;function merge(obj){var i=1,target,key;for(;i<arguments.length;i++){target=arguments[i];for(key in target){if(Object.prototype.hasOwnProperty.call(target,key)){obj[key]=target[key]}}}return obj}function marked(src,opt,callback){if(callback||typeof opt==="function"){if(!callback){callback=opt;opt=null}opt=merge({},marked.defaults,opt||{});var highlight=opt.highlight,tokens,pending,i=0;try{tokens=Lexer.lex(src,opt)}catch(e){return callback(e)}pending=tokens.length;var done=function(err){if(err){opt.highlight=highlight;return callback(err)}var out;try{out=Parser.parse(tokens,opt)}catch(e){err=e}opt.highlight=highlight;return err?callback(err):callback(null,out)};if(!highlight||highlight.length<3){return done()}delete opt.highlight;if(!pending)return done();for(;i<tokens.length;i++){(function(token){if(token.type!=="code"){return--pending||done()}return highlight(token.text,token.lang,function(err,code){if(err)return done(err);if(code==null||code===token.text){return--pending||done()}token.text=code;token.escaped=true;--pending||done()})})(tokens[i])}return}try{if(opt)opt=merge({},marked.defaults,opt);return Parser.parse(Lexer.lex(src,opt),opt)}catch(e){e.message+="\nPlease report this to https://github.com/chjj/marked.";if((opt||marked.defaults).silent){return"<p>An error occured:</p><pre>"+escape(e.message+"",true)+"</pre>"}throw e}}marked.options=marked.setOptions=function(opt){merge(marked.defaults,opt);return marked};marked.defaults={gfm:true,tables:true,breaks:false,pedantic:false,sanitize:false,sanitizer:null,mangle:true,smartLists:false,silent:false,highlight:null,langPrefix:"lang-",smartypants:false,headerPrefix:"",renderer:new Renderer,xhtml:false};marked.Parser=Parser;marked.parser=Parser.parse;marked.Renderer=Renderer;marked.Lexer=Lexer;marked.lexer=Lexer.lex;marked.InlineLexer=InlineLexer;marked.inlineLexer=InlineLexer.output;marked.parse=marked;if(typeof module!=="undefined"&&typeof exports==="object"){module.exports=marked}else if(typeof define==="function"&&define.amd){define(function(){return marked})}else{this.marked=marked}}).call(function(){return this||(typeof window!=="undefined"?window:global)}());
+
+	return module.exports;
+}();
+
+
+// FORMAT OPTIONS FOR MARKED IMPLEMENTATION
+
+function formatOptions(options)
+{
+	function toHighlight(code, lang)
+	{
+		if (!lang && options.defaultHighlighting.ctor === 'Just')
+		{
+			lang = options.defaultHighlighting._0;
+		}
+
+		if (typeof hljs !== 'undefined' && lang && hljs.listLanguages().indexOf(lang) >= 0)
+		{
+			return hljs.highlight(lang, code, true).value;
+		}
+
+		return code;
+	}
+
+	var gfm = options.githubFlavored;
+	if (gfm.ctor === 'Just')
+	{
+		return {
+			highlight: toHighlight,
+			gfm: true,
+			tables: gfm._0.tables,
+			breaks: gfm._0.breaks,
+			sanitize: options.sanitize,
+			smartypants: options.smartypants
+		};
+	}
+
+	return {
+		highlight: toHighlight,
+		gfm: false,
+		tables: false,
+		breaks: false,
+		sanitize: options.sanitize,
+		smartypants: options.smartypants
+	};
+}
+
+
+// EXPORTS
+
+return {
+	toHtml: F3(toHtml)
+};
+
+}();
+
+var _evancz$elm_markdown$Markdown$toHtmlWith = _evancz$elm_markdown$Native_Markdown.toHtml;
+var _evancz$elm_markdown$Markdown$defaultOptions = {
+	githubFlavored: _elm_lang$core$Maybe$Just(
+		{tables: false, breaks: false}),
+	defaultHighlighting: _elm_lang$core$Maybe$Nothing,
+	sanitize: false,
+	smartypants: false
+};
+var _evancz$elm_markdown$Markdown$toHtml = F2(
+	function (attrs, string) {
+		return A3(_evancz$elm_markdown$Native_Markdown.toHtml, _evancz$elm_markdown$Markdown$defaultOptions, attrs, string);
+	});
+var _evancz$elm_markdown$Markdown$Options = F4(
+	function (a, b, c, d) {
+		return {githubFlavored: a, defaultHighlighting: b, sanitize: c, smartypants: d};
+	});
+
+var _debois$elm_mdl$Material_Elevation$transition = function (duration) {
+	return A2(
+		_debois$elm_mdl$Material_Options$css,
+		'transition',
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			'box-shadow ',
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				_elm_lang$core$Basics$toString(duration),
+				'ms ease-in-out 0s')));
+};
+var _debois$elm_mdl$Material_Elevation$e0 = _debois$elm_mdl$Material_Options$nop;
+var _debois$elm_mdl$Material_Elevation$shadow = function (z) {
+	return _debois$elm_mdl$Material_Options$cs(
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			'mdl-shadow--',
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				_elm_lang$core$Basics$toString(z),
+				'dp')));
+};
+var _debois$elm_mdl$Material_Elevation$e2 = _debois$elm_mdl$Material_Elevation$shadow(2);
+var _debois$elm_mdl$Material_Elevation$e3 = _debois$elm_mdl$Material_Elevation$shadow(3);
+var _debois$elm_mdl$Material_Elevation$e4 = _debois$elm_mdl$Material_Elevation$shadow(4);
+var _debois$elm_mdl$Material_Elevation$e6 = _debois$elm_mdl$Material_Elevation$shadow(6);
+var _debois$elm_mdl$Material_Elevation$e8 = _debois$elm_mdl$Material_Elevation$shadow(8);
+var _debois$elm_mdl$Material_Elevation$e16 = _debois$elm_mdl$Material_Elevation$shadow(16);
+var _debois$elm_mdl$Material_Elevation$e24 = _debois$elm_mdl$Material_Elevation$shadow(24);
+var _debois$elm_mdl$Material_Elevation$elevations = _elm_lang$core$Array$fromList(
+	{
+		ctor: '::',
+		_0: {ctor: '_Tuple2', _0: _debois$elm_mdl$Material_Elevation$e0, _1: 0},
+		_1: {
+			ctor: '::',
+			_0: {ctor: '_Tuple2', _0: _debois$elm_mdl$Material_Elevation$e2, _1: 2},
+			_1: {
+				ctor: '::',
+				_0: {ctor: '_Tuple2', _0: _debois$elm_mdl$Material_Elevation$e3, _1: 3},
+				_1: {
+					ctor: '::',
+					_0: {ctor: '_Tuple2', _0: _debois$elm_mdl$Material_Elevation$e4, _1: 4},
+					_1: {
+						ctor: '::',
+						_0: {ctor: '_Tuple2', _0: _debois$elm_mdl$Material_Elevation$e6, _1: 6},
+						_1: {
+							ctor: '::',
+							_0: {ctor: '_Tuple2', _0: _debois$elm_mdl$Material_Elevation$e8, _1: 8},
+							_1: {
+								ctor: '::',
+								_0: {ctor: '_Tuple2', _0: _debois$elm_mdl$Material_Elevation$e16, _1: 16},
+								_1: {
+									ctor: '::',
+									_0: {ctor: '_Tuple2', _0: _debois$elm_mdl$Material_Elevation$e24, _1: 24},
+									_1: {ctor: '[]'}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	});
+
+var _debois$elm_mdl$Material_Card$stopClick = _debois$elm_mdl$Material_Internal_Options$attribute(
+	A2(_elm_lang$html$Html_Attributes$attribute, 'onclick', 'var event = arguments[0] || window.event; event.stopPropagation();'));
+var _debois$elm_mdl$Material_Card$block = function (block) {
+	var _p0 = block;
+	switch (_p0.ctor) {
+		case 'Title':
+			return A2(
+				_debois$elm_mdl$Material_Options$div,
+				{
+					ctor: '::',
+					_0: _debois$elm_mdl$Material_Options$cs('mdl-card__title'),
+					_1: _p0._0
+				},
+				_p0._1);
+		case 'Media':
+			return A2(
+				_debois$elm_mdl$Material_Options$div,
+				{
+					ctor: '::',
+					_0: _debois$elm_mdl$Material_Options$cs('mdl-card__media'),
+					_1: _p0._0
+				},
+				_p0._1);
+		case 'SupportingText':
+			return A2(
+				_debois$elm_mdl$Material_Options$div,
+				{
+					ctor: '::',
+					_0: _debois$elm_mdl$Material_Options$cs('mdl-card__supporting-text'),
+					_1: _p0._0
+				},
+				_p0._1);
+		case 'Actions':
+			return A2(
+				_debois$elm_mdl$Material_Options$div,
+				{
+					ctor: '::',
+					_0: _debois$elm_mdl$Material_Options$cs('mdl-card__actions'),
+					_1: {ctor: '::', _0: _debois$elm_mdl$Material_Card$stopClick, _1: _p0._0}
+				},
+				_p0._1);
+		default:
+			return A2(
+				_debois$elm_mdl$Material_Options$div,
+				{
+					ctor: '::',
+					_0: _debois$elm_mdl$Material_Options$cs('mdl-card__menu'),
+					_1: {ctor: '::', _0: _debois$elm_mdl$Material_Card$stopClick, _1: _p0._0}
+				},
+				_p0._1);
+	}
+};
+var _debois$elm_mdl$Material_Card$view = F2(
+	function (styling, views) {
+		return A2(
+			_debois$elm_mdl$Material_Options$div,
+			{
+				ctor: '::',
+				_0: _debois$elm_mdl$Material_Options$many(styling),
+				_1: {
+					ctor: '::',
+					_0: _debois$elm_mdl$Material_Options$cs('mdl-card'),
+					_1: {
+						ctor: '::',
+						_0: A2(_debois$elm_mdl$Material_Options$css, 'min-height', '0px'),
+						_1: {ctor: '[]'}
+					}
+				}
+			},
+			A2(_elm_lang$core$List$map, _debois$elm_mdl$Material_Card$block, views));
+	});
+var _debois$elm_mdl$Material_Card$subhead = function (styling) {
+	return _debois$elm_mdl$Material_Options$span(
+		{
+			ctor: '::',
+			_0: _debois$elm_mdl$Material_Options$cs('mdl-card__subtitle-text'),
+			_1: {
+				ctor: '::',
+				_0: A2(_debois$elm_mdl$Material_Options$css, 'padding-top', '8px'),
+				_1: styling
+			}
+		});
+};
+var _debois$elm_mdl$Material_Card$head = function (styling) {
+	return A2(
+		_debois$elm_mdl$Material_Options$styled,
+		_elm_lang$html$Html$h1,
+		{
+			ctor: '::',
+			_0: _debois$elm_mdl$Material_Options$cs('mdl-card__title-text'),
+			_1: {
+				ctor: '::',
+				_0: A2(_debois$elm_mdl$Material_Options$css, 'align-self', 'flex-start'),
+				_1: styling
+			}
+		});
+};
+var _debois$elm_mdl$Material_Card$expand = _debois$elm_mdl$Material_Options$cs('mdl-card--expand');
+var _debois$elm_mdl$Material_Card$border = _debois$elm_mdl$Material_Options$cs('mdl-card--border');
+var _debois$elm_mdl$Material_Card$Actions = F2(
+	function (a, b) {
+		return {ctor: 'Actions', _0: a, _1: b};
+	});
+var _debois$elm_mdl$Material_Card$actions = _debois$elm_mdl$Material_Card$Actions;
+var _debois$elm_mdl$Material_Card$SupportingText = F2(
+	function (a, b) {
+		return {ctor: 'SupportingText', _0: a, _1: b};
+	});
+var _debois$elm_mdl$Material_Card$text = _debois$elm_mdl$Material_Card$SupportingText;
+var _debois$elm_mdl$Material_Card$Media = F2(
+	function (a, b) {
+		return {ctor: 'Media', _0: a, _1: b};
+	});
+var _debois$elm_mdl$Material_Card$media = _debois$elm_mdl$Material_Card$Media;
+var _debois$elm_mdl$Material_Card$Menu = F2(
+	function (a, b) {
+		return {ctor: 'Menu', _0: a, _1: b};
+	});
+var _debois$elm_mdl$Material_Card$menu = F2(
+	function (styling, block) {
+		return A2(_debois$elm_mdl$Material_Card$Menu, styling, block);
+	});
+var _debois$elm_mdl$Material_Card$Title = F2(
+	function (a, b) {
+		return {ctor: 'Title', _0: a, _1: b};
+	});
+var _debois$elm_mdl$Material_Card$title = F2(
+	function (styling, block) {
+		return A2(
+			_debois$elm_mdl$Material_Card$Title,
+			{
+				ctor: '::',
+				_0: _debois$elm_mdl$Material_Options$many(styling),
+				_1: {
+					ctor: '::',
+					_0: A2(_debois$elm_mdl$Material_Options$css, 'justify-content', 'flex-end'),
+					_1: {
+						ctor: '::',
+						_0: A2(_debois$elm_mdl$Material_Options$css, 'flex-direction', 'column'),
+						_1: {
+							ctor: '::',
+							_0: A2(_debois$elm_mdl$Material_Options$css, 'align-items', 'flex-start'),
+							_1: {ctor: '[]'}
+						}
+					}
+				}
+			},
+			block);
+	});
+
+var _comjeito$comjeito$Page_Home$infoCard = function (title_) {
+	return function (text_) {
+		return function (image_) {
+			return function (imageMargin_) {
+				return function (imageWidth_) {
+					return function (imageHeight_) {
+						return function (color_) {
+							return function (buttonId_) {
+								return function (buttonLink_) {
+									return function (buttonText_) {
+										return function (model) {
+											return A2(
+												_debois$elm_mdl$Material_Card$view,
+												{
+													ctor: '::',
+													_0: _debois$elm_mdl$Material_Elevation$e8,
+													_1: {
+														ctor: '::',
+														_0: A2(_debois$elm_mdl$Material_Options$css, 'width', '100%'),
+														_1: {
+															ctor: '::',
+															_0: A2(_debois$elm_mdl$Material_Options$css, 'height', '100%'),
+															_1: {ctor: '[]'}
+														}
+													}
+												},
+												{
+													ctor: '::',
+													_0: A2(
+														_debois$elm_mdl$Material_Card$media,
+														{
+															ctor: '::',
+															_0: _debois$elm_mdl$Material_Color$background(color_),
+															_1: {ctor: '[]'}
+														},
+														{
+															ctor: '::',
+															_0: A2(
+																_debois$elm_mdl$Material_Options$div,
+																{
+																	ctor: '::',
+																	_0: _debois$elm_mdl$Material_Options$center,
+																	_1: {
+																		ctor: '::',
+																		_0: A2(_debois$elm_mdl$Material_Options$css, 'margin', imageMargin_),
+																		_1: {ctor: '[]'}
+																	}
+																},
+																{
+																	ctor: '::',
+																	_0: A2(
+																		_debois$elm_mdl$Material_Options$img,
+																		{
+																			ctor: '::',
+																			_0: _debois$elm_mdl$Material_Options$attribute(
+																				_elm_lang$html$Html_Attributes$src(image_)),
+																			_1: {
+																				ctor: '::',
+																				_0: A2(_debois$elm_mdl$Material_Options$css, 'width', imageWidth_),
+																				_1: {
+																					ctor: '::',
+																					_0: A2(_debois$elm_mdl$Material_Options$css, 'height', imageHeight_),
+																					_1: {ctor: '[]'}
+																				}
+																			}
+																		},
+																		{ctor: '[]'}),
+																	_1: {ctor: '[]'}
+																}),
+															_1: {ctor: '[]'}
+														}),
+													_1: {
+														ctor: '::',
+														_0: A2(
+															_debois$elm_mdl$Material_Card$title,
+															{ctor: '[]'},
+															{
+																ctor: '::',
+																_0: A2(
+																	_debois$elm_mdl$Material_Card$head,
+																	{
+																		ctor: '::',
+																		_0: _debois$elm_mdl$Material_Color$text(_debois$elm_mdl$Material_Color$accent),
+																		_1: {
+																			ctor: '::',
+																			_0: A2(_debois$elm_mdl$Material_Options$css, 'margin-left', 'auto'),
+																			_1: {
+																				ctor: '::',
+																				_0: A2(_debois$elm_mdl$Material_Options$css, 'margin-right', 'auto'),
+																				_1: {ctor: '[]'}
+																			}
+																		}
+																	},
+																	{
+																		ctor: '::',
+																		_0: _elm_lang$html$Html$text(title_),
+																		_1: {ctor: '[]'}
+																	}),
+																_1: {ctor: '[]'}
+															}),
+														_1: {
+															ctor: '::',
+															_0: A2(
+																_debois$elm_mdl$Material_Card$text,
+																{
+																	ctor: '::',
+																	_0: A2(_debois$elm_mdl$Material_Options$css, 'text-align', 'justify'),
+																	_1: {ctor: '[]'}
+																},
+																{
+																	ctor: '::',
+																	_0: A2(
+																		_evancz$elm_markdown$Markdown$toHtml,
+																		{ctor: '[]'},
+																		text_),
+																	_1: {ctor: '[]'}
+																}),
+															_1: {
+																ctor: '::',
+																_0: A2(
+																	_debois$elm_mdl$Material_Card$actions,
+																	{
+																		ctor: '::',
+																		_0: _debois$elm_mdl$Material_Card$border,
+																		_1: {ctor: '[]'}
+																	},
+																	{
+																		ctor: '::',
+																		_0: A5(
+																			_debois$elm_mdl$Material_Button$render,
+																			_comjeito$comjeito$Types$Mdl,
+																			buttonId_,
+																			model.mdl,
+																			{
+																				ctor: '::',
+																				_0: _debois$elm_mdl$Material_Button$accent,
+																				_1: {
+																					ctor: '::',
+																					_0: _debois$elm_mdl$Material_Button$ripple,
+																					_1: {
+																						ctor: '::',
+																						_0: _debois$elm_mdl$Material_Button$link(buttonLink_),
+																						_1: {ctor: '[]'}
+																					}
+																				}
+																			},
+																			{
+																				ctor: '::',
+																				_0: _elm_lang$html$Html$text(buttonText_),
+																				_1: {ctor: '[]'}
+																			}),
+																		_1: {ctor: '[]'}
+																	}),
+																_1: {ctor: '[]'}
+															}
+														}
+													}
+												});
+										};
+									};
+								};
+							};
+						};
+					};
+				};
+			};
+		};
+	};
+};
+var _comjeito$comjeito$Page_Home$engineerCard = function (model) {
+	return _comjeito$comjeito$Page_Home$infoCard('Arquitetos e engenheiros')('Lorem ipsum dolor sit amet, consectetur adipiscing elit,\r\n    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\r\n    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris\r\n    nisi ut aliquip ex ea commodo consequat.')('toolset.svg')('16px 0')('auto')('128px')(_debois$elm_mdl$Material_Color$white)(
+		{
+			ctor: '::',
+			_0: 3,
+			_1: {ctor: '[]'}
+		})('#/home')('Saiba mais')(model);
+};
+var _comjeito$comjeito$Page_Home$servicesCard = function (model) {
+	return _comjeito$comjeito$Page_Home$infoCard('Prestação de serviços')('Lorem ipsum dolor sit amet, consectetur adipiscing elit,\r\n    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\r\n    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris\r\n    nisi ut aliquip ex ea commodo consequat.')('drill-wood.svg')('16px 0')('auto')('128px')(_debois$elm_mdl$Material_Color$white)(
+		{
+			ctor: '::',
+			_0: 4,
+			_1: {ctor: '[]'}
+		})('#/home')('Saiba mais')(model);
+};
+var _comjeito$comjeito$Page_Home$regionCard = function (model) {
+	return _comjeito$comjeito$Page_Home$infoCard('Atendemos no Vale dos Sinos e na região da Serra Gaúcha')('Lorem ipsum dolor sit amet, consectetur adipiscing elit,\r\n    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\r\n    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris\r\n    nisi ut aliquip ex ea commodo consequat.')('landscape.svg')('0')('100%')('auto')(_debois$elm_mdl$Material_Color$white)(
+		{
+			ctor: '::',
+			_0: 5,
+			_1: {ctor: '[]'}
+		})('#/home')('Saiba mais')(model);
+};
+var _comjeito$comjeito$Page_Home$shareCard = function (model) {
+	return _comjeito$comjeito$Page_Home$infoCard('Compartilhe esta página no Facebook e ganhe N% de desconto')('Lorem ipsum dolor sit amet, consectetur adipiscing elit,\r\n    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\r\n    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris\r\n    nisi ut aliquip ex ea commodo consequat.')('like.svg')('0')('100%')('auto')(_debois$elm_mdl$Material_Color$white)(
+		{
+			ctor: '::',
+			_0: 6,
+			_1: {ctor: '[]'}
+		})('#/home')('Compartilhe')(model);
+};
+var _comjeito$comjeito$Page_Home$headButtons = function (model) {
+	return A2(
+		_debois$elm_mdl$Material_Options$div,
+		{
+			ctor: '::',
+			_0: A2(_debois$elm_mdl$Material_Options$css, 'padding', '8px 0'),
+			_1: {
+				ctor: '::',
+				_0: A2(_debois$elm_mdl$Material_Options$css, 'display', 'flex'),
+				_1: {
+					ctor: '::',
+					_0: A2(_debois$elm_mdl$Material_Options$css, 'flex-direction', 'row'),
+					_1: {
+						ctor: '::',
+						_0: A2(_debois$elm_mdl$Material_Options$css, 'justify-content', 'space-between'),
+						_1: {ctor: '[]'}
+					}
+				}
+			}
+		},
+		{
+			ctor: '::',
+			_0: A5(
+				_debois$elm_mdl$Material_Button$render,
+				_comjeito$comjeito$Types$Mdl,
+				{
+					ctor: '::',
+					_0: 1,
+					_1: {ctor: '[]'}
+				},
+				model.mdl,
+				{
+					ctor: '::',
+					_0: _debois$elm_mdl$Material_Button$raised,
+					_1: {
+						ctor: '::',
+						_0: _debois$elm_mdl$Material_Button$ripple,
+						_1: {
+							ctor: '::',
+							_0: _debois$elm_mdl$Material_Button$primary,
+							_1: {
+								ctor: '::',
+								_0: _debois$elm_mdl$Material_Button$link('#/servicos'),
+								_1: {
+									ctor: '::',
+									_0: A2(_debois$elm_mdl$Material_Options$css, 'width', '128px'),
+									_1: {ctor: '[]'}
+								}
+							}
+						}
+					}
+				},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text('Preços'),
+					_1: {ctor: '[]'}
+				}),
+			_1: {
+				ctor: '::',
+				_0: A5(
+					_debois$elm_mdl$Material_Button$render,
+					_comjeito$comjeito$Types$Mdl,
+					{
+						ctor: '::',
+						_0: 2,
+						_1: {ctor: '[]'}
+					},
+					model.mdl,
+					{
+						ctor: '::',
+						_0: _debois$elm_mdl$Material_Button$raised,
+						_1: {
+							ctor: '::',
+							_0: _debois$elm_mdl$Material_Button$ripple,
+							_1: {
+								ctor: '::',
+								_0: _debois$elm_mdl$Material_Button$primary,
+								_1: {
+									ctor: '::',
+									_0: _debois$elm_mdl$Material_Button$link('#/showroom'),
+									_1: {
+										ctor: '::',
+										_0: A2(_debois$elm_mdl$Material_Options$css, 'width', '128px'),
+										_1: {ctor: '[]'}
+									}
+								}
+							}
+						}
+					},
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html$text('Showroom'),
+						_1: {ctor: '[]'}
+					}),
+				_1: {ctor: '[]'}
+			}
+		});
+};
+var _comjeito$comjeito$Page_Home$whatsapp = function (model) {
+	return A2(
+		_debois$elm_mdl$Material_Options$div,
+		{
+			ctor: '::',
+			_0: A2(_debois$elm_mdl$Material_Options$css, 'display', 'flex'),
+			_1: {
+				ctor: '::',
+				_0: A2(_debois$elm_mdl$Material_Options$css, 'flex-direction', 'row'),
+				_1: {ctor: '[]'}
+			}
+		},
+		{
+			ctor: '::',
+			_0: A2(
+				_debois$elm_mdl$Material_Options$div,
+				{ctor: '[]'},
+				{
+					ctor: '::',
+					_0: A2(
+						_debois$elm_mdl$Material_Options$img,
+						{
+							ctor: '::',
+							_0: A2(_debois$elm_mdl$Material_Options$css, 'height', '48px'),
+							_1: {
+								ctor: '::',
+								_0: A2(_debois$elm_mdl$Material_Options$css, 'padding', '6px'),
+								_1: {
+									ctor: '::',
+									_0: _debois$elm_mdl$Material_Options$attribute(
+										_elm_lang$html$Html_Attributes$src('whatsapp.svg')),
+									_1: {ctor: '[]'}
+								}
+							}
+						},
+						{ctor: '[]'}),
+					_1: {ctor: '[]'}
+				}),
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_debois$elm_mdl$Material_Options$div,
+					{
+						ctor: '::',
+						_0: _debois$elm_mdl$Material_Color$text(_debois$elm_mdl$Material_Color$white),
+						_1: {
+							ctor: '::',
+							_0: A2(_debois$elm_mdl$Material_Options$css, 'flex', '1'),
+							_1: {
+								ctor: '::',
+								_0: A2(_debois$elm_mdl$Material_Options$css, 'align-self', 'center'),
+								_1: {
+									ctor: '::',
+									_0: A2(_debois$elm_mdl$Material_Options$css, 'height', '48px'),
+									_1: {ctor: '[]'}
+								}
+							}
+						}
+					},
+					{
+						ctor: '::',
+						_0: A3(
+							_debois$elm_mdl$Material_Options$styled,
+							_elm_lang$html$Html$p,
+							{
+								ctor: '::',
+								_0: A2(_debois$elm_mdl$Material_Options$css, 'font-size', '12px'),
+								_1: {
+									ctor: '::',
+									_0: A2(_debois$elm_mdl$Material_Options$css, 'text-transform', 'uppercase'),
+									_1: {
+										ctor: '::',
+										_0: A2(_debois$elm_mdl$Material_Options$css, 'font-weight', 'bold'),
+										_1: {
+											ctor: '::',
+											_0: A2(_debois$elm_mdl$Material_Options$css, 'margin', '0'),
+											_1: {ctor: '[]'}
+										}
+									}
+								}
+							},
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html$text('Entre em contato'),
+								_1: {ctor: '[]'}
+							}),
+						_1: {
+							ctor: '::',
+							_0: A3(
+								_debois$elm_mdl$Material_Options$styled,
+								_elm_lang$html$Html$p,
+								{
+									ctor: '::',
+									_0: A2(_debois$elm_mdl$Material_Options$css, 'font-size', '18px'),
+									_1: {ctor: '[]'}
+								},
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html$text('(51) 99131-4453'),
+									_1: {ctor: '[]'}
+								}),
+							_1: {ctor: '[]'}
+						}
+					}),
+				_1: {ctor: '[]'}
+			}
+		});
+};
+var _comjeito$comjeito$Page_Home$head = function (model) {
+	return A2(
+		_debois$elm_mdl$Material_Options$div,
+		{
+			ctor: '::',
+			_0: A2(_debois$elm_mdl$Material_Options$css, 'background-image', 'url(wood-background.svg)'),
+			_1: {
+				ctor: '::',
+				_0: A2(_debois$elm_mdl$Material_Options$css, 'background-repeat', 'no-repeat'),
+				_1: {
+					ctor: '::',
+					_0: A2(_debois$elm_mdl$Material_Options$css, 'background-size', '100% auto'),
+					_1: {
+						ctor: '::',
+						_0: A2(_debois$elm_mdl$Material_Options$css, 'background-color', '#a0522d'),
+						_1: {
+							ctor: '::',
+							_0: A2(_debois$elm_mdl$Material_Options$css, 'min-height', '128px'),
+							_1: {
+								ctor: '::',
+								_0: A2(_debois$elm_mdl$Material_Options$css, 'padding', '0 16px'),
+								_1: {ctor: '[]'}
+							}
+						}
+					}
+				}
+			}
+		},
+		{
+			ctor: '::',
+			_0: A3(
+				_debois$elm_mdl$Material_Options$styled,
+				_elm_lang$html$Html$h3,
+				{
+					ctor: '::',
+					_0: _debois$elm_mdl$Material_Color$text(_debois$elm_mdl$Material_Color$white),
+					_1: {
+						ctor: '::',
+						_0: A2(_debois$elm_mdl$Material_Options$css, 'text-align', 'center'),
+						_1: {
+							ctor: '::',
+							_0: A2(_debois$elm_mdl$Material_Options$css, 'margin', '0'),
+							_1: {
+								ctor: '::',
+								_0: A2(_debois$elm_mdl$Material_Options$css, 'padding', '16px 0'),
+								_1: {ctor: '[]'}
+							}
+						}
+					}
+				},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text('Pisos de luxo com alta qualidade'),
+					_1: {ctor: '[]'}
+				}),
+			_1: {
+				ctor: '::',
+				_0: A3(
+					_debois$elm_mdl$Material_Options$styled,
+					_elm_lang$html$Html$p,
+					{
+						ctor: '::',
+						_0: _debois$elm_mdl$Material_Color$text(_debois$elm_mdl$Material_Color$white),
+						_1: {
+							ctor: '::',
+							_0: A2(_debois$elm_mdl$Material_Options$css, 'font-weight', 'bold'),
+							_1: {ctor: '[]'}
+						}
+					},
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html$text('Somos especialistas em colocar pisos e renovar madeira'),
+						_1: {ctor: '[]'}
+					}),
+				_1: {
+					ctor: '::',
+					_0: _comjeito$comjeito$Page_Home$whatsapp(model),
+					_1: {
+						ctor: '::',
+						_0: _comjeito$comjeito$Page_Home$headButtons(model),
+						_1: {ctor: '[]'}
+					}
+				}
+			}
+		});
+};
 var _comjeito$comjeito$Page_Home$render = function (model) {
-	return _elm_lang$html$Html$text('home');
+	return A2(
+		_debois$elm_mdl$Material_Options$div,
+		{ctor: '[]'},
+		{
+			ctor: '::',
+			_0: _comjeito$comjeito$Page_Home$head(model),
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_debois$elm_mdl$Material_Grid$grid,
+					{ctor: '[]'},
+					{
+						ctor: '::',
+						_0: A2(
+							_debois$elm_mdl$Material_Grid$cell,
+							{
+								ctor: '::',
+								_0: A2(_debois$elm_mdl$Material_Grid$size, _debois$elm_mdl$Material_Grid$All, 12),
+								_1: {ctor: '[]'}
+							},
+							{
+								ctor: '::',
+								_0: _comjeito$comjeito$Page_Home$engineerCard(model),
+								_1: {ctor: '[]'}
+							}),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_debois$elm_mdl$Material_Grid$cell,
+								{
+									ctor: '::',
+									_0: A2(_debois$elm_mdl$Material_Grid$size, _debois$elm_mdl$Material_Grid$All, 12),
+									_1: {ctor: '[]'}
+								},
+								{
+									ctor: '::',
+									_0: _comjeito$comjeito$Page_Home$servicesCard(model),
+									_1: {ctor: '[]'}
+								}),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_debois$elm_mdl$Material_Grid$cell,
+									{
+										ctor: '::',
+										_0: A2(_debois$elm_mdl$Material_Grid$size, _debois$elm_mdl$Material_Grid$All, 12),
+										_1: {ctor: '[]'}
+									},
+									{
+										ctor: '::',
+										_0: _comjeito$comjeito$Page_Home$regionCard(model),
+										_1: {ctor: '[]'}
+									}),
+								_1: {
+									ctor: '::',
+									_0: A2(
+										_debois$elm_mdl$Material_Grid$cell,
+										{
+											ctor: '::',
+											_0: A2(_debois$elm_mdl$Material_Grid$size, _debois$elm_mdl$Material_Grid$All, 12),
+											_1: {ctor: '[]'}
+										},
+										{
+											ctor: '::',
+											_0: _comjeito$comjeito$Page_Home$shareCard(model),
+											_1: {ctor: '[]'}
+										}),
+									_1: {ctor: '[]'}
+								}
+							}
+						}
+					}),
+				_1: {ctor: '[]'}
+			}
+		});
+};
+
+var _comjeito$comjeito$Page_About$backgroundImage = _debois$elm_mdl$Material_Options$stylesheet('\r\n      body {\r\n        background-image: url(\"about-background.svg\");\r\n        background-size: cover;\r\n        background-repeat: no-repeat;\r\n        background-position: top;\r\n      }\r\n    ');
+var _comjeito$comjeito$Page_About$render = function (model) {
+	return A2(
+		_debois$elm_mdl$Material_Options$div,
+		{
+			ctor: '::',
+			_0: A2(_debois$elm_mdl$Material_Options$css, 'padding', '16px'),
+			_1: {ctor: '[]'}
+		},
+		{
+			ctor: '::',
+			_0: _comjeito$comjeito$Page_About$backgroundImage,
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_debois$elm_mdl$Material_Card$view,
+					{
+						ctor: '::',
+						_0: _debois$elm_mdl$Material_Elevation$e8,
+						_1: {
+							ctor: '::',
+							_0: A2(_debois$elm_mdl$Material_Options$css, 'width', '100%'),
+							_1: {ctor: '[]'}
+						}
+					},
+					{
+						ctor: '::',
+						_0: A2(
+							_debois$elm_mdl$Material_Card$title,
+							{ctor: '[]'},
+							{
+								ctor: '::',
+								_0: A2(
+									_debois$elm_mdl$Material_Card$head,
+									{
+										ctor: '::',
+										_0: _debois$elm_mdl$Material_Color$text(_debois$elm_mdl$Material_Color$accent),
+										_1: {ctor: '[]'}
+									},
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html$text('Quem somos?'),
+										_1: {ctor: '[]'}
+									}),
+								_1: {ctor: '[]'}
+							}),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_debois$elm_mdl$Material_Card$text,
+								{
+									ctor: '::',
+									_0: A2(_debois$elm_mdl$Material_Options$css, 'text-align', 'justify'),
+									_1: {ctor: '[]'}
+								},
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html$text('Lorem ipsum dolor sit amet, consectetur adipiscing elit,\r\n                sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\r\n                Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris\r\n                nisi ut aliquip ex ea commodo consequat.'),
+									_1: {ctor: '[]'}
+								}),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_debois$elm_mdl$Material_Card$title,
+									{ctor: '[]'},
+									{
+										ctor: '::',
+										_0: A2(
+											_debois$elm_mdl$Material_Card$head,
+											{
+												ctor: '::',
+												_0: _debois$elm_mdl$Material_Color$text(_debois$elm_mdl$Material_Color$accent),
+												_1: {ctor: '[]'}
+											},
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html$text('Lorem ipsum dolor'),
+												_1: {ctor: '[]'}
+											}),
+										_1: {ctor: '[]'}
+									}),
+								_1: {
+									ctor: '::',
+									_0: A2(
+										_debois$elm_mdl$Material_Card$text,
+										{
+											ctor: '::',
+											_0: A2(_debois$elm_mdl$Material_Options$css, 'text-align', 'justify'),
+											_1: {ctor: '[]'}
+										},
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html$text('Lorem ipsum dolor sit amet, consectetur adipiscing elit,\r\n                sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\r\n                Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris\r\n                nisi ut aliquip ex ea commodo consequat.'),
+											_1: {ctor: '[]'}
+										}),
+									_1: {ctor: '[]'}
+								}
+							}
+						}
+					}),
+				_1: {ctor: '[]'}
+			}
+		});
+};
+
+var _comjeito$comjeito$Page_Products$render = function (model) {
+	return _elm_lang$html$Html$text('products');
+};
+
+var _comjeito$comjeito$Page_Services$render = function (model) {
+	return _elm_lang$html$Html$text('Services');
+};
+
+var _comjeito$comjeito$Page_Showroom$showCard = F3(
+	function (img_, text_, model) {
+		return A2(
+			_debois$elm_mdl$Material_Card$view,
+			{
+				ctor: '::',
+				_0: _debois$elm_mdl$Material_Elevation$e8,
+				_1: {
+					ctor: '::',
+					_0: A2(_debois$elm_mdl$Material_Options$css, 'float', 'left'),
+					_1: {
+						ctor: '::',
+						_0: A2(_debois$elm_mdl$Material_Options$css, 'width', 'calc(50% - 8px)'),
+						_1: {
+							ctor: '::',
+							_0: A2(_debois$elm_mdl$Material_Options$css, 'margin', '8px 4px'),
+							_1: {ctor: '[]'}
+						}
+					}
+				}
+			},
+			{
+				ctor: '::',
+				_0: A2(
+					_debois$elm_mdl$Material_Card$media,
+					{
+						ctor: '::',
+						_0: _debois$elm_mdl$Material_Color$background(_debois$elm_mdl$Material_Color$white),
+						_1: {
+							ctor: '::',
+							_0: A2(_debois$elm_mdl$Material_Options$css, 'position', 'relative'),
+							_1: {ctor: '[]'}
+						}
+					},
+					{
+						ctor: '::',
+						_0: A2(
+							_debois$elm_mdl$Material_Options$img,
+							{
+								ctor: '::',
+								_0: A2(_debois$elm_mdl$Material_Options$css, 'width', '100%'),
+								_1: {
+									ctor: '::',
+									_0: _debois$elm_mdl$Material_Options$attribute(
+										_elm_lang$html$Html_Attributes$src(img_)),
+									_1: {ctor: '[]'}
+								}
+							},
+							{ctor: '[]'}),
+						_1: {
+							ctor: '::',
+							_0: A3(
+								_debois$elm_mdl$Material_Options$styled,
+								_elm_lang$html$Html$p,
+								{
+									ctor: '::',
+									_0: A2(_debois$elm_mdl$Material_Options$css, 'margin', '0'),
+									_1: {
+										ctor: '::',
+										_0: A2(_debois$elm_mdl$Material_Options$css, 'padding', '4px 0'),
+										_1: {
+											ctor: '::',
+											_0: A2(_debois$elm_mdl$Material_Options$css, 'text-transform', 'uppercase'),
+											_1: {
+												ctor: '::',
+												_0: A2(_debois$elm_mdl$Material_Options$css, 'background-color', 'rgba(0,0,0,0.50)'),
+												_1: {
+													ctor: '::',
+													_0: A2(_debois$elm_mdl$Material_Options$css, 'position', 'absolute'),
+													_1: {
+														ctor: '::',
+														_0: A2(_debois$elm_mdl$Material_Options$css, 'width', '100%'),
+														_1: {
+															ctor: '::',
+															_0: A2(_debois$elm_mdl$Material_Options$css, 'bottom', '0'),
+															_1: {
+																ctor: '::',
+																_0: A2(_debois$elm_mdl$Material_Options$css, 'left', '0'),
+																_1: {
+																	ctor: '::',
+																	_0: A2(_debois$elm_mdl$Material_Options$css, 'text-align', 'center'),
+																	_1: {
+																		ctor: '::',
+																		_0: _debois$elm_mdl$Material_Color$text(_debois$elm_mdl$Material_Color$white),
+																		_1: {ctor: '[]'}
+																	}
+																}
+															}
+														}
+													}
+												}
+											}
+										}
+									}
+								},
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html$text(text_),
+									_1: {ctor: '[]'}
+								}),
+							_1: {ctor: '[]'}
+						}
+					}),
+				_1: {ctor: '[]'}
+			});
+	});
+var _comjeito$comjeito$Page_Showroom$cacauCard = function (model) {
+	return A3(_comjeito$comjeito$Page_Showroom$showCard, 'cacau.jpg', 'Cacau', model);
+};
+var _comjeito$comjeito$Page_Showroom$arenitoCard = function (model) {
+	return A3(_comjeito$comjeito$Page_Showroom$showCard, 'arenito.jpg', 'Arenito', model);
+};
+var _comjeito$comjeito$Page_Showroom$madeiraCard = function (model) {
+	return A3(_comjeito$comjeito$Page_Showroom$showCard, 'madeira.jpg', 'Madeira', model);
+};
+var _comjeito$comjeito$Page_Showroom$foscoCard = function (model) {
+	return A3(_comjeito$comjeito$Page_Showroom$showCard, 'fosco.jpg', 'Fosco', model);
+};
+var _comjeito$comjeito$Page_Showroom$render = function (model) {
+	return A2(
+		_debois$elm_mdl$Material_Options$div,
+		{
+			ctor: '::',
+			_0: A2(_debois$elm_mdl$Material_Options$css, 'padding', '16px'),
+			_1: {ctor: '[]'}
+		},
+		{
+			ctor: '::',
+			_0: A3(
+				_debois$elm_mdl$Material_Options$styled,
+				_elm_lang$html$Html$h4,
+				{
+					ctor: '::',
+					_0: _debois$elm_mdl$Material_Color$text(_debois$elm_mdl$Material_Color$accent),
+					_1: {ctor: '[]'}
+				},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text('Precisa de inspiração?'),
+					_1: {ctor: '[]'}
+				}),
+			_1: {
+				ctor: '::',
+				_0: A3(
+					_debois$elm_mdl$Material_Options$styled,
+					_elm_lang$html$Html$p,
+					{
+						ctor: '::',
+						_0: _debois$elm_mdl$Material_Typography$body2,
+						_1: {ctor: '[]'}
+					},
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html$text('Este é o nosso showroom!'),
+						_1: {ctor: '[]'}
+					}),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_debois$elm_mdl$Material_Options$div,
+						{ctor: '[]'},
+						{
+							ctor: '::',
+							_0: _comjeito$comjeito$Page_Showroom$cacauCard(model),
+							_1: {
+								ctor: '::',
+								_0: _comjeito$comjeito$Page_Showroom$arenitoCard(model),
+								_1: {
+									ctor: '::',
+									_0: _comjeito$comjeito$Page_Showroom$madeiraCard(model),
+									_1: {
+										ctor: '::',
+										_0: _comjeito$comjeito$Page_Showroom$foscoCard(model),
+										_1: {ctor: '[]'}
+									}
+								}
+							}
+						}),
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_debois$elm_mdl$Material_Options$div,
+							{
+								ctor: '::',
+								_0: A2(_debois$elm_mdl$Material_Options$css, 'clear', 'both'),
+								_1: {ctor: '[]'}
+							},
+							{ctor: '[]'}),
+						_1: {ctor: '[]'}
+					}
+				}
+			}
+		});
 };
 
 var _comjeito$comjeito$View$renderPage = function (model) {
 	var pageContent = function () {
 		var _p0 = model.currentPage;
-		return _comjeito$comjeito$Page_Home$render(model);
+		switch (_p0.ctor) {
+			case 'Home':
+				return _comjeito$comjeito$Page_Home$render(model);
+			case 'About':
+				return _comjeito$comjeito$Page_About$render(model);
+			case 'Products':
+				return _comjeito$comjeito$Page_Products$render(model);
+			case 'Services':
+				return _comjeito$comjeito$Page_Services$render(model);
+			default:
+				return _comjeito$comjeito$Page_Showroom$render(model);
+		}
 	}();
 	return A2(
 		_debois$elm_mdl$Material_Options$div,
@@ -16299,7 +19101,11 @@ var _comjeito$comjeito$View$renderPage = function (model) {
 		{
 			ctor: '::',
 			_0: pageContent,
-			_1: {ctor: '[]'}
+			_1: {
+				ctor: '::',
+				_0: _comjeito$comjeito$Misc_Footer$render(model),
+				_1: {ctor: '[]'}
+			}
 		});
 };
 var _comjeito$comjeito$View$view = function (model) {
@@ -16313,17 +19119,21 @@ var _comjeito$comjeito$View$view = function (model) {
 			_1: {
 				ctor: '::',
 				_0: _debois$elm_mdl$Material_Layout$fixedDrawer,
-				_1: {ctor: '[]'}
+				_1: {
+					ctor: '::',
+					_0: _debois$elm_mdl$Material_Layout$onSelectTab(_comjeito$comjeito$Types$SelectTab),
+					_1: {
+						ctor: '::',
+						_0: _debois$elm_mdl$Material_Layout$selectedTab(model.selectedTab),
+						_1: {ctor: '[]'}
+					}
+				}
 			}
 		},
 		{
 			header: _comjeito$comjeito$Misc_Header$render(model),
 			drawer: _comjeito$comjeito$Misc_Drawer$render(model),
-			tabs: {
-				ctor: '_Tuple2',
-				_0: {ctor: '[]'},
-				_1: {ctor: '[]'}
-			},
+			tabs: _comjeito$comjeito$Misc_Tabs$render(model),
 			main: {
 				ctor: '::',
 				_0: _comjeito$comjeito$View$renderPage(model),
