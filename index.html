@@ -1,17 +1,24 @@
 <!DOCTYPE html>
 <html lang="pt-br">
   <head>
-    <title>ComJeito</title>
+    <title>ComJeito Ambientes</title>
     <link rel="icon" href="favicon.png">
     <link rel="shortcut icon" type="image/png" href="favicon.png">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
+    <meta name="description" content="Somos uma empresa de Novo Hamburgo especializada na instalação de pisos de luxo.">
+    <meta property="og:url" content="https://comjeito.com.br" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="ComJeito Ambientes" />
+    <meta property="og:description" content="Somos uma empresa de Novo Hamburgo especializada na instalação de pisos de luxo." />
+    <meta property="og:image" content="https://comjeito.com.br/logo-alt-black.png" />
     <link rel="stylesheet" type="text/css" href="dialog-polyfill.css">
     <link rel="stylesheet" type="text/css" href="select.css">
     <link rel="stylesheet" href="roboto.css">
     <link rel="stylesheet" href="material-icons.css">
     <link rel="stylesheet" href="material.css">
     <link rel="stylesheet" href="style.css">
+    <script src="dialog-polyfill.js"></script>
     <script src="main.js"></script>
   </head>
   <body>
@@ -19,6 +26,20 @@
     <script>
       var node = document.querySelector('#main');
       var app = Elm.Main.embed(node);
+
+      loadOnScrollInterop();
+
+      function loadOnScrollInterop() {
+        var main = document.querySelector("#elm-mdl-layout-main");
+        
+        if (main != null) {
+          main.onscroll = function() {
+            app.ports.scroll.send(this.scrollTop);
+          };
+        } else {
+            setTimeout(loadOnScrollInterop, 500);
+        }
+      };
     </script>
   </body>
 </html>

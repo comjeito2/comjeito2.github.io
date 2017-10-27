@@ -6,6 +6,23 @@ body {
   background-color: #F5F5F5;
 }
 
+dialog[open] {
+  width: 80%;
+  height: 80%;
+  max-width: 600px;
+  max-height: 900px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  top: 10%;
+}
+
+#elm-mdl-layout-main {
+  display: flex;
+  flex-direction: column;
+}
+
 .mdl-layout__tab-bar {
   width: calc(100% - 120px);
 }
