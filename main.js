@@ -16858,14 +16858,25 @@ var _comjeito$comjeito$Requests$getShowroomItems = F2(
 		return A2(
 			_elm_lang$http$Http$send,
 			_comjeito$comjeito$Types$GetShowroomItems,
-			A2(
-				_elm_lang$http$Http$get,
-				url,
-				A3(
-					_elm_lang$core$Json_Decode$map2,
-					_comjeito$comjeito$Types$ShowroomItemsWithStatus,
-					A2(_elm_lang$core$Json_Decode$field, 'status', _elm_lang$core$Json_Decode$int),
-					A2(_elm_lang$core$Json_Decode$field, 'items', _comjeito$comjeito$Requests$showroomItemsDecoder))));
+			_elm_lang$http$Http$request(
+				{
+					method: 'GET',
+					headers: {
+						ctor: '::',
+						_0: A2(_elm_lang$http$Http$header, 'access-control-allow-origin', '*'),
+						_1: {ctor: '[]'}
+					},
+					url: url,
+					body: _elm_lang$http$Http$emptyBody,
+					timeout: _elm_lang$core$Maybe$Nothing,
+					withCredentials: false,
+					expect: _elm_lang$http$Http$expectJson(
+						A3(
+							_elm_lang$core$Json_Decode$map2,
+							_comjeito$comjeito$Types$ShowroomItemsWithStatus,
+							A2(_elm_lang$core$Json_Decode$field, 'status', _elm_lang$core$Json_Decode$int),
+							A2(_elm_lang$core$Json_Decode$field, 'items', _comjeito$comjeito$Requests$showroomItemsDecoder)))
+				}));
 	});
 var _comjeito$comjeito$Requests$getShowroomItem = function (id_) {
 	var url = A2(_elm_lang$core$Basics_ops['++'], 'https://nameless-hamlet-42933.herokuapp.com/showroomitem/', id_);
@@ -20398,7 +20409,7 @@ var _comjeito$comjeito$Page_Home$infoCard = function (title_) {
 	};
 };
 var _comjeito$comjeito$Page_Home$engineerCard = function (model) {
-	return _comjeito$comjeito$Page_Home$infoCard('Arquitetos e engenheiros')('Oferecemos produtos relativos à instalação de pisos de madeira e realizamos prestação de\r\n    serviços para arquitetos e engenheiros. Este perfil de profissional se destaca como um foco da empresa,\r\n    sendo um cliente característico cujo qual voltamos nossos esforços para cada vez melhor atendê-los;\r\n    proporcionando serviços de alta qualidade e com riqueza em detalhes.')('toolset.svg')('16px 0')('auto')('128px')(_debois$elm_mdl$Material_Color$white)(
+	return _comjeito$comjeito$Page_Home$infoCard('Arquitetos e engenheiros')('Oferecemos produtos relativos à instalação de pisos de madeira e realizamos prestação de\n    serviços para arquitetos e engenheiros. Este perfil de profissional se destaca como um foco da empresa,\n    sendo um cliente característico cujo qual voltamos nossos esforços para cada vez melhor atendê-los;\n    proporcionando serviços de alta qualidade e com riqueza em detalhes.')('toolset.svg')('16px 0')('auto')('128px')(_debois$elm_mdl$Material_Color$white)(
 		{
 			ctor: '::',
 			_0: 3,
@@ -20406,7 +20417,7 @@ var _comjeito$comjeito$Page_Home$engineerCard = function (model) {
 		})('#/produtos')('Saiba mais')(model);
 };
 var _comjeito$comjeito$Page_Home$servicesCard = function (model) {
-	return _comjeito$comjeito$Page_Home$infoCard('Prestação de serviços')('Com 17 anos de experiência no mercado, a ComJeito trabalha com pisos de madeira de luxo e com alta qualidade.\r\n    Realizamos e lixação e sinteco em pisos de madeira. A lixação não emite poeira e os produtos que utilizamos\r\n    não possuem odor. Trabalhamos com os melhores produtos do mercado, conheça nossos serviços!')('drill-wood.svg')('16px 0')('auto')('128px')(_debois$elm_mdl$Material_Color$white)(
+	return _comjeito$comjeito$Page_Home$infoCard('Prestação de serviços')('Com 17 anos de experiência no mercado, a ComJeito trabalha com pisos de madeira de luxo e com alta qualidade.\n    Realizamos e lixação e sinteco em pisos de madeira. A lixação não emite poeira e os produtos que utilizamos\n    não possuem odor. Trabalhamos com os melhores produtos do mercado, conheça nossos serviços!')('drill-wood.svg')('16px 0')('auto')('128px')(_debois$elm_mdl$Material_Color$white)(
 		{
 			ctor: '::',
 			_0: 4,
@@ -20414,7 +20425,7 @@ var _comjeito$comjeito$Page_Home$servicesCard = function (model) {
 		})('#/servicos')('Saiba mais')(model);
 };
 var _comjeito$comjeito$Page_Home$regionCard = function (model) {
-	return _comjeito$comjeito$Page_Home$infoCard('Atendemos no Vale dos Sinos e na região da Serra Gaúcha')('Somos uma empresa de Novo Hamburgo que atende no Vale dos Sinos\r\n    e na região da Serra Gaúcha. Você pode entrar em contato conosco por\r\n    telefone ou WhatsApp. Temos certeza de que você irá adorar o nosso trabalho!')('landscape.svg')('0')('100%')('auto')(_debois$elm_mdl$Material_Color$white)(
+	return _comjeito$comjeito$Page_Home$infoCard('Atendemos no Vale dos Sinos e na região da Serra Gaúcha')('Somos uma empresa de Novo Hamburgo que atende no Vale dos Sinos\n    e na região da Serra Gaúcha. Você pode entrar em contato conosco por\n    telefone ou WhatsApp. Temos certeza de que você irá adorar o nosso trabalho!')('landscape.svg')('0')('100%')('auto')(_debois$elm_mdl$Material_Color$white)(
 		{
 			ctor: '::',
 			_0: 5,
@@ -20422,7 +20433,7 @@ var _comjeito$comjeito$Page_Home$regionCard = function (model) {
 		})('#/sobre')('Saiba mais')(model);
 };
 var _comjeito$comjeito$Page_Home$shareCard = function (model) {
-	return _comjeito$comjeito$Page_Home$infoCard('Compartilhe esta página no Facebook e ganhe 10% de desconto')('Ajude a divulgar a nossa marca e ganhe 10% de desconto na prestação de serviços.\r\n    Diga para os seus amigos do Facebook o que você achou do nosso showroom!')('like.svg')('0')('100%')('auto')(_debois$elm_mdl$Material_Color$white)(
+	return _comjeito$comjeito$Page_Home$infoCard('Compartilhe esta página no Facebook e ganhe 10% de desconto')('Ajude a divulgar a nossa marca e ganhe 10% de desconto na prestação de serviços.\n    Diga para os seus amigos do Facebook o que você achou do nosso showroom!')('like.svg')('0')('100%')('auto')(_debois$elm_mdl$Material_Color$white)(
 		{
 			ctor: '::',
 			_0: 6,
@@ -20862,7 +20873,7 @@ var _comjeito$comjeito$Page_Home$render = function (model) {
 		});
 };
 
-var _comjeito$comjeito$Page_About$backgroundImage = _debois$elm_mdl$Material_Options$stylesheet('\r\n      body {\r\n        background-image: url(\"about-background.svg\");\r\n        background-size: cover;\r\n        background-repeat: no-repeat;\r\n        background-position: top;\r\n      }\r\n    ');
+var _comjeito$comjeito$Page_About$backgroundImage = _debois$elm_mdl$Material_Options$stylesheet('\n      body {\n        background-image: url(\"about-background.svg\");\n        background-size: cover;\n        background-repeat: no-repeat;\n        background-position: top;\n      }\n    ');
 var _comjeito$comjeito$Page_About$render = function (model) {
 	return A2(
 		_debois$elm_mdl$Material_Options$div,
@@ -20923,7 +20934,7 @@ var _comjeito$comjeito$Page_About$render = function (model) {
 								},
 								{
 									ctor: '::',
-									_0: _elm_lang$html$Html$text('Somos uma empresa de Novo Hamburgo especializada em pisos de madeira.\r\n                Temos 17 anos de experiência no mercado, fornecendo serviços de alta qualidade\r\n                e utilizando os melhores produtos no mercado. Somos uma empresa que trabalha em\r\n                família. Somos perfeccionistas; buscamos sempre o melhor atendimento ao cliente.\r\n                A entrega do serviço é garantida: nós levamos os nossos prazos muito à sério!'),
+									_0: _elm_lang$html$Html$text('Somos uma empresa de Novo Hamburgo especializada em pisos de madeira.\n                Temos 17 anos de experiência no mercado, fornecendo serviços de alta qualidade\n                e utilizando os melhores produtos no mercado. Somos uma empresa que trabalha em\n                família. Somos perfeccionistas; buscamos sempre o melhor atendimento ao cliente.\n                A entrega do serviço é garantida: nós levamos os nossos prazos muito à sério!'),
 									_1: {ctor: '[]'}
 								}),
 							_1: {
@@ -20958,7 +20969,7 @@ var _comjeito$comjeito$Page_About$render = function (model) {
 										},
 										{
 											ctor: '::',
-											_0: _elm_lang$html$Html$text('Somos perfeccionistas. Utilizamos sempre os melhores produtos do mercado.\r\n                O trabalho de lixação dos pisos não emite poeira. Trabalhamos com resina de secagem\r\n                rápida. Os produtos que utilizamos não possuem cheiro.'),
+											_0: _elm_lang$html$Html$text('Somos perfeccionistas. Utilizamos sempre os melhores produtos do mercado.\n                O trabalho de lixação dos pisos não emite poeira. Trabalhamos com resina de secagem\n                rápida. Os produtos que utilizamos não possuem cheiro.'),
 											_1: {ctor: '[]'}
 										}),
 									_1: {ctor: '[]'}
