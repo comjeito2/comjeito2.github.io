@@ -69,11 +69,11 @@ dialog[open] {
 }
 
 @media screen and (max-width: 480px) {
-  #showrooom-items {
+  #showroom-items {
     -moz-column-count: 2;
   }
 }
 
-#showrooom-items {
+#showroom-items {
   -moz-column-count: 3;
 }
