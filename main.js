@@ -24657,7 +24657,11 @@ var _comjeito$comjeito$Page_Showroom$render = function (model) {
 								_1: {
 									ctor: '::',
 									_0: A2(_debois$elm_mdl$Material_Options$css, 'transform', 'translateZ(0)'),
-									_1: {ctor: '[]'}
+									_1: {
+										ctor: '::',
+										_0: _debois$elm_mdl$Material_Options$id('showroom-items'),
+										_1: {ctor: '[]'}
+									}
 								}
 							}
 						},

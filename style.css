@@ -67,3 +67,13 @@ dialog[open] {
     display: none;
   }
 }
+
+@media screen and (max-width: 480px) {
+  #showrooom-items {
+    -moz-column-count: 2;
+  }
+}
+
+#showrooom-items {
+  -moz-column-count: 3;
+}
