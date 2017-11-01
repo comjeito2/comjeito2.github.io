@@ -15,6 +15,16 @@
     <link rel="stylesheet" href="style.css">
     <script src="dialog-polyfill.js"></script>
     <script src="main.js"></script>
+    <!--[if IE]>
+      <style>
+        html, body {
+          display: none;
+        }
+      </style>
+      <script>
+        alert("Internet Explorer não é suportado. Por favor, acesse com Google Chrome ou Mozilla Firefox.");
+      </script>
+    <![endif]-->
   </head>
   <body>
     <div id="main"></div>
