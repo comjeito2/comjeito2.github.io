@@ -16490,6 +16490,337 @@ var _debois$elm_mdl$Material$Model = F8(
 		return {button: a, textfield: b, menu: c, layout: d, toggles: e, tooltip: f, tabs: g, select: h};
 	});
 
+var _debois$elm_mdl$Material_Snackbar$enqueue = F2(
+	function (contents, model) {
+		return _elm_lang$core$Native_Utils.update(
+			model,
+			{
+				queue: A2(
+					_elm_lang$core$List$append,
+					model.queue,
+					{
+						ctor: '::',
+						_0: contents,
+						_1: {ctor: '[]'}
+					})
+			});
+	});
+var _debois$elm_mdl$Material_Snackbar$snackbar = F3(
+	function (payload, message, label) {
+		return {
+			message: message,
+			action: _elm_lang$core$Maybe$Just(label),
+			payload: payload,
+			timeout: 2750,
+			fade: 250
+		};
+	});
+var _debois$elm_mdl$Material_Snackbar$toast = F2(
+	function (payload, message) {
+		return {message: message, action: _elm_lang$core$Maybe$Nothing, payload: payload, timeout: 2750, fade: 250};
+	});
+var _debois$elm_mdl$Material_Snackbar$Contents = F5(
+	function (a, b, c, d, e) {
+		return {message: a, action: b, payload: c, timeout: d, fade: e};
+	});
+var _debois$elm_mdl$Material_Snackbar$Model = F3(
+	function (a, b, c) {
+		return {queue: a, state: b, seq: c};
+	});
+var _debois$elm_mdl$Material_Snackbar$Fading = function (a) {
+	return {ctor: 'Fading', _0: a};
+};
+var _debois$elm_mdl$Material_Snackbar$Active = function (a) {
+	return {ctor: 'Active', _0: a};
+};
+var _debois$elm_mdl$Material_Snackbar$Inert = {ctor: 'Inert'};
+var _debois$elm_mdl$Material_Snackbar$model = {
+	queue: {ctor: '[]'},
+	state: _debois$elm_mdl$Material_Snackbar$Inert,
+	seq: -1
+};
+var _debois$elm_mdl$Material_Snackbar$Clicked = {ctor: 'Clicked'};
+var _debois$elm_mdl$Material_Snackbar$Timeout = {ctor: 'Timeout'};
+var _debois$elm_mdl$Material_Snackbar$Move = F2(
+	function (a, b) {
+		return {ctor: 'Move', _0: a, _1: b};
+	});
+var _debois$elm_mdl$Material_Snackbar$next = function (model) {
+	return _elm_lang$core$Platform_Cmd$map(
+		_debois$elm_mdl$Material_Snackbar$Move(model.seq));
+};
+var _debois$elm_mdl$Material_Snackbar$view = function (model) {
+	var isActive = function () {
+		var _p0 = model.state;
+		switch (_p0.ctor) {
+			case 'Inert':
+				return false;
+			case 'Active':
+				return true;
+			default:
+				return false;
+		}
+	}();
+	var contents = function () {
+		var _p1 = model.state;
+		switch (_p1.ctor) {
+			case 'Inert':
+				return _elm_lang$core$Maybe$Nothing;
+			case 'Active':
+				return _elm_lang$core$Maybe$Just(_p1._0);
+			default:
+				return _elm_lang$core$Maybe$Just(_p1._0);
+		}
+	}();
+	var action = A2(
+		_elm_lang$core$Maybe$andThen,
+		function (_) {
+			return _.action;
+		},
+		contents);
+	return A2(
+		_elm_lang$html$Html$div,
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$classList(
+				{
+					ctor: '::',
+					_0: {ctor: '_Tuple2', _0: 'mdl-js-snackbar', _1: true},
+					_1: {
+						ctor: '::',
+						_0: {ctor: '_Tuple2', _0: 'mdl-snackbar', _1: true},
+						_1: {
+							ctor: '::',
+							_0: {ctor: '_Tuple2', _0: 'mdl-snackbar--active', _1: isActive},
+							_1: {ctor: '[]'}
+						}
+					}
+				}),
+			_1: {
+				ctor: '::',
+				_0: A2(_debois$elm_mdl$Material_Helpers$aria, 'hidden', !isActive),
+				_1: {ctor: '[]'}
+			}
+		},
+		{
+			ctor: '::',
+			_0: A2(
+				_elm_lang$html$Html$div,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$class('mdl-snackbar__text'),
+					_1: {ctor: '[]'}
+				},
+				A2(
+					_elm_lang$core$Maybe$withDefault,
+					{ctor: '[]'},
+					A2(
+						_elm_lang$core$Maybe$map,
+						function (c) {
+							return {
+								ctor: '::',
+								_0: _elm_lang$html$Html$text(c.message),
+								_1: {ctor: '[]'}
+							};
+						},
+						contents))),
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$button,
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$class('mdl-snackbar__action'),
+						_1: {
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$type_('button'),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_debois$elm_mdl$Material_Helpers$aria,
+									'hidden',
+									A2(
+										_elm_lang$core$Maybe$withDefault,
+										true,
+										A2(
+											_elm_lang$core$Maybe$map,
+											_elm_lang$core$Basics$always(!isActive),
+											action))),
+								_1: A2(
+									_elm_lang$core$Maybe$withDefault,
+									{ctor: '[]'},
+									A2(
+										_elm_lang$core$Maybe$map,
+										_elm_lang$core$Basics$always(
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html_Events$onClick(
+													A2(_debois$elm_mdl$Material_Snackbar$Move, model.seq, _debois$elm_mdl$Material_Snackbar$Clicked)),
+												_1: {ctor: '[]'}
+											}),
+										action))
+							}
+						}
+					},
+					A2(
+						_elm_lang$core$Maybe$withDefault,
+						{ctor: '[]'},
+						A2(
+							_elm_lang$core$Maybe$map,
+							function (action) {
+								return {
+									ctor: '::',
+									_0: _elm_lang$html$Html$text(action),
+									_1: {ctor: '[]'}
+								};
+							},
+							action))),
+				_1: {ctor: '[]'}
+			}
+		});
+};
+var _debois$elm_mdl$Material_Snackbar$Click = function (a) {
+	return {ctor: 'Click', _0: a};
+};
+var _debois$elm_mdl$Material_Snackbar$End = function (a) {
+	return {ctor: 'End', _0: a};
+};
+var _debois$elm_mdl$Material_Snackbar$Begin = function (a) {
+	return {ctor: 'Begin', _0: a};
+};
+var _debois$elm_mdl$Material_Snackbar$tryDequeue = function (model) {
+	var _p2 = {ctor: '_Tuple2', _0: model.state, _1: model.queue};
+	if (((_p2.ctor === '_Tuple2') && (_p2._0.ctor === 'Inert')) && (_p2._1.ctor === '::')) {
+		var _p3 = _p2._1._0;
+		return {
+			ctor: '_Tuple2',
+			_0: _elm_lang$core$Native_Utils.update(
+				model,
+				{
+					state: _debois$elm_mdl$Material_Snackbar$Active(_p3),
+					queue: _p2._1._1,
+					seq: model.seq + 1
+				}),
+			_1: _elm_lang$core$Platform_Cmd$batch(
+				{
+					ctor: '::',
+					_0: A2(
+						_elm_lang$core$Platform_Cmd$map,
+						_debois$elm_mdl$Material_Snackbar$Move(model.seq + 1),
+						A2(_debois$elm_mdl$Material_Helpers$delay, _p3.timeout, _debois$elm_mdl$Material_Snackbar$Timeout)),
+					_1: {
+						ctor: '::',
+						_0: _debois$elm_mdl$Material_Helpers$cmd(
+							_debois$elm_mdl$Material_Snackbar$Begin(_p3.payload)),
+						_1: {ctor: '[]'}
+					}
+				})
+		};
+	} else {
+		return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+	}
+};
+var _debois$elm_mdl$Material_Snackbar$move = F2(
+	function (transition, model) {
+		var _p4 = {ctor: '_Tuple2', _0: model.state, _1: transition};
+		_v3_4:
+		do {
+			if (_p4.ctor === '_Tuple2') {
+				if (_p4._1.ctor === 'Clicked') {
+					if (_p4._0.ctor === 'Active') {
+						var _p5 = _p4._0._0;
+						return {
+							ctor: '_Tuple2',
+							_0: _elm_lang$core$Native_Utils.update(
+								model,
+								{
+									state: _debois$elm_mdl$Material_Snackbar$Fading(_p5)
+								}),
+							_1: _elm_lang$core$Platform_Cmd$batch(
+								{
+									ctor: '::',
+									_0: A2(
+										_debois$elm_mdl$Material_Snackbar$next,
+										model,
+										A2(_debois$elm_mdl$Material_Helpers$delay, _p5.fade, _debois$elm_mdl$Material_Snackbar$Timeout)),
+									_1: {
+										ctor: '::',
+										_0: _debois$elm_mdl$Material_Helpers$cmd(
+											_debois$elm_mdl$Material_Snackbar$Click(_p5.payload)),
+										_1: {ctor: '[]'}
+									}
+								})
+						};
+					} else {
+						break _v3_4;
+					}
+				} else {
+					switch (_p4._0.ctor) {
+						case 'Inert':
+							return _debois$elm_mdl$Material_Snackbar$tryDequeue(model);
+						case 'Active':
+							var _p6 = _p4._0._0;
+							return {
+								ctor: '_Tuple2',
+								_0: _elm_lang$core$Native_Utils.update(
+									model,
+									{
+										state: _debois$elm_mdl$Material_Snackbar$Fading(_p6)
+									}),
+								_1: _elm_lang$core$Platform_Cmd$batch(
+									{
+										ctor: '::',
+										_0: A2(
+											_debois$elm_mdl$Material_Snackbar$next,
+											model,
+											A2(_debois$elm_mdl$Material_Helpers$delay, _p6.fade, _debois$elm_mdl$Material_Snackbar$Timeout)),
+										_1: {ctor: '[]'}
+									})
+							};
+						default:
+							return {
+								ctor: '_Tuple2',
+								_0: _elm_lang$core$Native_Utils.update(
+									model,
+									{state: _debois$elm_mdl$Material_Snackbar$Inert}),
+								_1: _elm_lang$core$Platform_Cmd$batch(
+									{
+										ctor: '::',
+										_0: A2(
+											_debois$elm_mdl$Material_Snackbar$next,
+											model,
+											_debois$elm_mdl$Material_Helpers$cmd(_debois$elm_mdl$Material_Snackbar$Timeout)),
+										_1: {
+											ctor: '::',
+											_0: _debois$elm_mdl$Material_Helpers$cmd(
+												_debois$elm_mdl$Material_Snackbar$End(_p4._0._0.payload)),
+											_1: {ctor: '[]'}
+										}
+									})
+							};
+					}
+				}
+			} else {
+				break _v3_4;
+			}
+		} while(false);
+		return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+	});
+var _debois$elm_mdl$Material_Snackbar$update = F2(
+	function (action, model) {
+		var _p7 = action;
+		if (_p7.ctor === 'Move') {
+			return _elm_lang$core$Native_Utils.eq(_p7._0, model.seq) ? A2(_debois$elm_mdl$Material_Snackbar$move, _p7._1, model) : {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+		} else {
+			return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+		}
+	});
+var _debois$elm_mdl$Material_Snackbar$add = F2(
+	function (contents, model) {
+		return _debois$elm_mdl$Material_Snackbar$tryDequeue(
+			A2(_debois$elm_mdl$Material_Snackbar$enqueue, contents, model));
+	});
+
 var _debois$elm_mdl$Material_Grid$clip = F3(
 	function (lower, upper, k) {
 		return A2(
@@ -16667,6 +16998,37 @@ var _debois$elm_mdl$Material_Grid$Bottom = {ctor: 'Bottom'};
 var _debois$elm_mdl$Material_Grid$Middle = {ctor: 'Middle'};
 var _debois$elm_mdl$Material_Grid$Top = {ctor: 'Top'};
 
+var _comjeito$comjeito$Ports$scroll = _elm_lang$core$Native_Platform.incomingPort('scroll', _elm_lang$core$Json_Decode$int);
+var _comjeito$comjeito$Ports$token = _elm_lang$core$Native_Platform.incomingPort('token', _elm_lang$core$Json_Decode$string);
+var _comjeito$comjeito$Ports$setToken = _elm_lang$core$Native_Platform.outgoingPort(
+	'setToken',
+	function (v) {
+		return v;
+	});
+var _comjeito$comjeito$Ports$fileSelected = _elm_lang$core$Native_Platform.outgoingPort(
+	'fileSelected',
+	function (v) {
+		return v;
+	});
+var _comjeito$comjeito$Ports$fileContentRead = _elm_lang$core$Native_Platform.incomingPort(
+	'fileContentRead',
+	A2(
+		_elm_lang$core$Json_Decode$andThen,
+		function (contents) {
+			return A2(
+				_elm_lang$core$Json_Decode$andThen,
+				function (filename) {
+					return _elm_lang$core$Json_Decode$succeed(
+						{contents: contents, filename: filename});
+				},
+				A2(_elm_lang$core$Json_Decode$field, 'filename', _elm_lang$core$Json_Decode$string));
+		},
+		A2(_elm_lang$core$Json_Decode$field, 'contents', _elm_lang$core$Json_Decode$string)));
+var _comjeito$comjeito$Ports$ImageData = F2(
+	function (a, b) {
+		return {contents: a, filename: b};
+	});
+
 var _comjeito$comjeito$Types$Model = function (a) {
 	return function (b) {
 		return function (c) {
@@ -16690,7 +17052,29 @@ var _comjeito$comjeito$Types$Model = function (a) {
 																				return function (u) {
 																					return function (v) {
 																						return function (w) {
-																							return {currentPage: a, selectedTab: b, viewport: c, mdl: d, scroll: e, dialogView: f, dialogLoading: g, dialogError: h, showroomDialog: i, servicesDialog: j, productsDialog: k, showroomItems: l, productsItems: m, servicesItems: n, showroomLoading: o, productsLoading: p, servicesLoading: q, showroomError: r, productsError: s, servicesError: t, productsItem: u, servicesItem: v, showroomItem: w};
+																							return function (x) {
+																								return function (y) {
+																									return function (z) {
+																										return function (_1) {
+																											return function (_2) {
+																												return function (_3) {
+																													return function (_4) {
+																														return function (_5) {
+																															return function (_6) {
+																																return function (_7) {
+																																	return function (_8) {
+																																		return {currentPage: a, selectedTab: b, viewport: c, mdl: d, scroll: e, dialogView: f, dialogLoading: g, dialogError: h, showroomDialog: i, servicesDialog: j, productsDialog: k, showroomItems: l, productsItems: m, servicesItems: n, showroomLoading: o, productsLoading: p, servicesLoading: q, showroomError: r, productsError: s, servicesError: t, productsItem: u, servicesItem: v, showroomItem: w, servicesEnd: x, productsEnd: y, showroomEnd: z, adminError: _1, adminLoading: _2, adminEnabled: _3, adminToken: _4, adminCredentials: _5, adminToast: _6, editItemLoading: _7, editItemError: _8};
+																																	};
+																																};
+																															};
+																														};
+																													};
+																												};
+																											};
+																										};
+																									};
+																								};
+																							};
 																						};
 																					};
 																				};
@@ -16753,16 +17137,103 @@ var _comjeito$comjeito$Types$ShowroomItemsWithStatus = F2(
 	function (a, b) {
 		return {status: a, items: b};
 	});
+var _comjeito$comjeito$Types$LoginStatus = F2(
+	function (a, b) {
+		return {status: a, token: b};
+	});
+var _comjeito$comjeito$Types$LoginSubmit = F2(
+	function (a, b) {
+		return {username: a, password: b};
+	});
+var _comjeito$comjeito$Types$RequestStatus = function (a) {
+	return {status: a};
+};
+var _comjeito$comjeito$Types$ImageData = F2(
+	function (a, b) {
+		return {contents: a, filename: b};
+	});
+var _comjeito$comjeito$Types$Admin = {ctor: 'Admin'};
 var _comjeito$comjeito$Types$Showroom = {ctor: 'Showroom'};
 var _comjeito$comjeito$Types$Products = {ctor: 'Products'};
 var _comjeito$comjeito$Types$Services = {ctor: 'Services'};
 var _comjeito$comjeito$Types$About = {ctor: 'About'};
 var _comjeito$comjeito$Types$Home = {ctor: 'Home'};
+var _comjeito$comjeito$Types$CreateShowroomItem = {ctor: 'CreateShowroomItem'};
+var _comjeito$comjeito$Types$EditShowroomItem = {ctor: 'EditShowroomItem'};
+var _comjeito$comjeito$Types$CreateServicesItem = {ctor: 'CreateServicesItem'};
+var _comjeito$comjeito$Types$CreateProductsItem = {ctor: 'CreateProductsItem'};
+var _comjeito$comjeito$Types$EditServicesItem = {ctor: 'EditServicesItem'};
+var _comjeito$comjeito$Types$EditProductsItem = {ctor: 'EditProductsItem'};
 var _comjeito$comjeito$Types$ServicesItem = {ctor: 'ServicesItem'};
 var _comjeito$comjeito$Types$ProductsItem = {ctor: 'ProductsItem'};
 var _comjeito$comjeito$Types$ShowroomItem = {ctor: 'ShowroomItem'};
 var _comjeito$comjeito$Types$Next = {ctor: 'Next'};
 var _comjeito$comjeito$Types$Before = {ctor: 'Before'};
+var _comjeito$comjeito$Types$Password = {ctor: 'Password'};
+var _comjeito$comjeito$Types$Username = {ctor: 'Username'};
+var _comjeito$comjeito$Types$UpdateShowroomItemDescription = function (a) {
+	return {ctor: 'UpdateShowroomItemDescription', _0: a};
+};
+var _comjeito$comjeito$Types$UpdateShowroomItemTitle = function (a) {
+	return {ctor: 'UpdateShowroomItemTitle', _0: a};
+};
+var _comjeito$comjeito$Types$RemoveShowroomPicture = function (a) {
+	return {ctor: 'RemoveShowroomPicture', _0: a};
+};
+var _comjeito$comjeito$Types$ResultUpdateShowroomItem = function (a) {
+	return {ctor: 'ResultUpdateShowroomItem', _0: a};
+};
+var _comjeito$comjeito$Types$DoCreateShowroomItem = {ctor: 'DoCreateShowroomItem'};
+var _comjeito$comjeito$Types$DoUpdateShowroomItem = {ctor: 'DoUpdateShowroomItem'};
+var _comjeito$comjeito$Types$DoDeleteShowroomItem = function (a) {
+	return {ctor: 'DoDeleteShowroomItem', _0: a};
+};
+var _comjeito$comjeito$Types$RequestShowroom = {ctor: 'RequestShowroom'};
+var _comjeito$comjeito$Types$RequestProducts = {ctor: 'RequestProducts'};
+var _comjeito$comjeito$Types$RequestServices = {ctor: 'RequestServices'};
+var _comjeito$comjeito$Types$DoCreateItem = {ctor: 'DoCreateItem'};
+var _comjeito$comjeito$Types$ResultUpdateItem = function (a) {
+	return {ctor: 'ResultUpdateItem', _0: a};
+};
+var _comjeito$comjeito$Types$DoUpdateItem = {ctor: 'DoUpdateItem'};
+var _comjeito$comjeito$Types$UpdateItemPicture = function (a) {
+	return {ctor: 'UpdateItemPicture', _0: a};
+};
+var _comjeito$comjeito$Types$SelectItemPicture = {ctor: 'SelectItemPicture'};
+var _comjeito$comjeito$Types$UpdateItemPrice = function (a) {
+	return {ctor: 'UpdateItemPrice', _0: a};
+};
+var _comjeito$comjeito$Types$UpdateItemDescription = function (a) {
+	return {ctor: 'UpdateItemDescription', _0: a};
+};
+var _comjeito$comjeito$Types$UpdateItemTitle = function (a) {
+	return {ctor: 'UpdateItemTitle', _0: a};
+};
+var _comjeito$comjeito$Types$DoDelete = F2(
+	function (a, b) {
+		return {ctor: 'DoDelete', _0: a, _1: b};
+	});
+var _comjeito$comjeito$Types$DoRequest = function (a) {
+	return {ctor: 'DoRequest', _0: a};
+};
+var _comjeito$comjeito$Types$GetToken = function (a) {
+	return {ctor: 'GetToken', _0: a};
+};
+var _comjeito$comjeito$Types$Snackbar = function (a) {
+	return {ctor: 'Snackbar', _0: a};
+};
+var _comjeito$comjeito$Types$LogoutAdmin = {ctor: 'LogoutAdmin'};
+var _comjeito$comjeito$Types$AdminToast = function (a) {
+	return {ctor: 'AdminToast', _0: a};
+};
+var _comjeito$comjeito$Types$LoginAdmin = {ctor: 'LoginAdmin'};
+var _comjeito$comjeito$Types$SetAdminCredentials = F2(
+	function (a, b) {
+		return {ctor: 'SetAdminCredentials', _0: a, _1: b};
+	});
+var _comjeito$comjeito$Types$DoLogin = function (a) {
+	return {ctor: 'DoLogin', _0: a};
+};
 var _comjeito$comjeito$Types$GetShowroomItems = function (a) {
 	return {ctor: 'GetShowroomItems', _0: a};
 };
@@ -16823,6 +17294,166 @@ var _comjeito$comjeito$Route$lookFor = function (location) {
 	}
 };
 
+var _comjeito$comjeito$Requests$loginEncoder = function (form_) {
+	return A2(
+		_elm_lang$core$Json_Encode$encode,
+		0,
+		_elm_lang$core$Json_Encode$object(
+			{
+				ctor: '::',
+				_0: {
+					ctor: '_Tuple2',
+					_0: 'username',
+					_1: _elm_lang$core$Json_Encode$string(form_.username)
+				},
+				_1: {
+					ctor: '::',
+					_0: {
+						ctor: '_Tuple2',
+						_0: 'password',
+						_1: _elm_lang$core$Json_Encode$string(form_.password)
+					},
+					_1: {ctor: '[]'}
+				}
+			}));
+};
+var _comjeito$comjeito$Requests$loginDecoder = A3(
+	_elm_lang$core$Json_Decode$map2,
+	_comjeito$comjeito$Types$LoginStatus,
+	A2(_elm_lang$core$Json_Decode$field, 'status', _elm_lang$core$Json_Decode$int),
+	A2(_elm_lang$core$Json_Decode$field, 'token', _elm_lang$core$Json_Decode$string));
+var _comjeito$comjeito$Requests$doLogin = function (form_) {
+	var url = 'https://nameless-hamlet-42933.herokuapp.com/login';
+	return A2(
+		_elm_lang$http$Http$send,
+		_comjeito$comjeito$Types$DoLogin,
+		A3(
+			_elm_lang$http$Http$post,
+			url,
+			A2(
+				_elm_lang$http$Http$stringBody,
+				'application/json',
+				_comjeito$comjeito$Requests$loginEncoder(form_)),
+			_comjeito$comjeito$Requests$loginDecoder));
+};
+var _comjeito$comjeito$Requests$statusDecoder = A2(
+	_elm_lang$core$Json_Decode$map,
+	_comjeito$comjeito$Types$RequestStatus,
+	A2(_elm_lang$core$Json_Decode$field, 'status', _elm_lang$core$Json_Decode$int));
+var _comjeito$comjeito$Requests$deleteItem = F3(
+	function (category_, item_, model) {
+		var url = A2(
+			_elm_lang$core$Basics_ops['++'],
+			'https://nameless-hamlet-42933.herokuapp.com/deleteitem',
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				'/',
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					category_,
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						'/',
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							item_.id,
+							A2(_elm_lang$core$Basics_ops['++'], '?token=', model.adminToken))))));
+		return A2(
+			_elm_lang$http$Http$send,
+			_comjeito$comjeito$Types$DoRequest,
+			A2(_elm_lang$http$Http$get, url, _comjeito$comjeito$Requests$statusDecoder));
+	});
+var _comjeito$comjeito$Requests$deleteShowroomItem = F2(
+	function (item_, model) {
+		var url = A2(
+			_elm_lang$core$Basics_ops['++'],
+			'https://nameless-hamlet-42933.herokuapp.com/deleteshowroomitem',
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				'/',
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					item_.id,
+					A2(_elm_lang$core$Basics_ops['++'], '?token=', model.adminToken))));
+		return A2(
+			_elm_lang$http$Http$send,
+			_comjeito$comjeito$Types$DoRequest,
+			A2(_elm_lang$http$Http$get, url, _comjeito$comjeito$Requests$statusDecoder));
+	});
+var _comjeito$comjeito$Requests$showroomItemEncoder = function (item_) {
+	return A2(
+		_elm_lang$core$Json_Encode$encode,
+		0,
+		_elm_lang$core$Json_Encode$object(
+			{
+				ctor: '::',
+				_0: {
+					ctor: '_Tuple2',
+					_0: 'title',
+					_1: _elm_lang$core$Json_Encode$string(item_.title)
+				},
+				_1: {
+					ctor: '::',
+					_0: {
+						ctor: '_Tuple2',
+						_0: 'description',
+						_1: _elm_lang$core$Json_Encode$string(item_.description)
+					},
+					_1: {
+						ctor: '::',
+						_0: {
+							ctor: '_Tuple2',
+							_0: 'pictures',
+							_1: _elm_lang$core$Json_Encode$list(
+								A2(_elm_lang$core$List$map, _elm_lang$core$Json_Encode$string, item_.picturesPath))
+						},
+						_1: {ctor: '[]'}
+					}
+				}
+			}));
+};
+var _comjeito$comjeito$Requests$createShowroomItem = F2(
+	function (item_, model) {
+		var url = A2(
+			_elm_lang$core$Basics_ops['++'],
+			'https://nameless-hamlet-42933.herokuapp.com/insertshowroomitem',
+			A2(_elm_lang$core$Basics_ops['++'], '?token=', model.adminToken));
+		return A2(
+			_elm_lang$http$Http$send,
+			_comjeito$comjeito$Types$ResultUpdateShowroomItem,
+			A3(
+				_elm_lang$http$Http$post,
+				url,
+				A2(
+					_elm_lang$http$Http$stringBody,
+					'application/json',
+					_comjeito$comjeito$Requests$showroomItemEncoder(item_)),
+				_comjeito$comjeito$Requests$statusDecoder));
+	});
+var _comjeito$comjeito$Requests$updateShowroomItem = F2(
+	function (item_, model) {
+		var url = A2(
+			_elm_lang$core$Basics_ops['++'],
+			'https://nameless-hamlet-42933.herokuapp.com/updateshowroomitem',
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				'/',
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					item_.item.id,
+					A2(_elm_lang$core$Basics_ops['++'], '?token=', model.adminToken))));
+		return A2(
+			_elm_lang$http$Http$send,
+			_comjeito$comjeito$Types$ResultUpdateShowroomItem,
+			A3(
+				_elm_lang$http$Http$post,
+				url,
+				A2(
+					_elm_lang$http$Http$stringBody,
+					'application/json',
+					_comjeito$comjeito$Requests$showroomItemEncoder(item_)),
+				_comjeito$comjeito$Requests$statusDecoder));
+	});
 var _comjeito$comjeito$Requests$showroomItemDecoder = A5(
 	_elm_lang$core$Json_Decode$map4,
 	_comjeito$comjeito$Types$RequestShowroomItem,
@@ -16858,25 +17489,14 @@ var _comjeito$comjeito$Requests$getShowroomItems = F2(
 		return A2(
 			_elm_lang$http$Http$send,
 			_comjeito$comjeito$Types$GetShowroomItems,
-			_elm_lang$http$Http$request(
-				{
-					method: 'GET',
-					headers: {
-						ctor: '::',
-						_0: A2(_elm_lang$http$Http$header, 'access-control-allow-origin', '*'),
-						_1: {ctor: '[]'}
-					},
-					url: url,
-					body: _elm_lang$http$Http$emptyBody,
-					timeout: _elm_lang$core$Maybe$Nothing,
-					withCredentials: false,
-					expect: _elm_lang$http$Http$expectJson(
-						A3(
-							_elm_lang$core$Json_Decode$map2,
-							_comjeito$comjeito$Types$ShowroomItemsWithStatus,
-							A2(_elm_lang$core$Json_Decode$field, 'status', _elm_lang$core$Json_Decode$int),
-							A2(_elm_lang$core$Json_Decode$field, 'items', _comjeito$comjeito$Requests$showroomItemsDecoder)))
-				}));
+			A2(
+				_elm_lang$http$Http$get,
+				url,
+				A3(
+					_elm_lang$core$Json_Decode$map2,
+					_comjeito$comjeito$Types$ShowroomItemsWithStatus,
+					A2(_elm_lang$core$Json_Decode$field, 'status', _elm_lang$core$Json_Decode$int),
+					A2(_elm_lang$core$Json_Decode$field, 'items', _comjeito$comjeito$Requests$showroomItemsDecoder))));
 	});
 var _comjeito$comjeito$Requests$getShowroomItem = function (id_) {
 	var url = A2(_elm_lang$core$Basics_ops['++'], 'https://nameless-hamlet-42933.herokuapp.com/showroomitem/', id_);
@@ -16892,6 +17512,96 @@ var _comjeito$comjeito$Requests$getShowroomItem = function (id_) {
 				A2(_elm_lang$core$Json_Decode$field, 'status', _elm_lang$core$Json_Decode$int),
 				A2(_elm_lang$core$Json_Decode$field, 'item', _comjeito$comjeito$Requests$showroomItemDecoder))));
 };
+var _comjeito$comjeito$Requests$itemEncoder = F2(
+	function (category_, item_) {
+		return A2(
+			_elm_lang$core$Json_Encode$encode,
+			0,
+			_elm_lang$core$Json_Encode$object(
+				{
+					ctor: '::',
+					_0: {
+						ctor: '_Tuple2',
+						_0: 'title',
+						_1: _elm_lang$core$Json_Encode$string(item_.title)
+					},
+					_1: {
+						ctor: '::',
+						_0: {
+							ctor: '_Tuple2',
+							_0: 'description',
+							_1: _elm_lang$core$Json_Encode$string(item_.description)
+						},
+						_1: {
+							ctor: '::',
+							_0: {
+								ctor: '_Tuple2',
+								_0: 'price',
+								_1: _elm_lang$core$Json_Encode$string(item_.price)
+							},
+							_1: {
+								ctor: '::',
+								_0: {
+									ctor: '_Tuple2',
+									_0: 'picture',
+									_1: _elm_lang$core$Json_Encode$string(item_.picturePath)
+								},
+								_1: {
+									ctor: '::',
+									_0: {
+										ctor: '_Tuple2',
+										_0: 'category',
+										_1: _elm_lang$core$Json_Encode$string(category_)
+									},
+									_1: {ctor: '[]'}
+								}
+							}
+						}
+					}
+				}));
+	});
+var _comjeito$comjeito$Requests$updateItem = F3(
+	function (category_, item_, model) {
+		var url = A2(
+			_elm_lang$core$Basics_ops['++'],
+			'https://nameless-hamlet-42933.herokuapp.com/updateitem',
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				'/',
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					item_.item.id,
+					A2(_elm_lang$core$Basics_ops['++'], '?token=', model.adminToken))));
+		return A2(
+			_elm_lang$http$Http$send,
+			_comjeito$comjeito$Types$ResultUpdateItem,
+			A3(
+				_elm_lang$http$Http$post,
+				url,
+				A2(
+					_elm_lang$http$Http$stringBody,
+					'application/json',
+					A2(_comjeito$comjeito$Requests$itemEncoder, category_, item_)),
+				_comjeito$comjeito$Requests$statusDecoder));
+	});
+var _comjeito$comjeito$Requests$createItem = F3(
+	function (category_, item_, model) {
+		var url = A2(
+			_elm_lang$core$Basics_ops['++'],
+			'https://nameless-hamlet-42933.herokuapp.com/insertitem',
+			A2(_elm_lang$core$Basics_ops['++'], '?token=', model.adminToken));
+		return A2(
+			_elm_lang$http$Http$send,
+			_comjeito$comjeito$Types$ResultUpdateItem,
+			A3(
+				_elm_lang$http$Http$post,
+				url,
+				A2(
+					_elm_lang$http$Http$stringBody,
+					'application/json',
+					A2(_comjeito$comjeito$Requests$itemEncoder, category_, item_)),
+				_comjeito$comjeito$Requests$statusDecoder));
+	});
 var _comjeito$comjeito$Requests$itemDecoder = A6(
 	_elm_lang$core$Json_Decode$map5,
 	_comjeito$comjeito$Types$RequestItem,
@@ -17030,7 +17740,18 @@ var _comjeito$comjeito$Model$model = {
 		'',
 		'',
 		{ctor: '[]'},
-		_comjeito$comjeito$Types$ItemId(''))
+		_comjeito$comjeito$Types$ItemId('')),
+	servicesEnd: false,
+	productsEnd: false,
+	showroomEnd: false,
+	adminError: false,
+	adminLoading: false,
+	adminEnabled: false,
+	adminToken: '',
+	adminCredentials: A2(_comjeito$comjeito$Types$LoginSubmit, '', ''),
+	adminToast: _debois$elm_mdl$Material_Snackbar$model,
+	editItemLoading: false,
+	editItemError: false
 };
 var _comjeito$comjeito$Model$init = function (location) {
 	var page = function () {
@@ -17046,6 +17767,8 @@ var _comjeito$comjeito$Model$init = function (location) {
 				return _comjeito$comjeito$Types$Services;
 			case '#/showroom':
 				return _comjeito$comjeito$Types$Showroom;
+			case '#/admin':
+				return _comjeito$comjeito$Types$Admin;
 			default:
 				return _comjeito$comjeito$Types$Home;
 		}
@@ -17061,8 +17784,10 @@ var _comjeito$comjeito$Model$init = function (location) {
 				return 2;
 			case 'Products':
 				return 3;
-			default:
+			case 'About':
 				return 4;
+			default:
+				return 0;
 		}
 	}();
 	var model_ = _elm_lang$core$Native_Utils.update(
@@ -17119,8 +17844,10 @@ var _comjeito$comjeito$Update$update = F2(
 							return 2;
 						case 'Products':
 							return 3;
-						default:
+						case 'About':
 							return 4;
+						default:
+							return 0;
 					}
 				}();
 				var model_ = _elm_lang$core$Native_Utils.update(
@@ -17241,14 +17968,58 @@ var _comjeito$comjeito$Update$update = F2(
 							return _comjeito$comjeito$Requests$getShowroomItem(_p9.id);
 						case 'ProductsItem':
 							return _comjeito$comjeito$Requests$getProduct(_p9.id);
-						default:
+						case 'ServicesItem':
 							return _comjeito$comjeito$Requests$getService(_p9.id);
+						case 'EditProductsItem':
+							return _comjeito$comjeito$Requests$getProduct(_p9.id);
+						case 'EditServicesItem':
+							return _comjeito$comjeito$Requests$getService(_p9.id);
+						case 'CreateProductsItem':
+							return _elm_lang$core$Platform_Cmd$none;
+						case 'CreateServicesItem':
+							return _elm_lang$core$Platform_Cmd$none;
+						case 'EditShowroomItem':
+							return _comjeito$comjeito$Requests$getShowroomItem(_p9.id);
+						default:
+							return _elm_lang$core$Platform_Cmd$none;
 					}
 				}();
+				var model0 = _elm_lang$core$Native_Utils.update(
+					model,
+					{
+						productsItem: A5(
+							_comjeito$comjeito$Types$RequestItem,
+							'',
+							'',
+							'R$ ',
+							'',
+							_comjeito$comjeito$Types$ItemId(''))
+					});
+				var model1 = _elm_lang$core$Native_Utils.update(
+					model0,
+					{
+						servicesItem: A5(
+							_comjeito$comjeito$Types$RequestItem,
+							'',
+							'',
+							'R$ ',
+							'',
+							_comjeito$comjeito$Types$ItemId(''))
+					});
+				var model2 = _elm_lang$core$Native_Utils.update(
+					model1,
+					{
+						showroomItem: A4(
+							_comjeito$comjeito$Types$RequestShowroomItem,
+							'',
+							'',
+							{ctor: '[]'},
+							_comjeito$comjeito$Types$ItemId(''))
+					});
 				return {
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
-						model,
+						model2,
 						{dialogView: _p8}),
 					_1: request_
 				};
@@ -17288,18 +18059,26 @@ var _comjeito$comjeito$Update$update = F2(
 				}
 			case 'GetProducts':
 				if (_p0._0.ctor === 'Ok') {
-					var model_ = _elm_lang$core$Native_Utils.update(
+					var _p11 = _p0._0._0;
+					var model1 = _elm_lang$core$Native_Utils.update(
 						model,
 						{productsError: false});
-					var model__ = _elm_lang$core$Native_Utils.update(
-						model_,
+					var model2 = _elm_lang$core$Native_Utils.update(
+						model1,
 						{productsLoading: false});
+					var model3 = (_elm_lang$core$Native_Utils.cmp(
+						_elm_lang$core$List$length(_p11.items),
+						12) < 0) ? _elm_lang$core$Native_Utils.update(
+						model2,
+						{productsEnd: true}) : _elm_lang$core$Native_Utils.update(
+						model2,
+						{productsEnd: false});
 					return {
 						ctor: '_Tuple2',
 						_0: _elm_lang$core$Native_Utils.update(
-							model__,
+							model3,
 							{
-								productsItems: A2(_elm_lang$core$Basics_ops['++'], model.productsItems, _p0._0._0.items)
+								productsItems: A2(_elm_lang$core$Basics_ops['++'], model.productsItems, _p11.items)
 							}),
 						_1: _elm_lang$core$Platform_Cmd$none
 					};
@@ -17317,8 +18096,8 @@ var _comjeito$comjeito$Update$update = F2(
 				}
 			case 'GetService':
 				if (_p0._0.ctor === 'Ok') {
-					var _p11 = _p0._0._0;
-					var item_ = _p11.item;
+					var _p12 = _p0._0._0;
+					var item_ = _p12.item;
 					var model_ = _elm_lang$core$Native_Utils.update(
 						model,
 						{dialogError: false});
@@ -17334,11 +18113,11 @@ var _comjeito$comjeito$Update$update = F2(
 						ctor: '_Tuple2',
 						_0: _elm_lang$core$Native_Utils.update(
 							model___,
-							{servicesItem: _p11.item}),
+							{servicesItem: _p12.item}),
 						_1: _elm_lang$core$Platform_Cmd$none
 					};
 				} else {
-					var _p12 = A2(_elm_lang$core$Debug$log, 'teste', _p0._0._0);
+					var _p13 = A2(_elm_lang$core$Debug$log, 'teste', _p0._0._0);
 					var model_ = _elm_lang$core$Native_Utils.update(
 						model,
 						{dialogError: true});
@@ -17352,18 +18131,26 @@ var _comjeito$comjeito$Update$update = F2(
 				}
 			case 'GetServices':
 				if (_p0._0.ctor === 'Ok') {
-					var model_ = _elm_lang$core$Native_Utils.update(
+					var _p14 = _p0._0._0;
+					var model1 = _elm_lang$core$Native_Utils.update(
 						model,
 						{servicesError: false});
-					var model__ = _elm_lang$core$Native_Utils.update(
-						model_,
+					var model2 = _elm_lang$core$Native_Utils.update(
+						model1,
 						{servicesLoading: false});
+					var model3 = (_elm_lang$core$Native_Utils.cmp(
+						_elm_lang$core$List$length(_p14.items),
+						12) < 0) ? _elm_lang$core$Native_Utils.update(
+						model2,
+						{servicesEnd: true}) : _elm_lang$core$Native_Utils.update(
+						model2,
+						{servicesEnd: false});
 					return {
 						ctor: '_Tuple2',
 						_0: _elm_lang$core$Native_Utils.update(
-							model__,
+							model3,
 							{
-								servicesItems: A2(_elm_lang$core$Basics_ops['++'], model.servicesItems, _p0._0._0.items)
+								servicesItems: A2(_elm_lang$core$Basics_ops['++'], model.servicesItems, _p14.items)
 							}),
 						_1: _elm_lang$core$Platform_Cmd$none
 					};
@@ -17381,8 +18168,8 @@ var _comjeito$comjeito$Update$update = F2(
 				}
 			case 'GetShowroomItem':
 				if (_p0._0.ctor === 'Ok') {
-					var _p13 = _p0._0._0;
-					var item_ = _p13.item;
+					var _p15 = _p0._0._0;
+					var item_ = _p15.item;
 					var model_ = _elm_lang$core$Native_Utils.update(
 						model,
 						{dialogError: false});
@@ -17398,7 +18185,7 @@ var _comjeito$comjeito$Update$update = F2(
 						ctor: '_Tuple2',
 						_0: _elm_lang$core$Native_Utils.update(
 							model___,
-							{showroomItem: _p13.item}),
+							{showroomItem: _p15.item}),
 						_1: _elm_lang$core$Platform_Cmd$none
 					};
 				} else {
@@ -17413,20 +18200,28 @@ var _comjeito$comjeito$Update$update = F2(
 						_1: _elm_lang$core$Platform_Cmd$none
 					};
 				}
-			default:
+			case 'GetShowroomItems':
 				if (_p0._0.ctor === 'Ok') {
-					var model_ = _elm_lang$core$Native_Utils.update(
+					var _p16 = _p0._0._0;
+					var model1 = _elm_lang$core$Native_Utils.update(
 						model,
 						{showroomError: false});
-					var model__ = _elm_lang$core$Native_Utils.update(
-						model_,
+					var model2 = _elm_lang$core$Native_Utils.update(
+						model1,
 						{showroomLoading: false});
+					var model3 = (_elm_lang$core$Native_Utils.cmp(
+						_elm_lang$core$List$length(_p16.items),
+						12) < 0) ? _elm_lang$core$Native_Utils.update(
+						model2,
+						{showroomEnd: true}) : _elm_lang$core$Native_Utils.update(
+						model2,
+						{showroomEnd: false});
 					return {
 						ctor: '_Tuple2',
 						_0: _elm_lang$core$Native_Utils.update(
-							model__,
+							model3,
 							{
-								showroomItems: A2(_elm_lang$core$Basics_ops['++'], model.showroomItems, _p0._0._0.items)
+								showroomItems: A2(_elm_lang$core$Basics_ops['++'], model.showroomItems, _p16.items)
 							}),
 						_1: _elm_lang$core$Platform_Cmd$none
 					};
@@ -17442,10 +18237,654 @@ var _comjeito$comjeito$Update$update = F2(
 						_1: _elm_lang$core$Platform_Cmd$none
 					};
 				}
+			case 'DoLogin':
+				if (_p0._0.ctor === 'Ok') {
+					var _p17 = _p0._0._0;
+					var model_ = _elm_lang$core$Native_Utils.update(
+						model,
+						{
+							adminError: _elm_lang$core$Native_Utils.eq(_p17.status, 200)
+						});
+					var model__ = _elm_lang$core$Native_Utils.update(
+						model_,
+						{adminLoading: false});
+					var model___ = _elm_lang$core$Native_Utils.update(
+						model__,
+						{adminEnabled: true});
+					return {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.update(
+							model___,
+							{adminToken: _p17.token}),
+						_1: _elm_lang$core$Native_Utils.eq(_p17.status, 200) ? _elm_lang$core$Platform_Cmd$batch(
+							{
+								ctor: '::',
+								_0: _elm_lang$navigation$Navigation$newUrl('#/showroom'),
+								_1: {
+									ctor: '::',
+									_0: A2(
+										_debois$elm_mdl$Material_Helpers$delay,
+										_elm_lang$core$Time$second * 1,
+										_comjeito$comjeito$Types$AdminToast('Modo administrativo habilitado')),
+									_1: {
+										ctor: '::',
+										_0: _comjeito$comjeito$Ports$setToken(_p17.token),
+										_1: {ctor: '[]'}
+									}
+								}
+							}) : _elm_lang$core$Platform_Cmd$none
+					};
+				} else {
+					var model_ = _elm_lang$core$Native_Utils.update(
+						model,
+						{adminError: true});
+					var model__ = _elm_lang$core$Native_Utils.update(
+						model_,
+						{adminLoading: false});
+					return {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.update(
+							model__,
+							{adminToken: ''}),
+						_1: _elm_lang$core$Platform_Cmd$none
+					};
+				}
+			case 'SetAdminCredentials':
+				if (_p0._0.ctor === 'Username') {
+					return {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.update(
+							model,
+							{
+								adminCredentials: A2(_comjeito$comjeito$Types$LoginSubmit, _p0._1, model.adminCredentials.password)
+							}),
+						_1: _elm_lang$core$Platform_Cmd$none
+					};
+				} else {
+					return {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.update(
+							model,
+							{
+								adminCredentials: A2(_comjeito$comjeito$Types$LoginSubmit, model.adminCredentials.username, _p0._1)
+							}),
+						_1: _elm_lang$core$Platform_Cmd$none
+					};
+				}
+			case 'LoginAdmin':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{adminLoading: true}),
+					_1: _comjeito$comjeito$Requests$doLogin(model.adminCredentials)
+				};
+			case 'AdminToast':
+				var _p18 = A2(
+					_debois$elm_mdl$Material_Snackbar$add,
+					A2(
+						_debois$elm_mdl$Material_Snackbar$toast,
+						{ctor: '_Tuple0'},
+						_p0._0),
+					model.adminToast);
+				var model_ = _p18._0;
+				var cmd_ = _p18._1;
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{adminToast: model_}),
+					_1: A2(_elm_lang$core$Platform_Cmd$map, _comjeito$comjeito$Types$Snackbar, cmd_)
+				};
+			case 'LogoutAdmin':
+				var model_ = _elm_lang$core$Native_Utils.update(
+					model,
+					{adminToken: ''});
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model_,
+						{adminEnabled: false}),
+					_1: _elm_lang$core$Platform_Cmd$batch(
+						{
+							ctor: '::',
+							_0: A2(
+								_debois$elm_mdl$Material_Helpers$delay,
+								_elm_lang$core$Time$second * 1,
+								_comjeito$comjeito$Types$AdminToast('Modo administrativo desabilitado')),
+							_1: {
+								ctor: '::',
+								_0: _debois$elm_mdl$Material_Helpers$cmd(_comjeito$comjeito$Types$CloseDrawer),
+								_1: {
+									ctor: '::',
+									_0: _comjeito$comjeito$Ports$setToken(''),
+									_1: {ctor: '[]'}
+								}
+							}
+						})
+				};
+			case 'Snackbar':
+				var _p19 = _p0._0;
+				if ((_p19.ctor === 'Move') && (_p19._0 === 0)) {
+					return {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.update(
+							model,
+							{adminToast: _debois$elm_mdl$Material_Snackbar$model}),
+						_1: _elm_lang$core$Platform_Cmd$none
+					};
+				} else {
+					return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+				}
+			case 'GetToken':
+				var _p20 = _p0._0;
+				var model_ = _elm_lang$core$Native_Utils.update(
+					model,
+					{
+						adminEnabled: _elm_lang$core$Native_Utils.eq(_p20, '') ? false : true
+					});
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model_,
+						{adminToken: _p20}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'DoRequest':
+				if (_p0._0.ctor === 'Ok') {
+					if (A2(
+						_elm_lang$core$List$member,
+						_p0._0._0.status,
+						{
+							ctor: '::',
+							_0: 200,
+							_1: {
+								ctor: '::',
+								_0: 201,
+								_1: {ctor: '[]'}
+							}
+						})) {
+						var model1 = _elm_lang$core$Native_Utils.update(
+							model,
+							{
+								productsItems: {ctor: '[]'}
+							});
+						var model2 = _elm_lang$core$Native_Utils.update(
+							model1,
+							{
+								servicesItems: {ctor: '[]'}
+							});
+						var model3 = _elm_lang$core$Native_Utils.update(
+							model2,
+							{productsEnd: false});
+						var model4 = _elm_lang$core$Native_Utils.update(
+							model3,
+							{servicesEnd: false});
+						var model5 = _elm_lang$core$Native_Utils.update(
+							model4,
+							{
+								showroomItems: {ctor: '[]'}
+							});
+						var model6 = _elm_lang$core$Native_Utils.update(
+							model5,
+							{showroomEnd: false});
+						return {
+							ctor: '_Tuple2',
+							_0: model6,
+							_1: _elm_lang$core$Platform_Cmd$batch(
+								{
+									ctor: '::',
+									_0: _debois$elm_mdl$Material_Helpers$cmd(
+										_comjeito$comjeito$Types$AdminToast('Operação realizada com sucesso')),
+									_1: {
+										ctor: '::',
+										_0: A2(_comjeito$comjeito$Requests$getProducts, 0, 12),
+										_1: {
+											ctor: '::',
+											_0: A2(_comjeito$comjeito$Requests$getServices, 0, 12),
+											_1: {
+												ctor: '::',
+												_0: A2(_comjeito$comjeito$Requests$getShowroomItems, 0, 12),
+												_1: {ctor: '[]'}
+											}
+										}
+									}
+								})
+						};
+					} else {
+						return {
+							ctor: '_Tuple2',
+							_0: model,
+							_1: _debois$elm_mdl$Material_Helpers$cmd(
+								_comjeito$comjeito$Types$AdminToast('Operação falhou'))
+						};
+					}
+				} else {
+					return {
+						ctor: '_Tuple2',
+						_0: model,
+						_1: _debois$elm_mdl$Material_Helpers$cmd(
+							_comjeito$comjeito$Types$AdminToast('Operação falhou'))
+					};
+				}
+			case 'DoDelete':
+				return {
+					ctor: '_Tuple2',
+					_0: model,
+					_1: A3(_comjeito$comjeito$Requests$deleteItem, _p0._0, _p0._1, model)
+				};
+			case 'UpdateItemTitle':
+				var _p21 = _p0._0;
+				if (_elm_lang$core$Native_Utils.eq(model.dialogView, _comjeito$comjeito$Types$EditProductsItem) || _elm_lang$core$Native_Utils.eq(model.dialogView, _comjeito$comjeito$Types$CreateProductsItem)) {
+					var productsItem_ = model.productsItem;
+					return {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.update(
+							model,
+							{
+								productsItem: _elm_lang$core$Native_Utils.update(
+									productsItem_,
+									{title: _p21})
+							}),
+						_1: _elm_lang$core$Platform_Cmd$none
+					};
+				} else {
+					var servicesItem_ = model.servicesItem;
+					return {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.update(
+							model,
+							{
+								servicesItem: _elm_lang$core$Native_Utils.update(
+									servicesItem_,
+									{title: _p21})
+							}),
+						_1: _elm_lang$core$Platform_Cmd$none
+					};
+				}
+			case 'UpdateItemDescription':
+				var _p22 = _p0._0;
+				if (_elm_lang$core$Native_Utils.eq(model.dialogView, _comjeito$comjeito$Types$EditProductsItem) || _elm_lang$core$Native_Utils.eq(model.dialogView, _comjeito$comjeito$Types$CreateProductsItem)) {
+					var productsItem_ = model.productsItem;
+					return {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.update(
+							model,
+							{
+								productsItem: _elm_lang$core$Native_Utils.update(
+									productsItem_,
+									{description: _p22})
+							}),
+						_1: _elm_lang$core$Platform_Cmd$none
+					};
+				} else {
+					var servicesItem_ = model.servicesItem;
+					return {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.update(
+							model,
+							{
+								servicesItem: _elm_lang$core$Native_Utils.update(
+									servicesItem_,
+									{description: _p22})
+							}),
+						_1: _elm_lang$core$Platform_Cmd$none
+					};
+				}
+			case 'UpdateItemPrice':
+				var _p23 = _p0._0;
+				if (A2(_elm_lang$core$String$startsWith, 'R$ ', _p23)) {
+					if (_elm_lang$core$Native_Utils.eq(model.dialogView, _comjeito$comjeito$Types$EditProductsItem) || _elm_lang$core$Native_Utils.eq(model.dialogView, _comjeito$comjeito$Types$CreateProductsItem)) {
+						var productsItem_ = model.productsItem;
+						return {
+							ctor: '_Tuple2',
+							_0: _elm_lang$core$Native_Utils.update(
+								model,
+								{
+									productsItem: _elm_lang$core$Native_Utils.update(
+										productsItem_,
+										{price: _p23})
+								}),
+							_1: _elm_lang$core$Platform_Cmd$none
+						};
+					} else {
+						var servicesItem_ = model.servicesItem;
+						return {
+							ctor: '_Tuple2',
+							_0: _elm_lang$core$Native_Utils.update(
+								model,
+								{
+									servicesItem: _elm_lang$core$Native_Utils.update(
+										servicesItem_,
+										{price: _p23})
+								}),
+							_1: _elm_lang$core$Platform_Cmd$none
+						};
+					}
+				} else {
+					return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+				}
+			case 'SelectItemPicture':
+				return {
+					ctor: '_Tuple2',
+					_0: model,
+					_1: _comjeito$comjeito$Ports$fileSelected('--select-image-file')
+				};
+			case 'UpdateItemPicture':
+				var _p24 = _p0._0;
+				if (_elm_lang$core$Native_Utils.eq(model.dialogView, _comjeito$comjeito$Types$EditProductsItem) || _elm_lang$core$Native_Utils.eq(model.dialogView, _comjeito$comjeito$Types$CreateProductsItem)) {
+					var productsItem_ = model.productsItem;
+					return {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.update(
+							model,
+							{
+								productsItem: _elm_lang$core$Native_Utils.update(
+									productsItem_,
+									{picturePath: _p24.contents})
+							}),
+						_1: _elm_lang$core$Platform_Cmd$none
+					};
+				} else {
+					if (_elm_lang$core$Native_Utils.eq(model.dialogView, _comjeito$comjeito$Types$EditServicesItem) || _elm_lang$core$Native_Utils.eq(model.dialogView, _comjeito$comjeito$Types$CreateServicesItem)) {
+						var servicesItem_ = model.servicesItem;
+						return {
+							ctor: '_Tuple2',
+							_0: _elm_lang$core$Native_Utils.update(
+								model,
+								{
+									servicesItem: _elm_lang$core$Native_Utils.update(
+										servicesItem_,
+										{picturePath: _p24.contents})
+								}),
+							_1: _elm_lang$core$Platform_Cmd$none
+						};
+					} else {
+						var picturesPath_ = model.showroomItem.picturesPath;
+						var showroomItem_ = model.showroomItem;
+						return {
+							ctor: '_Tuple2',
+							_0: _elm_lang$core$Native_Utils.update(
+								model,
+								{
+									showroomItem: _elm_lang$core$Native_Utils.update(
+										showroomItem_,
+										{
+											picturesPath: A2(
+												_elm_lang$core$Basics_ops['++'],
+												picturesPath_,
+												{
+													ctor: '::',
+													_0: _p24.contents,
+													_1: {ctor: '[]'}
+												})
+										})
+								}),
+							_1: _elm_lang$core$Platform_Cmd$none
+						};
+					}
+				}
+			case 'DoUpdateItem':
+				var item_ = _elm_lang$core$Native_Utils.eq(model.dialogView, _comjeito$comjeito$Types$EditProductsItem) ? model.productsItem : model.servicesItem;
+				var itemType_ = _elm_lang$core$Native_Utils.eq(model.dialogView, _comjeito$comjeito$Types$EditProductsItem) ? 'products' : 'services';
+				var model_ = _elm_lang$core$Native_Utils.update(
+					model,
+					{editItemError: false});
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model_,
+						{editItemLoading: true}),
+					_1: A3(_comjeito$comjeito$Requests$updateItem, itemType_, item_, model)
+				};
+			case 'ResultUpdateItem':
+				if (_p0._0.ctor === 'Ok') {
+					if (_elm_lang$core$Native_Utils.eq(_p0._0._0.status, 201)) {
+						var model0 = _elm_lang$core$Native_Utils.update(
+							model,
+							{editItemError: false});
+						var model1 = _elm_lang$core$Native_Utils.update(
+							model0,
+							{
+								productsItems: {ctor: '[]'}
+							});
+						var model2 = _elm_lang$core$Native_Utils.update(
+							model1,
+							{
+								servicesItems: {ctor: '[]'}
+							});
+						var model3 = _elm_lang$core$Native_Utils.update(
+							model2,
+							{productsEnd: false});
+						var model4 = _elm_lang$core$Native_Utils.update(
+							model3,
+							{servicesEnd: false});
+						return {
+							ctor: '_Tuple2',
+							_0: _elm_lang$core$Native_Utils.update(
+								model4,
+								{editItemLoading: false}),
+							_1: _elm_lang$core$Platform_Cmd$batch(
+								{
+									ctor: '::',
+									_0: _debois$elm_mdl$Material_Helpers$cmd(
+										_comjeito$comjeito$Types$AdminToast('Operação realizada com sucesso')),
+									_1: {
+										ctor: '::',
+										_0: A2(_comjeito$comjeito$Requests$getProducts, 0, 12),
+										_1: {
+											ctor: '::',
+											_0: A2(_comjeito$comjeito$Requests$getServices, 0, 12),
+											_1: {ctor: '[]'}
+										}
+									}
+								})
+						};
+					} else {
+						var model_ = _elm_lang$core$Native_Utils.update(
+							model,
+							{editItemError: true});
+						return {
+							ctor: '_Tuple2',
+							_0: _elm_lang$core$Native_Utils.update(
+								model_,
+								{editItemLoading: false}),
+							_1: _debois$elm_mdl$Material_Helpers$cmd(
+								_comjeito$comjeito$Types$AdminToast('Operação falhou'))
+						};
+					}
+				} else {
+					var model_ = _elm_lang$core$Native_Utils.update(
+						model,
+						{editItemError: true});
+					return {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.update(
+							model_,
+							{editItemLoading: false}),
+						_1: _debois$elm_mdl$Material_Helpers$cmd(
+							_comjeito$comjeito$Types$AdminToast('Operação falhou'))
+					};
+				}
+			case 'DoCreateItem':
+				var item_ = _elm_lang$core$Native_Utils.eq(model.dialogView, _comjeito$comjeito$Types$CreateProductsItem) ? model.productsItem : model.servicesItem;
+				var itemType_ = _elm_lang$core$Native_Utils.eq(model.dialogView, _comjeito$comjeito$Types$CreateProductsItem) ? 'products' : 'services';
+				var model_ = _elm_lang$core$Native_Utils.update(
+					model,
+					{editItemError: false});
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model_,
+						{editItemLoading: true}),
+					_1: A3(_comjeito$comjeito$Requests$createItem, itemType_, item_, model)
+				};
+			case 'RequestServices':
+				var length_ = _elm_lang$core$List$length(model.servicesItems);
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{servicesLoading: true}),
+					_1: A2(_comjeito$comjeito$Requests$getServices, length_, 12)
+				};
+			case 'RequestProducts':
+				var length_ = _elm_lang$core$List$length(model.productsItems);
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{productsLoading: true}),
+					_1: A2(_comjeito$comjeito$Requests$getProducts, length_, 12)
+				};
+			case 'RequestShowroom':
+				var length_ = _elm_lang$core$List$length(model.showroomItems);
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{showroomLoading: true}),
+					_1: A2(_comjeito$comjeito$Requests$getShowroomItems, length_, 12)
+				};
+			case 'DoDeleteShowroomItem':
+				return {
+					ctor: '_Tuple2',
+					_0: model,
+					_1: A2(_comjeito$comjeito$Requests$deleteShowroomItem, _p0._0, model)
+				};
+			case 'DoCreateShowroomItem':
+				var model_ = _elm_lang$core$Native_Utils.update(
+					model,
+					{editItemError: false});
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model_,
+						{editItemLoading: true}),
+					_1: A2(_comjeito$comjeito$Requests$createShowroomItem, model.showroomItem, model)
+				};
+			case 'DoUpdateShowroomItem':
+				var model_ = _elm_lang$core$Native_Utils.update(
+					model,
+					{editItemError: false});
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model_,
+						{editItemLoading: true}),
+					_1: A2(_comjeito$comjeito$Requests$updateShowroomItem, model.showroomItem, model)
+				};
+			case 'ResultUpdateShowroomItem':
+				if (_p0._0.ctor === 'Ok') {
+					if (_elm_lang$core$Native_Utils.eq(_p0._0._0.status, 201)) {
+						var model0 = _elm_lang$core$Native_Utils.update(
+							model,
+							{editItemError: false});
+						var model1 = _elm_lang$core$Native_Utils.update(
+							model0,
+							{
+								showroomItems: {ctor: '[]'}
+							});
+						var model2 = _elm_lang$core$Native_Utils.update(
+							model1,
+							{showroomEnd: false});
+						return {
+							ctor: '_Tuple2',
+							_0: _elm_lang$core$Native_Utils.update(
+								model2,
+								{editItemLoading: false}),
+							_1: _elm_lang$core$Platform_Cmd$batch(
+								{
+									ctor: '::',
+									_0: _debois$elm_mdl$Material_Helpers$cmd(
+										_comjeito$comjeito$Types$AdminToast('Operação realizada com sucesso')),
+									_1: {
+										ctor: '::',
+										_0: A2(_comjeito$comjeito$Requests$getShowroomItems, 0, 12),
+										_1: {ctor: '[]'}
+									}
+								})
+						};
+					} else {
+						var model_ = _elm_lang$core$Native_Utils.update(
+							model,
+							{editItemError: true});
+						return {
+							ctor: '_Tuple2',
+							_0: _elm_lang$core$Native_Utils.update(
+								model_,
+								{editItemLoading: false}),
+							_1: _debois$elm_mdl$Material_Helpers$cmd(
+								_comjeito$comjeito$Types$AdminToast('Operação falhou'))
+						};
+					}
+				} else {
+					var model_ = _elm_lang$core$Native_Utils.update(
+						model,
+						{editItemError: true});
+					return {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.update(
+							model_,
+							{editItemLoading: false}),
+						_1: _debois$elm_mdl$Material_Helpers$cmd(
+							_comjeito$comjeito$Types$AdminToast('Operação falhou'))
+					};
+				}
+			case 'RemoveShowroomPicture':
+				var _p25 = _p0._0;
+				var showroomItem_ = model.showroomItem;
+				var picturesArray_ = _elm_lang$core$Array$fromList(model.showroomItem.picturesPath);
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{
+							showroomItem: _elm_lang$core$Native_Utils.update(
+								showroomItem_,
+								{
+									picturesPath: A2(
+										_elm_lang$core$Basics_ops['++'],
+										_elm_lang$core$Array$toList(
+											A3(_elm_lang$core$Array$slice, 0, _p25, picturesArray_)),
+										_elm_lang$core$Array$toList(
+											A3(
+												_elm_lang$core$Array$slice,
+												_p25 + 1,
+												_elm_lang$core$Array$length(picturesArray_),
+												picturesArray_)))
+								})
+						}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'UpdateShowroomItemTitle':
+				var showroomItem_ = model.showroomItem;
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{
+							showroomItem: _elm_lang$core$Native_Utils.update(
+								showroomItem_,
+								{title: _p0._0})
+						}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			default:
+				var showroomItem_ = model.showroomItem;
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{
+							showroomItem: _elm_lang$core$Native_Utils.update(
+								showroomItem_,
+								{description: _p0._0})
+						}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
 		}
 	});
-
-var _comjeito$comjeito$Ports$scroll = _elm_lang$core$Native_Platform.incomingPort('scroll', _elm_lang$core$Json_Decode$int);
 
 var _comjeito$comjeito$Subscriptions$subscriptions = function (model) {
 	return _elm_lang$core$Platform_Sub$batch(
@@ -17464,7 +18903,15 @@ var _comjeito$comjeito$Subscriptions$subscriptions = function (model) {
 						_1: {
 							ctor: '::',
 							_0: _comjeito$comjeito$Ports$scroll(_comjeito$comjeito$Types$ScrollChange),
-							_1: {ctor: '[]'}
+							_1: {
+								ctor: '::',
+								_0: _comjeito$comjeito$Ports$token(_comjeito$comjeito$Types$GetToken),
+								_1: {
+									ctor: '::',
+									_0: _comjeito$comjeito$Ports$fileContentRead(_comjeito$comjeito$Types$UpdateItemPicture),
+									_1: {ctor: '[]'}
+								}
+							}
 						}
 					}
 				}
@@ -17931,6 +19378,31 @@ var _comjeito$comjeito$Misc_Header$render = function (model) {
 	};
 };
 
+var _comjeito$comjeito$Misc_Drawer$toggleAdminMode = function (model) {
+	return A2(
+		_debois$elm_mdl$Material_Layout$link,
+		{
+			ctor: '::',
+			_0: A2(
+				_debois$elm_mdl$Material_Options$when,
+				!model.adminEnabled,
+				A2(_debois$elm_mdl$Material_Options$css, 'display', 'none')),
+			_1: {
+				ctor: '::',
+				_0: A2(_debois$elm_mdl$Material_Options$css, 'cursor', 'pointer'),
+				_1: {
+					ctor: '::',
+					_0: _debois$elm_mdl$Material_Options$onClick(_comjeito$comjeito$Types$LogoutAdmin),
+					_1: {ctor: '[]'}
+				}
+			}
+		},
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html$text('Sair do modo administrativo'),
+			_1: {ctor: '[]'}
+		});
+};
 var _comjeito$comjeito$Misc_Drawer$closeDrawer = function (model) {
 	return _debois$elm_mdl$Material_Options$onClick(_comjeito$comjeito$Types$CloseDrawer);
 };
@@ -17994,20 +19466,24 @@ var _comjeito$comjeito$Misc_Drawer$render = function (model) {
 					_0: _debois$elm_mdl$Material_Layout$spacer,
 					_1: {
 						ctor: '::',
-						_0: A3(_comjeito$comjeito$Misc_Drawer$item, 'Home', '#/home', model),
+						_0: _comjeito$comjeito$Misc_Drawer$toggleAdminMode(model),
 						_1: {
 							ctor: '::',
-							_0: A3(_comjeito$comjeito$Misc_Drawer$item, 'Serviços oferecidos', '#/servicos', model),
+							_0: A3(_comjeito$comjeito$Misc_Drawer$item, 'Home', '#/home', model),
 							_1: {
 								ctor: '::',
-								_0: A3(_comjeito$comjeito$Misc_Drawer$item, 'Conheça nossos produtos', '#/produtos', model),
+								_0: A3(_comjeito$comjeito$Misc_Drawer$item, 'Serviços oferecidos', '#/servicos', model),
 								_1: {
 									ctor: '::',
-									_0: A3(_comjeito$comjeito$Misc_Drawer$item, 'Acesse o showroom', '#/showroom', model),
+									_0: A3(_comjeito$comjeito$Misc_Drawer$item, 'Conheça nossos produtos', '#/produtos', model),
 									_1: {
 										ctor: '::',
-										_0: A3(_comjeito$comjeito$Misc_Drawer$item, 'Sobre a empresa', '#/sobre', model),
-										_1: {ctor: '[]'}
+										_0: A3(_comjeito$comjeito$Misc_Drawer$item, 'Acesse o showroom', '#/showroom', model),
+										_1: {
+											ctor: '::',
+											_0: A3(_comjeito$comjeito$Misc_Drawer$item, 'Sobre a empresa', '#/sobre', model),
+											_1: {ctor: '[]'}
+										}
 									}
 								}
 							}
@@ -19224,7 +20700,11 @@ var _comjeito$comjeito$Misc_ProductsDialog$render = function (model) {
 				{
 					ctor: '::',
 					_0: _debois$elm_mdl$Material_Color$text(_debois$elm_mdl$Material_Color$accent),
-					_1: {ctor: '[]'}
+					_1: {
+						ctor: '::',
+						_0: A2(_debois$elm_mdl$Material_Options$css, 'line-height', '1'),
+						_1: {ctor: '[]'}
+					}
 				},
 				{
 					ctor: '::',
@@ -19468,7 +20948,11 @@ var _comjeito$comjeito$Misc_ServicesDialog$render = function (model) {
 				{
 					ctor: '::',
 					_0: _debois$elm_mdl$Material_Color$text(_debois$elm_mdl$Material_Color$accent),
-					_1: {ctor: '[]'}
+					_1: {
+						ctor: '::',
+						_0: A2(_debois$elm_mdl$Material_Options$css, 'line-height', '1'),
+						_1: {ctor: '[]'}
+					}
 				},
 				{
 					ctor: '::',
@@ -19764,7 +21248,11 @@ var _comjeito$comjeito$Misc_ShowroomDialog$render = function (model) {
 				{
 					ctor: '::',
 					_0: _debois$elm_mdl$Material_Color$text(_debois$elm_mdl$Material_Color$accent),
-					_1: {ctor: '[]'}
+					_1: {
+						ctor: '::',
+						_0: A2(_debois$elm_mdl$Material_Options$css, 'line-height', '1'),
+						_1: {ctor: '[]'}
+					}
 				},
 				{
 					ctor: '::',
@@ -19824,6 +21312,886 @@ var _comjeito$comjeito$Misc_ShowroomDialog$render = function (model) {
 	};
 };
 
+var _comjeito$comjeito$Misc_Helpers$getIndex = function (item_) {
+	var _p0 = _elm_lang$core$String$toInt(
+		A2(_elm_lang$core$String$filter, _elm_lang$core$Char$isDigit, item_.id));
+	if (_p0.ctor === 'Ok') {
+		return _p0._0;
+	} else {
+		return 0;
+	}
+};
+var _comjeito$comjeito$Misc_Helpers$last = function (list) {
+	last:
+	while (true) {
+		var _p1 = list;
+		if (_p1.ctor === '[]') {
+			return _elm_lang$core$Maybe$Nothing;
+		} else {
+			if (_p1._1.ctor === '[]') {
+				return _elm_lang$core$Maybe$Just(_p1._0);
+			} else {
+				var _v2 = _p1._1;
+				list = _v2;
+				continue last;
+			}
+		}
+	}
+};
+var _comjeito$comjeito$Misc_Helpers$set_url = F2(
+	function (url_, conf_) {
+		var list_ = A2(_elm_lang$core$String$split, '/', url_);
+		var joinedUrl = A2(
+			_elm_lang$core$Basics_ops['++'],
+			A2(
+				_elm_lang$core$List$take,
+				_elm_lang$core$List$length(list_) - 2,
+				list_),
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				{
+					ctor: '::',
+					_0: conf_,
+					_1: {ctor: '[]'}
+				},
+				function () {
+					var _p2 = _comjeito$comjeito$Misc_Helpers$last(list_);
+					if (_p2.ctor === 'Just') {
+						return {
+							ctor: '::',
+							_0: _p2._0,
+							_1: {ctor: '[]'}
+						};
+					} else {
+						return {
+							ctor: '::',
+							_0: '',
+							_1: {ctor: '[]'}
+						};
+					}
+				}()));
+		return A2(_elm_lang$core$String$join, '/', joinedUrl);
+	});
+var _comjeito$comjeito$Misc_Helpers$fileButton = F3(
+	function (labelText_, msg_, model) {
+		return A2(
+			_debois$elm_mdl$Material_Options$div,
+			{ctor: '[]'},
+			{
+				ctor: '::',
+				_0: A3(
+					_debois$elm_mdl$Material_Options$styled,
+					_elm_lang$html$Html$input,
+					{
+						ctor: '::',
+						_0: _debois$elm_mdl$Material_Options$attribute(
+							_elm_lang$html$Html_Attributes$type_('file')),
+						_1: {
+							ctor: '::',
+							_0: _debois$elm_mdl$Material_Options$id('--select-image-file'),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_debois$elm_mdl$Material_Options$on,
+									'change',
+									_elm_lang$core$Json_Decode$succeed(msg_)),
+								_1: {
+									ctor: '::',
+									_0: A2(_debois$elm_mdl$Material_Options$css, 'display', 'none'),
+									_1: {ctor: '[]'}
+								}
+							}
+						}
+					},
+					{ctor: '[]'}),
+				_1: {
+					ctor: '::',
+					_0: A5(
+						_debois$elm_mdl$Material_Button$render,
+						_comjeito$comjeito$Types$Mdl,
+						{
+							ctor: '::',
+							_0: 1001,
+							_1: {ctor: '[]'}
+						},
+						model.mdl,
+						{
+							ctor: '::',
+							_0: _debois$elm_mdl$Material_Button$raised,
+							_1: {
+								ctor: '::',
+								_0: A2(_debois$elm_mdl$Material_Options$css, 'display', 'block'),
+								_1: {ctor: '[]'}
+							}
+						},
+						{
+							ctor: '::',
+							_0: A3(
+								_debois$elm_mdl$Material_Options$styled,
+								_elm_lang$html$Html$label,
+								{
+									ctor: '::',
+									_0: _debois$elm_mdl$Material_Options$attribute(
+										_elm_lang$html$Html_Attributes$for('--select-image-file')),
+									_1: {
+										ctor: '::',
+										_0: A2(_debois$elm_mdl$Material_Options$css, 'display', 'block'),
+										_1: {
+											ctor: '::',
+											_0: A2(_debois$elm_mdl$Material_Options$css, 'cursor', 'pointer'),
+											_1: {ctor: '[]'}
+										}
+									}
+								},
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html$text(labelText_),
+									_1: {ctor: '[]'}
+								}),
+							_1: {ctor: '[]'}
+						}),
+					_1: {ctor: '[]'}
+				}
+			});
+	});
+
+var _comjeito$comjeito$Misc_EditDialog$disableForm = function (item) {
+	return (_elm_lang$core$Native_Utils.cmp(
+		_elm_lang$core$String$length(item.title),
+		2) < 0) || ((_elm_lang$core$Native_Utils.cmp(
+		_elm_lang$core$String$length(item.description),
+		16) < 0) || ((_elm_lang$core$Native_Utils.cmp(
+		_elm_lang$core$String$length(item.price),
+		5) < 0) || _elm_lang$core$Native_Utils.eq(item.picturePath, '')));
+};
+var _comjeito$comjeito$Misc_EditDialog$render = function (model) {
+	var item = (_elm_lang$core$Native_Utils.eq(model.dialogView, _comjeito$comjeito$Types$EditProductsItem) || _elm_lang$core$Native_Utils.eq(model.dialogView, _comjeito$comjeito$Types$CreateProductsItem)) ? model.productsItem : model.servicesItem;
+	return {
+		ctor: '::',
+		_0: A2(
+			_debois$elm_mdl$Material_Dialog$title,
+			{
+				ctor: '::',
+				_0: _debois$elm_mdl$Material_Color$text(_debois$elm_mdl$Material_Color$accent),
+				_1: {
+					ctor: '::',
+					_0: A2(_debois$elm_mdl$Material_Options$css, 'line-height', '1.5'),
+					_1: {ctor: '[]'}
+				}
+			},
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html$text('Editar item'),
+				_1: {ctor: '[]'}
+			}),
+		_1: {
+			ctor: '::',
+			_0: A2(
+				_debois$elm_mdl$Material_Dialog$content,
+				{
+					ctor: '::',
+					_0: A2(_debois$elm_mdl$Material_Options$css, 'flex', '1'),
+					_1: {
+						ctor: '::',
+						_0: A2(_debois$elm_mdl$Material_Options$css, 'overflow-y', 'auto'),
+						_1: {ctor: '[]'}
+					}
+				},
+				{
+					ctor: '::',
+					_0: A5(
+						_debois$elm_mdl$Material_Textfield$render,
+						_comjeito$comjeito$Types$Mdl,
+						{
+							ctor: '::',
+							_0: 201,
+							_1: {ctor: '[]'}
+						},
+						model.mdl,
+						{
+							ctor: '::',
+							_0: _debois$elm_mdl$Material_Textfield$floatingLabel,
+							_1: {
+								ctor: '::',
+								_0: _debois$elm_mdl$Material_Textfield$label('Título'),
+								_1: {
+									ctor: '::',
+									_0: _debois$elm_mdl$Material_Textfield$value(item.title),
+									_1: {
+										ctor: '::',
+										_0: _debois$elm_mdl$Material_Textfield$maxlength(64),
+										_1: {
+											ctor: '::',
+											_0: _debois$elm_mdl$Material_Options$onInput(_comjeito$comjeito$Types$UpdateItemTitle),
+											_1: {
+												ctor: '::',
+												_0: A2(
+													_debois$elm_mdl$Material_Options$when,
+													(_elm_lang$core$Native_Utils.cmp(
+														_elm_lang$core$String$length(item.title),
+														2) < 0) && (!_elm_lang$core$Native_Utils.eq(item.title, '')),
+													_debois$elm_mdl$Material_Textfield$error('Precisa ter pelo menos 2 letras')),
+												_1: {
+													ctor: '::',
+													_0: A2(_debois$elm_mdl$Material_Options$css, 'width', '100%'),
+													_1: {ctor: '[]'}
+												}
+											}
+										}
+									}
+								}
+							}
+						},
+						{ctor: '[]'}),
+					_1: {
+						ctor: '::',
+						_0: A5(
+							_debois$elm_mdl$Material_Textfield$render,
+							_comjeito$comjeito$Types$Mdl,
+							{
+								ctor: '::',
+								_0: 202,
+								_1: {ctor: '[]'}
+							},
+							model.mdl,
+							{
+								ctor: '::',
+								_0: _debois$elm_mdl$Material_Textfield$floatingLabel,
+								_1: {
+									ctor: '::',
+									_0: _debois$elm_mdl$Material_Textfield$label('Descrição'),
+									_1: {
+										ctor: '::',
+										_0: _debois$elm_mdl$Material_Textfield$value(item.description),
+										_1: {
+											ctor: '::',
+											_0: _debois$elm_mdl$Material_Textfield$textarea,
+											_1: {
+												ctor: '::',
+												_0: _debois$elm_mdl$Material_Textfield$rows(6),
+												_1: {
+													ctor: '::',
+													_0: _debois$elm_mdl$Material_Textfield$maxlength(1024),
+													_1: {
+														ctor: '::',
+														_0: _debois$elm_mdl$Material_Options$onInput(_comjeito$comjeito$Types$UpdateItemDescription),
+														_1: {
+															ctor: '::',
+															_0: A2(
+																_debois$elm_mdl$Material_Options$when,
+																(_elm_lang$core$Native_Utils.cmp(
+																	_elm_lang$core$String$length(item.description),
+																	16) < 0) && (!_elm_lang$core$Native_Utils.eq(item.description, '')),
+																_debois$elm_mdl$Material_Textfield$error('Precisa ter pelo menos 16 letras')),
+															_1: {
+																ctor: '::',
+																_0: A2(_debois$elm_mdl$Material_Options$css, 'width', '100%'),
+																_1: {ctor: '[]'}
+															}
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+							},
+							{ctor: '[]'}),
+						_1: {
+							ctor: '::',
+							_0: A5(
+								_debois$elm_mdl$Material_Textfield$render,
+								_comjeito$comjeito$Types$Mdl,
+								{
+									ctor: '::',
+									_0: 203,
+									_1: {ctor: '[]'}
+								},
+								model.mdl,
+								{
+									ctor: '::',
+									_0: _debois$elm_mdl$Material_Textfield$floatingLabel,
+									_1: {
+										ctor: '::',
+										_0: _debois$elm_mdl$Material_Textfield$label('Preço'),
+										_1: {
+											ctor: '::',
+											_0: _debois$elm_mdl$Material_Textfield$value(item.price),
+											_1: {
+												ctor: '::',
+												_0: _debois$elm_mdl$Material_Textfield$maxlength(16),
+												_1: {
+													ctor: '::',
+													_0: A2(
+														_debois$elm_mdl$Material_Options$when,
+														(_elm_lang$core$Native_Utils.cmp(
+															_elm_lang$core$String$length(item.price),
+															5) < 0) && (!_elm_lang$core$Native_Utils.eq(item.price, 'R$ ')),
+														_debois$elm_mdl$Material_Textfield$error('O preço precisa ser declarativo. Exemplo: R$ 10,00')),
+													_1: {
+														ctor: '::',
+														_0: _debois$elm_mdl$Material_Options$onInput(_comjeito$comjeito$Types$UpdateItemPrice),
+														_1: {
+															ctor: '::',
+															_0: A2(_debois$elm_mdl$Material_Options$css, 'width', '100%'),
+															_1: {ctor: '[]'}
+														}
+													}
+												}
+											}
+										}
+									}
+								},
+								{ctor: '[]'}),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_debois$elm_mdl$Material_Options$div,
+									{
+										ctor: '::',
+										_0: A2(_debois$elm_mdl$Material_Options$css, 'margin-top', '12px'),
+										_1: {ctor: '[]'}
+									},
+									{
+										ctor: '::',
+										_0: A3(_comjeito$comjeito$Misc_Helpers$fileButton, 'Selecionar imagem', _comjeito$comjeito$Types$SelectItemPicture, model),
+										_1: {ctor: '[]'}
+									}),
+								_1: {
+									ctor: '::',
+									_0: A2(
+										_debois$elm_mdl$Material_Options$div,
+										{
+											ctor: '::',
+											_0: _debois$elm_mdl$Material_Options$center,
+											_1: {
+												ctor: '::',
+												_0: A2(_debois$elm_mdl$Material_Options$css, 'margin-top', '32px'),
+												_1: {
+													ctor: '::',
+													_0: A2(_debois$elm_mdl$Material_Options$css, 'margin-bottom', '32px'),
+													_1: {ctor: '[]'}
+												}
+											}
+										},
+										{
+											ctor: '::',
+											_0: A2(
+												_debois$elm_mdl$Material_Options$img,
+												{
+													ctor: '::',
+													_0: _debois$elm_mdl$Material_Options$attribute(
+														_elm_lang$html$Html_Attributes$src(item.picturePath)),
+													_1: {
+														ctor: '::',
+														_0: A2(
+															_debois$elm_mdl$Material_Options$css,
+															'width',
+															_elm_lang$core$Native_Utils.eq(model.viewport, _debois$elm_mdl$Material_Grid$Phone) ? '100%' : '60%'),
+														_1: {
+															ctor: '::',
+															_0: A2(_debois$elm_mdl$Material_Options$css, 'border-radius', '4px'),
+															_1: {ctor: '[]'}
+														}
+													}
+												},
+												{ctor: '[]'}),
+											_1: {ctor: '[]'}
+										}),
+									_1: {
+										ctor: '::',
+										_0: A2(
+											_debois$elm_mdl$Material_Options$div,
+											{
+												ctor: '::',
+												_0: _debois$elm_mdl$Material_Options$center,
+												_1: {ctor: '[]'}
+											},
+											{
+												ctor: '::',
+												_0: _debois$elm_mdl$Material_Spinner$spinner(
+													{
+														ctor: '::',
+														_0: _debois$elm_mdl$Material_Spinner$active(model.editItemLoading),
+														_1: {ctor: '[]'}
+													}),
+												_1: {ctor: '[]'}
+											}),
+										_1: {ctor: '[]'}
+									}
+								}
+							}
+						}
+					}
+				}),
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_debois$elm_mdl$Material_Dialog$actions,
+					{ctor: '[]'},
+					{
+						ctor: '::',
+						_0: A5(
+							_debois$elm_mdl$Material_Button$render,
+							_comjeito$comjeito$Types$Mdl,
+							{
+								ctor: '::',
+								_0: 104,
+								_1: {ctor: '[]'}
+							},
+							model.mdl,
+							{
+								ctor: '::',
+								_0: _debois$elm_mdl$Material_Button$ripple,
+								_1: {
+									ctor: '::',
+									_0: _debois$elm_mdl$Material_Button$accent,
+									_1: {
+										ctor: '::',
+										_0: A2(
+											_debois$elm_mdl$Material_Options$when,
+											_comjeito$comjeito$Misc_EditDialog$disableForm(item),
+											_debois$elm_mdl$Material_Button$disabled),
+										_1: {
+											ctor: '::',
+											_0: _debois$elm_mdl$Material_Options$onClick(
+												(_elm_lang$core$Native_Utils.eq(model.dialogView, _comjeito$comjeito$Types$CreateProductsItem) || _elm_lang$core$Native_Utils.eq(model.dialogView, _comjeito$comjeito$Types$CreateServicesItem)) ? _comjeito$comjeito$Types$DoCreateItem : _comjeito$comjeito$Types$DoUpdateItem),
+											_1: {ctor: '[]'}
+										}
+									}
+								}
+							},
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html$text('Confirmar'),
+								_1: {ctor: '[]'}
+							}),
+						_1: {
+							ctor: '::',
+							_0: A5(
+								_debois$elm_mdl$Material_Button$render,
+								_comjeito$comjeito$Types$Mdl,
+								{
+									ctor: '::',
+									_0: 105,
+									_1: {ctor: '[]'}
+								},
+								model.mdl,
+								{
+									ctor: '::',
+									_0: _debois$elm_mdl$Material_Button$ripple,
+									_1: {
+										ctor: '::',
+										_0: _debois$elm_mdl$Material_Button$accent,
+										_1: {
+											ctor: '::',
+											_0: _debois$elm_mdl$Material_Dialog$closeOn('click'),
+											_1: {ctor: '[]'}
+										}
+									}
+								},
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html$text('Voltar'),
+									_1: {ctor: '[]'}
+								}),
+							_1: {ctor: '[]'}
+						}
+					}),
+				_1: {ctor: '[]'}
+			}
+		}
+	};
+};
+
+var _comjeito$comjeito$Misc_EditShowroomDialog$listPictures = F2(
+	function (pictures_, model) {
+		return A2(
+			_debois$elm_mdl$Material_Options$div,
+			{
+				ctor: '::',
+				_0: A2(_debois$elm_mdl$Material_Options$css, 'text-align', 'center'),
+				_1: {ctor: '[]'}
+			},
+			_elm_lang$core$Array$toList(
+				A2(
+					_elm_lang$core$Array$indexedMap,
+					F2(
+						function (index_, picture_) {
+							return A2(
+								_debois$elm_mdl$Material_Options$div,
+								{
+									ctor: '::',
+									_0: A2(_debois$elm_mdl$Material_Options$css, 'display', 'inline-block'),
+									_1: {
+										ctor: '::',
+										_0: A2(_debois$elm_mdl$Material_Options$css, 'width', '128px'),
+										_1: {
+											ctor: '::',
+											_0: A2(_debois$elm_mdl$Material_Options$css, 'margin', '4px'),
+											_1: {
+												ctor: '::',
+												_0: A2(_debois$elm_mdl$Material_Options$css, 'position', 'relative'),
+												_1: {ctor: '[]'}
+											}
+										}
+									}
+								},
+								{
+									ctor: '::',
+									_0: A2(
+										_debois$elm_mdl$Material_Options$img,
+										{
+											ctor: '::',
+											_0: _debois$elm_mdl$Material_Options$attribute(
+												_elm_lang$html$Html_Attributes$src(
+													A2(_elm_lang$core$String$startsWith, 'data:image', picture_) ? picture_ : A2(_comjeito$comjeito$Misc_Helpers$set_url, picture_, 'w_128,h_256,c_fit'))),
+											_1: {
+												ctor: '::',
+												_0: A2(_debois$elm_mdl$Material_Options$css, 'width', '100%'),
+												_1: {
+													ctor: '::',
+													_0: A2(_debois$elm_mdl$Material_Options$css, 'height', '100%'),
+													_1: {ctor: '[]'}
+												}
+											}
+										},
+										{ctor: '[]'}),
+									_1: {
+										ctor: '::',
+										_0: A5(
+											_debois$elm_mdl$Material_Button$render,
+											_comjeito$comjeito$Types$Mdl,
+											{
+												ctor: '::',
+												_0: 2023,
+												_1: {ctor: '[]'}
+											},
+											model.mdl,
+											{
+												ctor: '::',
+												_0: A2(_debois$elm_mdl$Material_Options$css, 'position', 'absolute'),
+												_1: {
+													ctor: '::',
+													_0: A2(_debois$elm_mdl$Material_Options$css, 'width', '100%'),
+													_1: {
+														ctor: '::',
+														_0: A2(_debois$elm_mdl$Material_Options$css, 'bottom', '0'),
+														_1: {
+															ctor: '::',
+															_0: A2(_debois$elm_mdl$Material_Options$css, 'left', '0'),
+															_1: {
+																ctor: '::',
+																_0: A2(_debois$elm_mdl$Material_Options$css, 'background-color', 'rgba(0,0,0,0.5)'),
+																_1: {
+																	ctor: '::',
+																	_0: _debois$elm_mdl$Material_Button$ripple,
+																	_1: {
+																		ctor: '::',
+																		_0: _debois$elm_mdl$Material_Color$text(_debois$elm_mdl$Material_Color$white),
+																		_1: {
+																			ctor: '::',
+																			_0: _debois$elm_mdl$Material_Options$onClick(
+																				_comjeito$comjeito$Types$RemoveShowroomPicture(index_)),
+																			_1: {ctor: '[]'}
+																		}
+																	}
+																}
+															}
+														}
+													}
+												}
+											},
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html$text('Remover'),
+												_1: {ctor: '[]'}
+											}),
+										_1: {ctor: '[]'}
+									}
+								});
+						}),
+					_elm_lang$core$Array$fromList(pictures_))));
+	});
+var _comjeito$comjeito$Misc_EditShowroomDialog$disableForm = function (item) {
+	return (_elm_lang$core$Native_Utils.cmp(
+		_elm_lang$core$String$length(item.title),
+		2) < 0) || ((_elm_lang$core$Native_Utils.cmp(
+		_elm_lang$core$String$length(item.description),
+		16) < 0) || _elm_lang$core$Native_Utils.eq(
+		_elm_lang$core$List$length(item.picturesPath),
+		0));
+};
+var _comjeito$comjeito$Misc_EditShowroomDialog$render = function (model) {
+	var item = model.showroomItem;
+	return {
+		ctor: '::',
+		_0: A2(
+			_debois$elm_mdl$Material_Dialog$title,
+			{
+				ctor: '::',
+				_0: _debois$elm_mdl$Material_Color$text(_debois$elm_mdl$Material_Color$accent),
+				_1: {
+					ctor: '::',
+					_0: A2(_debois$elm_mdl$Material_Options$css, 'line-height', '1.5'),
+					_1: {ctor: '[]'}
+				}
+			},
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html$text('Editar item'),
+				_1: {ctor: '[]'}
+			}),
+		_1: {
+			ctor: '::',
+			_0: A2(
+				_debois$elm_mdl$Material_Dialog$content,
+				{
+					ctor: '::',
+					_0: A2(_debois$elm_mdl$Material_Options$css, 'flex', '1'),
+					_1: {
+						ctor: '::',
+						_0: A2(_debois$elm_mdl$Material_Options$css, 'overflow-y', 'auto'),
+						_1: {ctor: '[]'}
+					}
+				},
+				{
+					ctor: '::',
+					_0: A5(
+						_debois$elm_mdl$Material_Textfield$render,
+						_comjeito$comjeito$Types$Mdl,
+						{
+							ctor: '::',
+							_0: 201,
+							_1: {ctor: '[]'}
+						},
+						model.mdl,
+						{
+							ctor: '::',
+							_0: _debois$elm_mdl$Material_Textfield$floatingLabel,
+							_1: {
+								ctor: '::',
+								_0: _debois$elm_mdl$Material_Textfield$label('Título'),
+								_1: {
+									ctor: '::',
+									_0: _debois$elm_mdl$Material_Textfield$value(item.title),
+									_1: {
+										ctor: '::',
+										_0: _debois$elm_mdl$Material_Textfield$maxlength(64),
+										_1: {
+											ctor: '::',
+											_0: _debois$elm_mdl$Material_Options$onInput(_comjeito$comjeito$Types$UpdateShowroomItemTitle),
+											_1: {
+												ctor: '::',
+												_0: A2(
+													_debois$elm_mdl$Material_Options$when,
+													(_elm_lang$core$Native_Utils.cmp(
+														_elm_lang$core$String$length(item.title),
+														2) < 0) && (!_elm_lang$core$Native_Utils.eq(item.title, '')),
+													_debois$elm_mdl$Material_Textfield$error('Precisa ter pelo menos 2 letras')),
+												_1: {
+													ctor: '::',
+													_0: A2(_debois$elm_mdl$Material_Options$css, 'width', '100%'),
+													_1: {ctor: '[]'}
+												}
+											}
+										}
+									}
+								}
+							}
+						},
+						{ctor: '[]'}),
+					_1: {
+						ctor: '::',
+						_0: A5(
+							_debois$elm_mdl$Material_Textfield$render,
+							_comjeito$comjeito$Types$Mdl,
+							{
+								ctor: '::',
+								_0: 202,
+								_1: {ctor: '[]'}
+							},
+							model.mdl,
+							{
+								ctor: '::',
+								_0: _debois$elm_mdl$Material_Textfield$floatingLabel,
+								_1: {
+									ctor: '::',
+									_0: _debois$elm_mdl$Material_Textfield$label('Descrição'),
+									_1: {
+										ctor: '::',
+										_0: _debois$elm_mdl$Material_Textfield$value(item.description),
+										_1: {
+											ctor: '::',
+											_0: _debois$elm_mdl$Material_Textfield$textarea,
+											_1: {
+												ctor: '::',
+												_0: _debois$elm_mdl$Material_Textfield$rows(6),
+												_1: {
+													ctor: '::',
+													_0: _debois$elm_mdl$Material_Textfield$maxlength(1024),
+													_1: {
+														ctor: '::',
+														_0: _debois$elm_mdl$Material_Options$onInput(_comjeito$comjeito$Types$UpdateShowroomItemDescription),
+														_1: {
+															ctor: '::',
+															_0: A2(
+																_debois$elm_mdl$Material_Options$when,
+																(_elm_lang$core$Native_Utils.cmp(
+																	_elm_lang$core$String$length(item.description),
+																	16) < 0) && (!_elm_lang$core$Native_Utils.eq(item.description, '')),
+																_debois$elm_mdl$Material_Textfield$error('Precisa ter pelo menos 16 letras')),
+															_1: {
+																ctor: '::',
+																_0: A2(_debois$elm_mdl$Material_Options$css, 'width', '100%'),
+																_1: {ctor: '[]'}
+															}
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+							},
+							{ctor: '[]'}),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_debois$elm_mdl$Material_Options$div,
+								{
+									ctor: '::',
+									_0: A2(_debois$elm_mdl$Material_Options$css, 'margin-top', '12px'),
+									_1: {
+										ctor: '::',
+										_0: A2(_debois$elm_mdl$Material_Options$css, 'margin-bottom', '12px'),
+										_1: {ctor: '[]'}
+									}
+								},
+								{
+									ctor: '::',
+									_0: A3(_comjeito$comjeito$Misc_Helpers$fileButton, 'Selecionar imagem', _comjeito$comjeito$Types$SelectItemPicture, model),
+									_1: {ctor: '[]'}
+								}),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_debois$elm_mdl$Material_Options$div,
+									{
+										ctor: '::',
+										_0: A2(_debois$elm_mdl$Material_Options$css, 'margin-bottom', '12px'),
+										_1: {ctor: '[]'}
+									},
+									{
+										ctor: '::',
+										_0: A2(_comjeito$comjeito$Misc_EditShowroomDialog$listPictures, item.picturesPath, model),
+										_1: {ctor: '[]'}
+									}),
+								_1: {
+									ctor: '::',
+									_0: A2(
+										_debois$elm_mdl$Material_Options$div,
+										{
+											ctor: '::',
+											_0: _debois$elm_mdl$Material_Options$center,
+											_1: {ctor: '[]'}
+										},
+										{
+											ctor: '::',
+											_0: _debois$elm_mdl$Material_Spinner$spinner(
+												{
+													ctor: '::',
+													_0: _debois$elm_mdl$Material_Spinner$active(model.editItemLoading),
+													_1: {ctor: '[]'}
+												}),
+											_1: {ctor: '[]'}
+										}),
+									_1: {ctor: '[]'}
+								}
+							}
+						}
+					}
+				}),
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_debois$elm_mdl$Material_Dialog$actions,
+					{ctor: '[]'},
+					{
+						ctor: '::',
+						_0: A5(
+							_debois$elm_mdl$Material_Button$render,
+							_comjeito$comjeito$Types$Mdl,
+							{
+								ctor: '::',
+								_0: 104,
+								_1: {ctor: '[]'}
+							},
+							model.mdl,
+							{
+								ctor: '::',
+								_0: _debois$elm_mdl$Material_Button$ripple,
+								_1: {
+									ctor: '::',
+									_0: _debois$elm_mdl$Material_Button$accent,
+									_1: {
+										ctor: '::',
+										_0: A2(
+											_debois$elm_mdl$Material_Options$when,
+											_comjeito$comjeito$Misc_EditShowroomDialog$disableForm(item),
+											_debois$elm_mdl$Material_Button$disabled),
+										_1: {
+											ctor: '::',
+											_0: _debois$elm_mdl$Material_Options$onClick(
+												_elm_lang$core$Native_Utils.eq(model.dialogView, _comjeito$comjeito$Types$CreateShowroomItem) ? _comjeito$comjeito$Types$DoCreateShowroomItem : _comjeito$comjeito$Types$DoUpdateShowroomItem),
+											_1: {ctor: '[]'}
+										}
+									}
+								}
+							},
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html$text('Confirmar'),
+								_1: {ctor: '[]'}
+							}),
+						_1: {
+							ctor: '::',
+							_0: A5(
+								_debois$elm_mdl$Material_Button$render,
+								_comjeito$comjeito$Types$Mdl,
+								{
+									ctor: '::',
+									_0: 105,
+									_1: {ctor: '[]'}
+								},
+								model.mdl,
+								{
+									ctor: '::',
+									_0: _debois$elm_mdl$Material_Button$ripple,
+									_1: {
+										ctor: '::',
+										_0: _debois$elm_mdl$Material_Button$accent,
+										_1: {
+											ctor: '::',
+											_0: _debois$elm_mdl$Material_Dialog$closeOn('click'),
+											_1: {ctor: '[]'}
+										}
+									}
+								},
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html$text('Voltar'),
+									_1: {ctor: '[]'}
+								}),
+							_1: {ctor: '[]'}
+						}
+					}),
+				_1: {ctor: '[]'}
+			}
+		}
+	};
+};
+
 var _comjeito$comjeito$Misc_Dialog$render = function (model) {
 	return A2(
 		_debois$elm_mdl$Material_Dialog$view,
@@ -19840,7 +22208,11 @@ var _comjeito$comjeito$Misc_Dialog$render = function (model) {
 							_1: {
 								ctor: '::',
 								_0: A2(_debois$elm_mdl$Material_Options$css, 'flex', '1'),
-								_1: {ctor: '[]'}
+								_1: {
+									ctor: '::',
+									_0: A2(_debois$elm_mdl$Material_Options$css, 'flex-direction', 'column'),
+									_1: {ctor: '[]'}
+								}
 							}
 						},
 						{
@@ -19861,9 +22233,90 @@ var _comjeito$comjeito$Misc_Dialog$render = function (model) {
 						ctor: '::',
 						_0: A2(
 							_debois$elm_mdl$Material_Dialog$content,
-							{ctor: '[]'},
-							{ctor: '[]'}),
-						_1: {ctor: '[]'}
+							{
+								ctor: '::',
+								_0: A2(_debois$elm_mdl$Material_Options$css, 'flex', '1'),
+								_1: {
+									ctor: '::',
+									_0: A2(_debois$elm_mdl$Material_Options$css, 'flex-direction', 'column'),
+									_1: {
+										ctor: '::',
+										_0: _debois$elm_mdl$Material_Options$center,
+										_1: {ctor: '[]'}
+									}
+								}
+							},
+							{
+								ctor: '::',
+								_0: A3(
+									_debois$elm_mdl$Material_Options$styled,
+									_elm_lang$html$Html$p,
+									{
+										ctor: '::',
+										_0: _debois$elm_mdl$Material_Typography$body2,
+										_1: {ctor: '[]'}
+									},
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html$text('Houve um problema de conexão'),
+										_1: {ctor: '[]'}
+									}),
+								_1: {
+									ctor: '::',
+									_0: A3(
+										_debois$elm_mdl$Material_Options$styled,
+										_elm_lang$html$Html$p,
+										{
+											ctor: '::',
+											_0: _debois$elm_mdl$Material_Typography$display1,
+											_1: {ctor: '[]'}
+										},
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html$text(':('),
+											_1: {ctor: '[]'}
+										}),
+									_1: {ctor: '[]'}
+								}
+							}),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_debois$elm_mdl$Material_Dialog$actions,
+								{ctor: '[]'},
+								{
+									ctor: '::',
+									_0: A5(
+										_debois$elm_mdl$Material_Button$render,
+										_comjeito$comjeito$Types$Mdl,
+										{
+											ctor: '::',
+											_0: 105,
+											_1: {ctor: '[]'}
+										},
+										model.mdl,
+										{
+											ctor: '::',
+											_0: _debois$elm_mdl$Material_Button$ripple,
+											_1: {
+												ctor: '::',
+												_0: _debois$elm_mdl$Material_Button$accent,
+												_1: {
+													ctor: '::',
+													_0: _debois$elm_mdl$Material_Dialog$closeOn('click'),
+													_1: {ctor: '[]'}
+												}
+											}
+										},
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html$text('Voltar'),
+											_1: {ctor: '[]'}
+										}),
+									_1: {ctor: '[]'}
+								}),
+							_1: {ctor: '[]'}
+						}
 					};
 				} else {
 					var _p0 = model.dialogView;
@@ -19872,8 +22325,20 @@ var _comjeito$comjeito$Misc_Dialog$render = function (model) {
 							return _comjeito$comjeito$Misc_ProductsDialog$render(model);
 						case 'ServicesItem':
 							return _comjeito$comjeito$Misc_ServicesDialog$render(model);
-						default:
+						case 'ShowroomItem':
 							return _comjeito$comjeito$Misc_ShowroomDialog$render(model);
+						case 'EditProductsItem':
+							return _comjeito$comjeito$Misc_EditDialog$render(model);
+						case 'EditServicesItem':
+							return _comjeito$comjeito$Misc_EditDialog$render(model);
+						case 'CreateServicesItem':
+							return _comjeito$comjeito$Misc_EditDialog$render(model);
+						case 'CreateProductsItem':
+							return _comjeito$comjeito$Misc_EditDialog$render(model);
+						case 'EditShowroomItem':
+							return _comjeito$comjeito$Misc_EditShowroomDialog$render(model);
+						default:
+							return _comjeito$comjeito$Misc_EditShowroomDialog$render(model);
 					}
 				}
 			}
@@ -20409,7 +22874,7 @@ var _comjeito$comjeito$Page_Home$infoCard = function (title_) {
 	};
 };
 var _comjeito$comjeito$Page_Home$engineerCard = function (model) {
-	return _comjeito$comjeito$Page_Home$infoCard('Arquitetos e engenheiros')('Oferecemos produtos relativos à instalação de pisos de madeira e realizamos prestação de\n    serviços para arquitetos e engenheiros. Este perfil de profissional se destaca como um foco da empresa,\n    sendo um cliente característico cujo qual voltamos nossos esforços para cada vez melhor atendê-los;\n    proporcionando serviços de alta qualidade e com riqueza em detalhes.')('toolset.svg')('16px 0')('auto')('128px')(_debois$elm_mdl$Material_Color$white)(
+	return _comjeito$comjeito$Page_Home$infoCard('Arquitetos e engenheiros')('Oferecemos produtos relativos à instalação de pisos e realizamos prestação de\n    serviços para arquitetos e engenheiros. Este perfil de profissional se destaca como um foco da empresa,\n    sendo um cliente característico cujo qual voltamos nossos esforços para cada vez melhor atendê-los;\n    proporcionando serviços de alta qualidade e com riqueza em detalhes.')('toolset.svg')('16px 0')('auto')('128px')(_debois$elm_mdl$Material_Color$white)(
 		{
 			ctor: '::',
 			_0: 3,
@@ -20417,7 +22882,7 @@ var _comjeito$comjeito$Page_Home$engineerCard = function (model) {
 		})('#/produtos')('Saiba mais')(model);
 };
 var _comjeito$comjeito$Page_Home$servicesCard = function (model) {
-	return _comjeito$comjeito$Page_Home$infoCard('Prestação de serviços')('Com 17 anos de experiência no mercado, a ComJeito trabalha com pisos de madeira de luxo e com alta qualidade.\n    Realizamos e lixação e sinteco em pisos de madeira. A lixação não emite poeira e os produtos que utilizamos\n    não possuem odor. Trabalhamos com os melhores produtos do mercado, conheça nossos serviços!')('drill-wood.svg')('16px 0')('auto')('128px')(_debois$elm_mdl$Material_Color$white)(
+	return _comjeito$comjeito$Page_Home$infoCard('Prestação de serviços')('Com 17 anos de experiência no mercado, a ComJeito trabalha com pisos de madeira de luxo e com alta qualidade.\n    Realizamos lixação e sinteco em pisos de madeira. A lixação não emite poeira e os produtos que utilizamos\n    não possuem odor. Trabalhamos com os melhores produtos do mercado, conheça nossos serviços!')('drill-wood.svg')('16px 0')('auto')('128px')(_debois$elm_mdl$Material_Color$white)(
 		{
 			ctor: '::',
 			_0: 4,
@@ -20485,14 +22950,18 @@ var _comjeito$comjeito$Page_Home$headButtons = function (model) {
 								_0: _debois$elm_mdl$Material_Button$link('#/servicos'),
 								_1: {
 									ctor: '::',
-									_0: A2(_debois$elm_mdl$Material_Options$css, 'width', '128px'),
+									_0: A2(_debois$elm_mdl$Material_Options$css, 'background-color', 'rgb(208,206,107)'),
 									_1: {
 										ctor: '::',
-										_0: A2(
-											_debois$elm_mdl$Material_Options$when,
-											!_elm_lang$core$Native_Utils.eq(model.viewport, _debois$elm_mdl$Material_Grid$Phone),
-											A2(_debois$elm_mdl$Material_Options$css, 'margin-right', '16px')),
-										_1: {ctor: '[]'}
+										_0: A2(_debois$elm_mdl$Material_Options$css, 'width', '128px'),
+										_1: {
+											ctor: '::',
+											_0: A2(
+												_debois$elm_mdl$Material_Options$when,
+												!_elm_lang$core$Native_Utils.eq(model.viewport, _debois$elm_mdl$Material_Grid$Phone),
+												A2(_debois$elm_mdl$Material_Options$css, 'margin-right', '16px')),
+											_1: {ctor: '[]'}
+										}
 									}
 								}
 							}
@@ -20529,8 +22998,12 @@ var _comjeito$comjeito$Page_Home$headButtons = function (model) {
 									_0: _debois$elm_mdl$Material_Button$link('#/showroom'),
 									_1: {
 										ctor: '::',
-										_0: A2(_debois$elm_mdl$Material_Options$css, 'width', '128px'),
-										_1: {ctor: '[]'}
+										_0: A2(_debois$elm_mdl$Material_Options$css, 'background-color', 'rgb(208,206,107)'),
+										_1: {
+											ctor: '::',
+											_0: A2(_debois$elm_mdl$Material_Options$css, 'width', '128px'),
+											_1: {ctor: '[]'}
+										}
 									}
 								}
 							}
@@ -20834,37 +23307,14 @@ var _comjeito$comjeito$Page_Home$render = function (model) {
 									{
 										ctor: '::',
 										_0: A2(_debois$elm_mdl$Material_Grid$size, _debois$elm_mdl$Material_Grid$All, 12),
-										_1: {
-											ctor: '::',
-											_0: A2(_debois$elm_mdl$Material_Grid$size, _debois$elm_mdl$Material_Grid$Desktop, 6),
-											_1: {ctor: '[]'}
-										}
+										_1: {ctor: '[]'}
 									},
 									{
 										ctor: '::',
 										_0: _comjeito$comjeito$Page_Home$regionCard(model),
 										_1: {ctor: '[]'}
 									}),
-								_1: {
-									ctor: '::',
-									_0: A2(
-										_debois$elm_mdl$Material_Grid$cell,
-										{
-											ctor: '::',
-											_0: A2(_debois$elm_mdl$Material_Grid$size, _debois$elm_mdl$Material_Grid$All, 12),
-											_1: {
-												ctor: '::',
-												_0: A2(_debois$elm_mdl$Material_Grid$size, _debois$elm_mdl$Material_Grid$Desktop, 6),
-												_1: {ctor: '[]'}
-											}
-										},
-										{
-											ctor: '::',
-											_0: _comjeito$comjeito$Page_Home$shareCard(model),
-											_1: {ctor: '[]'}
-										}),
-									_1: {ctor: '[]'}
-								}
+								_1: {ctor: '[]'}
 							}
 						}
 					}),
@@ -20934,7 +23384,7 @@ var _comjeito$comjeito$Page_About$render = function (model) {
 								},
 								{
 									ctor: '::',
-									_0: _elm_lang$html$Html$text('Somos uma empresa de Novo Hamburgo especializada em pisos de madeira.\n                Temos 17 anos de experiência no mercado, fornecendo serviços de alta qualidade\n                e utilizando os melhores produtos no mercado. Somos uma empresa que trabalha em\n                família. Somos perfeccionistas; buscamos sempre o melhor atendimento ao cliente.\n                A entrega do serviço é garantida: nós levamos os nossos prazos muito à sério!'),
+									_0: _elm_lang$html$Html$text('Somos uma empresa de Novo Hamburgo especializada em pisos e renovação de madeira.\n                Temos 17 anos de experiência do mercado, fornecendo serviços de alta qualidade\n                e utilizando os melhores produtos no mercado. Somos uma empresa que trabalha em\n                família. Somos perfeccionistas; buscamos sempre o melhor atendimento ao cliente.\n                A entrega do serviço é garantida: nós levamos os nossos prazos muito à sério!'),
 									_1: {ctor: '[]'}
 								}),
 							_1: {
@@ -20969,7 +23419,7 @@ var _comjeito$comjeito$Page_About$render = function (model) {
 										},
 										{
 											ctor: '::',
-											_0: _elm_lang$html$Html$text('Somos perfeccionistas. Utilizamos sempre os melhores produtos do mercado.\n                O trabalho de lixação dos pisos não emite poeira. Trabalhamos com resina de secagem\n                rápida. Os produtos que utilizamos não possuem cheiro.'),
+											_0: _elm_lang$html$Html$text('Somos perfeccionistas. Utilizamos sempre os melhores produtos do mercado.\n                O trabalho de lixação dos pisos não emite poeira. Trabalhamos com resina de secagem\n                rápida. Os produtos que utilizamos não possuem cheiro. Mas, o mais importante: temos\n                17 anos de experiência no mercado e, portanto, a qualidade do serviço que oferecemos\n                foi lapidada durante muito tempo. O primor pelos detalhes e a garantia da satisfação\n                do cliente é um requisito dentro da cultura da empresa.'),
 											_1: {ctor: '[]'}
 										}),
 									_1: {ctor: '[]'}
@@ -21042,32 +23492,54 @@ var _comjeito$comjeito$Misc_HeadText$render = F3(
 			});
 	});
 
-var _comjeito$comjeito$Misc_ItemCard$render = F6(
-	function (dialogView_, item_, img_, title_, description_, model) {
+var _comjeito$comjeito$Misc_ItemCard$adminOptions = F3(
+	function (dialogView_, item_, model) {
 		return A2(
 			_debois$elm_mdl$Material_Options$div,
-			{ctor: '[]'},
 			{
 				ctor: '::',
 				_0: A2(
-					_debois$elm_mdl$Material_Card$view,
-					{
+					_debois$elm_mdl$Material_Options$when,
+					!model.adminEnabled,
+					A2(_debois$elm_mdl$Material_Options$css, 'display', 'none')),
+				_1: {
+					ctor: '::',
+					_0: A2(_debois$elm_mdl$Material_Options$css, 'position', 'absolute'),
+					_1: {
 						ctor: '::',
-						_0: _debois$elm_mdl$Material_Elevation$e8,
+						_0: A2(_debois$elm_mdl$Material_Options$css, 'top', '4px'),
 						_1: {
 							ctor: '::',
-							_0: A2(_debois$elm_mdl$Material_Options$css, 'margin-bottom', '8px'),
+							_0: A2(_debois$elm_mdl$Material_Options$css, 'right', '4px'),
+							_1: {ctor: '[]'}
+						}
+					}
+				}
+			},
+			{
+				ctor: '::',
+				_0: A5(
+					_debois$elm_mdl$Material_Menu$render,
+					_comjeito$comjeito$Types$Mdl,
+					{
+						ctor: '::',
+						_0: _comjeito$comjeito$Misc_Helpers$getIndex(item_),
+						_1: {ctor: '[]'}
+					},
+					model.mdl,
+					{
+						ctor: '::',
+						_0: _debois$elm_mdl$Material_Menu$bottomLeft,
+						_1: {
+							ctor: '::',
+							_0: _debois$elm_mdl$Material_Color$text(_debois$elm_mdl$Material_Color$white),
 							_1: {
 								ctor: '::',
-								_0: A2(_debois$elm_mdl$Material_Options$css, 'display', 'inline-block'),
+								_0: A2(_debois$elm_mdl$Material_Options$css, 'background-color', 'rgba(0,0,0,0.5)'),
 								_1: {
 									ctor: '::',
-									_0: A2(_debois$elm_mdl$Material_Options$css, 'position', 'relative'),
-									_1: {
-										ctor: '::',
-										_0: A2(_debois$elm_mdl$Material_Options$css, 'width', '100%'),
-										_1: {ctor: '[]'}
-									}
+									_0: A2(_debois$elm_mdl$Material_Options$css, 'border-radius', '50%'),
+									_1: {ctor: '[]'}
 								}
 							}
 						}
@@ -21075,21 +23547,121 @@ var _comjeito$comjeito$Misc_ItemCard$render = F6(
 					{
 						ctor: '::',
 						_0: A2(
-							_debois$elm_mdl$Material_Card$text,
+							_debois$elm_mdl$Material_Menu$item,
 							{
 								ctor: '::',
-								_0: A2(_debois$elm_mdl$Material_Options$css, 'width', '40%'),
+								_0: _debois$elm_mdl$Material_Dropdown_Item$onSelect(
+									_elm_lang$core$Native_Utils.eq(dialogView_, _comjeito$comjeito$Types$ProductsItem) ? A2(_comjeito$comjeito$Types$ChangeDialogView, _comjeito$comjeito$Types$EditProductsItem, item_) : A2(_comjeito$comjeito$Types$ChangeDialogView, _comjeito$comjeito$Types$EditServicesItem, item_)),
 								_1: {
 									ctor: '::',
-									_0: A2(_debois$elm_mdl$Material_Options$css, 'padding', '0'),
-									_1: {
-										ctor: '::',
-										_0: A2(_debois$elm_mdl$Material_Options$css, 'position', 'relative'),
-										_1: {ctor: '[]'}
-									}
+									_0: _debois$elm_mdl$Material_Dialog$openOn('click'),
+									_1: {ctor: '[]'}
 								}
 							},
 							{
+								ctor: '::',
+								_0: _elm_lang$html$Html$text('Editar item'),
+								_1: {ctor: '[]'}
+							}),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_debois$elm_mdl$Material_Menu$item,
+								{
+									ctor: '::',
+									_0: _debois$elm_mdl$Material_Dropdown_Item$onSelect(
+										A2(
+											_comjeito$comjeito$Types$DoDelete,
+											_elm_lang$core$Native_Utils.eq(dialogView_, _comjeito$comjeito$Types$ProductsItem) ? 'products' : 'services',
+											item_)),
+									_1: {ctor: '[]'}
+								},
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html$text('Remover item'),
+									_1: {ctor: '[]'}
+								}),
+							_1: {ctor: '[]'}
+						}
+					}),
+				_1: {ctor: '[]'}
+			});
+	});
+var _comjeito$comjeito$Misc_ItemCard$adminOptionsHack = _debois$elm_mdl$Material_Options$stylesheet('\n      .mdl-menu__container {\n        top: 0 !important;\n      }\n    ');
+var _comjeito$comjeito$Misc_ItemCard$render = F7(
+	function (dialogView_, item_, img_, title_, description_, price_, model) {
+		return A2(
+			_debois$elm_mdl$Material_Card$view,
+			{
+				ctor: '::',
+				_0: _debois$elm_mdl$Material_Elevation$e8,
+				_1: {
+					ctor: '::',
+					_0: A2(_debois$elm_mdl$Material_Options$css, 'margin-bottom', '16px'),
+					_1: {
+						ctor: '::',
+						_0: A2(_debois$elm_mdl$Material_Options$css, 'display', 'inline-block'),
+						_1: {
+							ctor: '::',
+							_0: A2(_debois$elm_mdl$Material_Options$css, 'position', 'relative'),
+							_1: {
+								ctor: '::',
+								_0: A2(_debois$elm_mdl$Material_Options$css, 'overflow-x', 'hidden'),
+								_1: {
+									ctor: '::',
+									_0: A2(_debois$elm_mdl$Material_Options$css, 'overflow-y', 'auto'),
+									_1: {
+										ctor: '::',
+										_0: _elm_lang$core$Native_Utils.eq(model.viewport, _debois$elm_mdl$Material_Grid$Desktop) ? _debois$elm_mdl$Material_Options$many(
+											{
+												ctor: '::',
+												_0: A2(_debois$elm_mdl$Material_Options$css, 'width', 'calc(50% - 16px)'),
+												_1: {
+													ctor: '::',
+													_0: A2(_debois$elm_mdl$Material_Options$css, 'margin-left', '8px'),
+													_1: {
+														ctor: '::',
+														_0: A2(_debois$elm_mdl$Material_Options$css, 'margin-right', '8px'),
+														_1: {ctor: '[]'}
+													}
+												}
+											}) : A2(_debois$elm_mdl$Material_Options$css, 'width', '100%'),
+										_1: {ctor: '[]'}
+									}
+								}
+							}
+						}
+					}
+				}
+			},
+			{
+				ctor: '::',
+				_0: A2(
+					_debois$elm_mdl$Material_Card$text,
+					{
+						ctor: '::',
+						_0: A2(_debois$elm_mdl$Material_Options$css, 'width', '40%'),
+						_1: {
+							ctor: '::',
+							_0: A2(_debois$elm_mdl$Material_Options$css, 'padding', '0'),
+							_1: {
+								ctor: '::',
+								_0: A2(_debois$elm_mdl$Material_Options$css, 'position', 'relative'),
+								_1: {
+									ctor: '::',
+									_0: A2(_debois$elm_mdl$Material_Options$css, 'overflow', 'initial'),
+									_1: {ctor: '[]'}
+								}
+							}
+						}
+					},
+					{
+						ctor: '::',
+						_0: A3(_comjeito$comjeito$Misc_ItemCard$adminOptions, dialogView_, item_, model),
+						_1: {
+							ctor: '::',
+							_0: _comjeito$comjeito$Misc_ItemCard$adminOptionsHack,
+							_1: {
 								ctor: '::',
 								_0: A2(
 									_debois$elm_mdl$Material_Options$img,
@@ -21155,38 +23727,57 @@ var _comjeito$comjeito$Misc_ItemCard$render = F6(
 										},
 										{
 											ctor: '::',
-											_0: _elm_lang$html$Html$text('R$ 10,00'),
+											_0: _elm_lang$html$Html$text(price_),
 											_1: {ctor: '[]'}
 										}),
 									_1: {ctor: '[]'}
 								}
-							}),
-						_1: {
+							}
+						}
+					}),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_debois$elm_mdl$Material_Card$text,
+						{
 							ctor: '::',
-							_0: A2(
-								_debois$elm_mdl$Material_Card$text,
-								{
+							_0: A2(_debois$elm_mdl$Material_Options$css, 'width', '60%'),
+							_1: {
+								ctor: '::',
+								_0: A2(_debois$elm_mdl$Material_Options$css, 'height', '100%'),
+								_1: {
 									ctor: '::',
-									_0: A2(_debois$elm_mdl$Material_Options$css, 'width', '60%'),
+									_0: A2(_debois$elm_mdl$Material_Options$css, 'position', 'absolute'),
 									_1: {
 										ctor: '::',
-										_0: A2(_debois$elm_mdl$Material_Options$css, 'height', '100%'),
+										_0: A2(_debois$elm_mdl$Material_Options$css, 'top', '0'),
 										_1: {
 											ctor: '::',
-											_0: A2(_debois$elm_mdl$Material_Options$css, 'position', 'absolute'),
+											_0: A2(_debois$elm_mdl$Material_Options$css, 'right', '0'),
 											_1: {
 												ctor: '::',
-												_0: A2(_debois$elm_mdl$Material_Options$css, 'top', '0'),
-												_1: {
-													ctor: '::',
-													_0: A2(_debois$elm_mdl$Material_Options$css, 'right', '0'),
-													_1: {
-														ctor: '::',
-														_0: A2(_debois$elm_mdl$Material_Options$css, 'padding', '0'),
-														_1: {ctor: '[]'}
-													}
-												}
+												_0: A2(_debois$elm_mdl$Material_Options$css, 'padding', '0'),
+												_1: {ctor: '[]'}
 											}
+										}
+									}
+								}
+							}
+						},
+						{
+							ctor: '::',
+							_0: A2(
+								_debois$elm_mdl$Material_Options$div,
+								{
+									ctor: '::',
+									_0: A2(_debois$elm_mdl$Material_Options$css, 'padding', '0 8px'),
+									_1: {
+										ctor: '::',
+										_0: A2(_debois$elm_mdl$Material_Options$css, 'height', 'calc(100% - 36px)'),
+										_1: {
+											ctor: '::',
+											_0: A2(_debois$elm_mdl$Material_Options$css, 'overflow', 'auto'),
+											_1: {ctor: '[]'}
 										}
 									}
 								},
@@ -21196,126 +23787,125 @@ var _comjeito$comjeito$Misc_ItemCard$render = F6(
 										_debois$elm_mdl$Material_Options$div,
 										{
 											ctor: '::',
-											_0: A2(_debois$elm_mdl$Material_Options$css, 'padding', '0 8px'),
-											_1: {
-												ctor: '::',
-												_0: A2(_debois$elm_mdl$Material_Options$css, 'height', 'calc(100% - 36px)'),
-												_1: {
-													ctor: '::',
-													_0: A2(_debois$elm_mdl$Material_Options$css, 'overflow', 'auto'),
-													_1: {ctor: '[]'}
-												}
-											}
+											_0: A2(_debois$elm_mdl$Material_Options$css, 'padding', '8px'),
+											_1: {ctor: '[]'}
 										},
 										{
 											ctor: '::',
-											_0: A2(
-												_debois$elm_mdl$Material_Options$div,
+											_0: A3(
+												_debois$elm_mdl$Material_Options$styled,
+												_elm_lang$html$Html$h1,
 												{
 													ctor: '::',
-													_0: A2(_debois$elm_mdl$Material_Options$css, 'padding', '8px'),
-													_1: {ctor: '[]'}
+													_0: _debois$elm_mdl$Material_Typography$headline,
+													_1: {
+														ctor: '::',
+														_0: A2(_debois$elm_mdl$Material_Options$css, 'margin', '0'),
+														_1: {
+															ctor: '::',
+															_0: A2(_debois$elm_mdl$Material_Options$css, 'font-size', '20px'),
+															_1: {
+																ctor: '::',
+																_0: A2(_debois$elm_mdl$Material_Options$css, 'line-height', '1.5'),
+																_1: {
+																	ctor: '::',
+																	_0: A2(_debois$elm_mdl$Material_Options$css, 'padding-bottom', '4px'),
+																	_1: {ctor: '[]'}
+																}
+															}
+														}
+													}
 												},
 												{
 													ctor: '::',
-													_0: A3(
-														_debois$elm_mdl$Material_Options$styled,
-														_elm_lang$html$Html$h1,
+													_0: _elm_lang$html$Html$text(title_),
+													_1: {ctor: '[]'}
+												}),
+											_1: {
+												ctor: '::',
+												_0: A3(
+													_debois$elm_mdl$Material_Options$styled,
+													_elm_lang$html$Html$p,
+													{
+														ctor: '::',
+														_0: _debois$elm_mdl$Material_Typography$body1,
+														_1: {ctor: '[]'}
+													},
+													{
+														ctor: '::',
+														_0: _elm_lang$html$Html$text(
+															(_elm_lang$core$Native_Utils.cmp(
+																_elm_lang$core$String$length(description_),
+																16) > 0) ? A2(
+																_elm_lang$core$Basics_ops['++'],
+																A3(_elm_lang$core$String$slice, 0, 17, description_),
+																' (...)') : description_),
+														_1: {ctor: '[]'}
+													}),
+												_1: {
+													ctor: '::',
+													_0: A5(
+														_debois$elm_mdl$Material_Button$render,
+														_comjeito$comjeito$Types$Mdl,
 														{
 															ctor: '::',
-															_0: _debois$elm_mdl$Material_Typography$headline,
+															_0: 8,
+															_1: {ctor: '[]'}
+														},
+														model.mdl,
+														{
+															ctor: '::',
+															_0: _debois$elm_mdl$Material_Button$ripple,
 															_1: {
 																ctor: '::',
-																_0: A2(_debois$elm_mdl$Material_Options$css, 'margin', '0'),
-																_1: {ctor: '[]'}
-															}
-														},
-														{
-															ctor: '::',
-															_0: _elm_lang$html$Html$text(title_),
-															_1: {ctor: '[]'}
-														}),
-													_1: {
-														ctor: '::',
-														_0: A3(
-															_debois$elm_mdl$Material_Options$styled,
-															_elm_lang$html$Html$p,
-															{
-																ctor: '::',
-																_0: _debois$elm_mdl$Material_Typography$body1,
-																_1: {ctor: '[]'}
-															},
-															{
-																ctor: '::',
-																_0: _elm_lang$html$Html$text(description_),
-																_1: {ctor: '[]'}
-															}),
-														_1: {
-															ctor: '::',
-															_0: A5(
-																_debois$elm_mdl$Material_Button$render,
-																_comjeito$comjeito$Types$Mdl,
-																{
+																_0: _debois$elm_mdl$Material_Button$accent,
+																_1: {
 																	ctor: '::',
-																	_0: 8,
-																	_1: {ctor: '[]'}
-																},
-																model.mdl,
-																{
-																	ctor: '::',
-																	_0: _debois$elm_mdl$Material_Button$ripple,
+																	_0: A2(_debois$elm_mdl$Material_Options$css, 'position', 'absolute'),
 																	_1: {
 																		ctor: '::',
-																		_0: _debois$elm_mdl$Material_Button$accent,
+																		_0: A2(_debois$elm_mdl$Material_Options$css, 'bottom', '0'),
 																		_1: {
 																			ctor: '::',
-																			_0: A2(_debois$elm_mdl$Material_Options$css, 'position', 'absolute'),
+																			_0: A2(_debois$elm_mdl$Material_Options$css, 'left', '0'),
 																			_1: {
 																				ctor: '::',
-																				_0: A2(_debois$elm_mdl$Material_Options$css, 'bottom', '0'),
+																				_0: A2(_debois$elm_mdl$Material_Options$css, 'width', '100%'),
 																				_1: {
 																					ctor: '::',
-																					_0: A2(_debois$elm_mdl$Material_Options$css, 'left', '0'),
+																					_0: A2(_debois$elm_mdl$Material_Options$css, 'font-size', '10px'),
 																					_1: {
 																						ctor: '::',
-																						_0: A2(_debois$elm_mdl$Material_Options$css, 'width', '100%'),
+																						_0: _debois$elm_mdl$Material_Dialog$openOn('click'),
 																						_1: {
 																							ctor: '::',
-																							_0: A2(_debois$elm_mdl$Material_Options$css, 'font-size', '10px'),
-																							_1: {
-																								ctor: '::',
-																								_0: _debois$elm_mdl$Material_Dialog$openOn('click'),
-																								_1: {
-																									ctor: '::',
-																									_0: _debois$elm_mdl$Material_Options$onClick(
-																										A2(_comjeito$comjeito$Types$ChangeDialogView, dialogView_, item_)),
-																									_1: {ctor: '[]'}
-																								}
-																							}
+																							_0: _debois$elm_mdl$Material_Options$onClick(
+																								A2(_comjeito$comjeito$Types$ChangeDialogView, dialogView_, item_)),
+																							_1: {ctor: '[]'}
 																						}
 																					}
 																				}
 																			}
 																		}
 																	}
-																},
-																{
-																	ctor: '::',
-																	_0: _elm_lang$html$Html$text('Mais informações'),
-																	_1: {ctor: '[]'}
-																}),
+																}
+															}
+														},
+														{
+															ctor: '::',
+															_0: _elm_lang$html$Html$text('Mais informações'),
 															_1: {ctor: '[]'}
-														}
-													}
-												}),
-											_1: {ctor: '[]'}
+														}),
+													_1: {ctor: '[]'}
+												}
+											}
 										}),
 									_1: {ctor: '[]'}
 								}),
 							_1: {ctor: '[]'}
-						}
-					}),
-				_1: {ctor: '[]'}
+						}),
+					_1: {ctor: '[]'}
+				}
 			});
 	});
 
@@ -21324,7 +23914,14 @@ var _comjeito$comjeito$Page_Products$itemsView = function (model) {
 	return A2(
 		_elm_lang$core$List$map,
 		function (item_) {
-			return A5(_comjeito$comjeito$Page_Products$renderProductsItem, item_.item, item_.picturePath, item_.title, item_.description, model);
+			return A6(
+				_comjeito$comjeito$Page_Products$renderProductsItem,
+				item_.item,
+				A2(_comjeito$comjeito$Misc_Helpers$set_url, item_.picturePath, 'w_256,h_256,c_fill'),
+				item_.title,
+				item_.description,
+				item_.price,
+				model);
 		},
 		model.productsItems);
 };
@@ -21357,40 +23954,147 @@ var _comjeito$comjeito$Page_Products$render = function (model) {
 					_debois$elm_mdl$Material_Options$div,
 					{
 						ctor: '::',
-						_0: A2(
-							_debois$elm_mdl$Material_Options$css,
-							'column-count',
-							function () {
-								var _p0 = model.viewport;
-								if (_p0.ctor === 'Desktop') {
-									return '2';
-								} else {
-									return '1';
-								}
-							}()),
-						_1: {ctor: '[]'}
+						_0: model.adminEnabled ? _debois$elm_mdl$Material_Options$center : A2(_debois$elm_mdl$Material_Options$css, 'display', 'none'),
+						_1: {
+							ctor: '::',
+							_0: A2(_debois$elm_mdl$Material_Options$css, 'margin-top', '16px'),
+							_1: {
+								ctor: '::',
+								_0: A2(_debois$elm_mdl$Material_Options$css, 'margin-bottom', '16px'),
+								_1: {ctor: '[]'}
+							}
+						}
 					},
-					_comjeito$comjeito$Page_Products$itemsView(model)),
+					{
+						ctor: '::',
+						_0: A5(
+							_debois$elm_mdl$Material_Button$render,
+							_comjeito$comjeito$Types$Mdl,
+							{
+								ctor: '::',
+								_0: 2001,
+								_1: {ctor: '[]'}
+							},
+							model.mdl,
+							{
+								ctor: '::',
+								_0: _debois$elm_mdl$Material_Button$ripple,
+								_1: {
+									ctor: '::',
+									_0: _debois$elm_mdl$Material_Button$raised,
+									_1: {
+										ctor: '::',
+										_0: _debois$elm_mdl$Material_Dialog$openOn('click'),
+										_1: {
+											ctor: '::',
+											_0: _debois$elm_mdl$Material_Options$onClick(
+												A2(
+													_comjeito$comjeito$Types$ChangeDialogView,
+													_comjeito$comjeito$Types$CreateProductsItem,
+													_comjeito$comjeito$Types$ItemId(''))),
+											_1: {ctor: '[]'}
+										}
+									}
+								}
+							},
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html$text('Adicionar produto'),
+								_1: {ctor: '[]'}
+							}),
+						_1: {ctor: '[]'}
+					}),
 				_1: {
 					ctor: '::',
 					_0: A2(
 						_debois$elm_mdl$Material_Options$div,
-						{
+						{ctor: '[]'},
+						_comjeito$comjeito$Page_Products$itemsView(model)),
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_debois$elm_mdl$Material_Options$div,
+							{
+								ctor: '::',
+								_0: _debois$elm_mdl$Material_Options$center,
+								_1: {ctor: '[]'}
+							},
+							{
+								ctor: '::',
+								_0: _debois$elm_mdl$Material_Spinner$spinner(
+									{
+										ctor: '::',
+										_0: _debois$elm_mdl$Material_Spinner$active(model.productsLoading),
+										_1: {ctor: '[]'}
+									}),
+								_1: {
+									ctor: '::',
+									_0: A3(
+										_debois$elm_mdl$Material_Options$styled,
+										_elm_lang$html$Html$p,
+										{
+											ctor: '::',
+											_0: _debois$elm_mdl$Material_Typography$body2,
+											_1: {
+												ctor: '::',
+												_0: A2(
+													_debois$elm_mdl$Material_Options$when,
+													!model.productsError,
+													A2(_debois$elm_mdl$Material_Options$css, 'display', 'none')),
+												_1: {ctor: '[]'}
+											}
+										},
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html$text('Houve um problema ao carregar os produtos. Por favor, atualize a página e tente novamente.'),
+											_1: {ctor: '[]'}
+										}),
+									_1: {ctor: '[]'}
+								}
+							}),
+						_1: {
 							ctor: '::',
-							_0: _debois$elm_mdl$Material_Options$center,
-							_1: {ctor: '[]'}
-						},
-						{
-							ctor: '::',
-							_0: _debois$elm_mdl$Material_Spinner$spinner(
+							_0: A2(
+								_debois$elm_mdl$Material_Options$div,
 								{
 									ctor: '::',
-									_0: _debois$elm_mdl$Material_Spinner$active(model.productsLoading),
+									_0: (model.productsLoading || model.productsEnd) ? A2(_debois$elm_mdl$Material_Options$css, 'display', 'none') : _debois$elm_mdl$Material_Options$center,
+									_1: {ctor: '[]'}
+								},
+								{
+									ctor: '::',
+									_0: A5(
+										_debois$elm_mdl$Material_Button$render,
+										_comjeito$comjeito$Types$Mdl,
+										{
+											ctor: '::',
+											_0: 2002,
+											_1: {ctor: '[]'}
+										},
+										model.mdl,
+										{
+											ctor: '::',
+											_0: _debois$elm_mdl$Material_Button$ripple,
+											_1: {
+												ctor: '::',
+												_0: _debois$elm_mdl$Material_Button$raised,
+												_1: {
+													ctor: '::',
+													_0: _debois$elm_mdl$Material_Options$onClick(_comjeito$comjeito$Types$RequestProducts),
+													_1: {ctor: '[]'}
+												}
+											}
+										},
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html$text('Carregar mais'),
+											_1: {ctor: '[]'}
+										}),
 									_1: {ctor: '[]'}
 								}),
 							_1: {ctor: '[]'}
-						}),
-					_1: {ctor: '[]'}
+						}
+					}
 				}
 			}
 		});
@@ -21401,7 +24105,14 @@ var _comjeito$comjeito$Page_Services$itemsView = function (model) {
 	return A2(
 		_elm_lang$core$List$map,
 		function (item_) {
-			return A5(_comjeito$comjeito$Page_Services$renderServicesItem, item_.item, item_.picturePath, item_.title, item_.description, model);
+			return A6(
+				_comjeito$comjeito$Page_Services$renderServicesItem,
+				item_.item,
+				A2(_comjeito$comjeito$Misc_Helpers$set_url, item_.picturePath, 'w_256,h_256,c_fill'),
+				item_.title,
+				item_.description,
+				item_.price,
+				model);
 		},
 		model.servicesItems);
 };
@@ -21434,45 +24145,245 @@ var _comjeito$comjeito$Page_Services$render = function (model) {
 					_debois$elm_mdl$Material_Options$div,
 					{
 						ctor: '::',
-						_0: A2(
-							_debois$elm_mdl$Material_Options$css,
-							'column-count',
-							function () {
-								var _p0 = model.viewport;
-								if (_p0.ctor === 'Desktop') {
-									return '2';
-								} else {
-									return '1';
-								}
-							}()),
-						_1: {ctor: '[]'}
+						_0: model.adminEnabled ? _debois$elm_mdl$Material_Options$center : A2(_debois$elm_mdl$Material_Options$css, 'display', 'none'),
+						_1: {
+							ctor: '::',
+							_0: A2(_debois$elm_mdl$Material_Options$css, 'margin-top', '16px'),
+							_1: {
+								ctor: '::',
+								_0: A2(_debois$elm_mdl$Material_Options$css, 'margin-bottom', '16px'),
+								_1: {ctor: '[]'}
+							}
+						}
 					},
-					_comjeito$comjeito$Page_Services$itemsView(model)),
+					{
+						ctor: '::',
+						_0: A5(
+							_debois$elm_mdl$Material_Button$render,
+							_comjeito$comjeito$Types$Mdl,
+							{
+								ctor: '::',
+								_0: 2001,
+								_1: {ctor: '[]'}
+							},
+							model.mdl,
+							{
+								ctor: '::',
+								_0: _debois$elm_mdl$Material_Button$ripple,
+								_1: {
+									ctor: '::',
+									_0: _debois$elm_mdl$Material_Button$raised,
+									_1: {
+										ctor: '::',
+										_0: _debois$elm_mdl$Material_Dialog$openOn('click'),
+										_1: {
+											ctor: '::',
+											_0: _debois$elm_mdl$Material_Options$onClick(
+												A2(
+													_comjeito$comjeito$Types$ChangeDialogView,
+													_comjeito$comjeito$Types$CreateServicesItem,
+													_comjeito$comjeito$Types$ItemId(''))),
+											_1: {ctor: '[]'}
+										}
+									}
+								}
+							},
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html$text('Adicionar serviço'),
+								_1: {ctor: '[]'}
+							}),
+						_1: {ctor: '[]'}
+					}),
 				_1: {
 					ctor: '::',
 					_0: A2(
 						_debois$elm_mdl$Material_Options$div,
-						{
+						{ctor: '[]'},
+						_comjeito$comjeito$Page_Services$itemsView(model)),
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_debois$elm_mdl$Material_Options$div,
+							{
+								ctor: '::',
+								_0: _debois$elm_mdl$Material_Options$center,
+								_1: {ctor: '[]'}
+							},
+							{
+								ctor: '::',
+								_0: _debois$elm_mdl$Material_Spinner$spinner(
+									{
+										ctor: '::',
+										_0: _debois$elm_mdl$Material_Spinner$active(model.servicesLoading),
+										_1: {ctor: '[]'}
+									}),
+								_1: {
+									ctor: '::',
+									_0: A3(
+										_debois$elm_mdl$Material_Options$styled,
+										_elm_lang$html$Html$p,
+										{
+											ctor: '::',
+											_0: _debois$elm_mdl$Material_Typography$body2,
+											_1: {
+												ctor: '::',
+												_0: A2(
+													_debois$elm_mdl$Material_Options$when,
+													!model.servicesError,
+													A2(_debois$elm_mdl$Material_Options$css, 'display', 'none')),
+												_1: {ctor: '[]'}
+											}
+										},
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html$text('Houve um problema ao carregar os serviços. Por favor, atualize a página e tente novamente.'),
+											_1: {ctor: '[]'}
+										}),
+									_1: {ctor: '[]'}
+								}
+							}),
+						_1: {
 							ctor: '::',
-							_0: _debois$elm_mdl$Material_Options$center,
-							_1: {ctor: '[]'}
-						},
-						{
-							ctor: '::',
-							_0: _debois$elm_mdl$Material_Spinner$spinner(
+							_0: A2(
+								_debois$elm_mdl$Material_Options$div,
 								{
 									ctor: '::',
-									_0: _debois$elm_mdl$Material_Spinner$active(model.servicesLoading),
+									_0: (model.servicesLoading || model.servicesEnd) ? A2(_debois$elm_mdl$Material_Options$css, 'display', 'none') : _debois$elm_mdl$Material_Options$center,
+									_1: {ctor: '[]'}
+								},
+								{
+									ctor: '::',
+									_0: A5(
+										_debois$elm_mdl$Material_Button$render,
+										_comjeito$comjeito$Types$Mdl,
+										{
+											ctor: '::',
+											_0: 2002,
+											_1: {ctor: '[]'}
+										},
+										model.mdl,
+										{
+											ctor: '::',
+											_0: _debois$elm_mdl$Material_Button$ripple,
+											_1: {
+												ctor: '::',
+												_0: _debois$elm_mdl$Material_Button$raised,
+												_1: {
+													ctor: '::',
+													_0: _debois$elm_mdl$Material_Options$onClick(_comjeito$comjeito$Types$RequestServices),
+													_1: {ctor: '[]'}
+												}
+											}
+										},
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html$text('Carregar mais'),
+											_1: {ctor: '[]'}
+										}),
 									_1: {ctor: '[]'}
 								}),
 							_1: {ctor: '[]'}
-						}),
-					_1: {ctor: '[]'}
+						}
+					}
 				}
 			}
 		});
 };
 
+var _comjeito$comjeito$Page_Showroom$adminOptions = F3(
+	function (dialogView_, item_, model) {
+		return A2(
+			_debois$elm_mdl$Material_Options$div,
+			{
+				ctor: '::',
+				_0: A2(
+					_debois$elm_mdl$Material_Options$when,
+					!model.adminEnabled,
+					A2(_debois$elm_mdl$Material_Options$css, 'display', 'none')),
+				_1: {
+					ctor: '::',
+					_0: A2(_debois$elm_mdl$Material_Options$css, 'position', 'absolute'),
+					_1: {
+						ctor: '::',
+						_0: A2(_debois$elm_mdl$Material_Options$css, 'top', '4px'),
+						_1: {
+							ctor: '::',
+							_0: A2(_debois$elm_mdl$Material_Options$css, 'right', '4px'),
+							_1: {ctor: '[]'}
+						}
+					}
+				}
+			},
+			{
+				ctor: '::',
+				_0: A5(
+					_debois$elm_mdl$Material_Menu$render,
+					_comjeito$comjeito$Types$Mdl,
+					{
+						ctor: '::',
+						_0: _comjeito$comjeito$Misc_Helpers$getIndex(item_),
+						_1: {ctor: '[]'}
+					},
+					model.mdl,
+					{
+						ctor: '::',
+						_0: _debois$elm_mdl$Material_Menu$bottomRight,
+						_1: {
+							ctor: '::',
+							_0: _debois$elm_mdl$Material_Color$text(_debois$elm_mdl$Material_Color$white),
+							_1: {
+								ctor: '::',
+								_0: A2(_debois$elm_mdl$Material_Options$css, 'background-color', 'rgba(0,0,0,0.5)'),
+								_1: {
+									ctor: '::',
+									_0: A2(_debois$elm_mdl$Material_Options$css, 'border-radius', '50%'),
+									_1: {ctor: '[]'}
+								}
+							}
+						}
+					},
+					{
+						ctor: '::',
+						_0: A2(
+							_debois$elm_mdl$Material_Menu$item,
+							{
+								ctor: '::',
+								_0: _debois$elm_mdl$Material_Dropdown_Item$onSelect(
+									A2(_comjeito$comjeito$Types$ChangeDialogView, _comjeito$comjeito$Types$EditShowroomItem, item_)),
+								_1: {
+									ctor: '::',
+									_0: _debois$elm_mdl$Material_Dialog$openOn('click'),
+									_1: {ctor: '[]'}
+								}
+							},
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html$text('Editar item'),
+								_1: {ctor: '[]'}
+							}),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_debois$elm_mdl$Material_Menu$item,
+								{
+									ctor: '::',
+									_0: _debois$elm_mdl$Material_Dropdown_Item$onSelect(
+										_comjeito$comjeito$Types$DoDeleteShowroomItem(item_)),
+									_1: {ctor: '[]'}
+								},
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html$text('Remover item'),
+									_1: {ctor: '[]'}
+								}),
+							_1: {ctor: '[]'}
+						}
+					}),
+				_1: {ctor: '[]'}
+			});
+	});
+var _comjeito$comjeito$Page_Showroom$adminOptionsHack = _debois$elm_mdl$Material_Options$stylesheet('\n      .mdl-menu__container {\n        top: 0 !important;\n      }\n    ');
 var _comjeito$comjeito$Page_Showroom$showCard = F4(
 	function (img_, text_, item_, model) {
 		return A2(
@@ -21497,13 +24408,8 @@ var _comjeito$comjeito$Page_Showroom$showCard = F4(
 								_0: A2(_debois$elm_mdl$Material_Options$css, 'display', 'block'),
 								_1: {
 									ctor: '::',
-									_0: _debois$elm_mdl$Material_Dialog$openOn('click'),
-									_1: {
-										ctor: '::',
-										_0: _debois$elm_mdl$Material_Options$onClick(
-											A2(_comjeito$comjeito$Types$ChangeDialogView, _comjeito$comjeito$Types$ShowroomItem, item_)),
-										_1: {ctor: '[]'}
-									}
+									_0: A2(_debois$elm_mdl$Material_Options$css, 'position', 'relative'),
+									_1: {ctor: '[]'}
 								}
 							}
 						}
@@ -21513,80 +24419,124 @@ var _comjeito$comjeito$Page_Showroom$showCard = F4(
 			{
 				ctor: '::',
 				_0: A2(
-					_debois$elm_mdl$Material_Card$media,
+					_debois$elm_mdl$Material_Card$text,
 					{
 						ctor: '::',
-						_0: _debois$elm_mdl$Material_Color$background(_debois$elm_mdl$Material_Color$white),
+						_0: A2(_debois$elm_mdl$Material_Options$css, 'position', 'absolute'),
 						_1: {
 							ctor: '::',
-							_0: A2(_debois$elm_mdl$Material_Options$css, 'position', 'relative'),
-							_1: {ctor: '[]'}
+							_0: A2(_debois$elm_mdl$Material_Options$css, 'z-index', '1'),
+							_1: {
+								ctor: '::',
+								_0: A2(_debois$elm_mdl$Material_Options$css, 'overflow', 'initial'),
+								_1: {
+									ctor: '::',
+									_0: A2(_debois$elm_mdl$Material_Options$css, 'width', '100%'),
+									_1: {
+										ctor: '::',
+										_0: A2(_debois$elm_mdl$Material_Options$css, 'padding', '0'),
+										_1: {ctor: '[]'}
+									}
+								}
+							}
 						}
 					},
 					{
 						ctor: '::',
-						_0: A2(
-							_debois$elm_mdl$Material_Options$img,
-							{
-								ctor: '::',
-								_0: A2(_debois$elm_mdl$Material_Options$css, 'width', '100%'),
-								_1: {
-									ctor: '::',
-									_0: _debois$elm_mdl$Material_Options$attribute(
-										_elm_lang$html$Html_Attributes$src(img_)),
-									_1: {ctor: '[]'}
-								}
-							},
-							{ctor: '[]'}),
+						_0: _comjeito$comjeito$Page_Showroom$adminOptionsHack,
 						_1: {
 							ctor: '::',
-							_0: A5(
-								_debois$elm_mdl$Material_Button$render,
-								_comjeito$comjeito$Types$Mdl,
-								{
+							_0: A3(_comjeito$comjeito$Page_Showroom$adminOptions, _comjeito$comjeito$Types$EditProductsItem, item_, model),
+							_1: {ctor: '[]'}
+						}
+					}),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_debois$elm_mdl$Material_Card$media,
+						{
+							ctor: '::',
+							_0: _debois$elm_mdl$Material_Color$background(_debois$elm_mdl$Material_Color$white),
+							_1: {
+								ctor: '::',
+								_0: A2(_debois$elm_mdl$Material_Options$css, 'position', 'relative'),
+								_1: {
 									ctor: '::',
-									_0: 7,
-									_1: {ctor: '[]'}
-								},
-								model.mdl,
-								{
-									ctor: '::',
-									_0: A2(_debois$elm_mdl$Material_Options$css, 'position', 'absolute'),
+									_0: _debois$elm_mdl$Material_Options$onClick(
+										A2(_comjeito$comjeito$Types$ChangeDialogView, _comjeito$comjeito$Types$ShowroomItem, item_)),
 									_1: {
 										ctor: '::',
-										_0: A2(_debois$elm_mdl$Material_Options$css, 'width', '100%'),
+										_0: _debois$elm_mdl$Material_Dialog$openOn('click'),
+										_1: {ctor: '[]'}
+									}
+								}
+							}
+						},
+						{
+							ctor: '::',
+							_0: A2(
+								_debois$elm_mdl$Material_Options$img,
+								{
+									ctor: '::',
+									_0: A2(_debois$elm_mdl$Material_Options$css, 'width', '100%'),
+									_1: {
+										ctor: '::',
+										_0: _debois$elm_mdl$Material_Options$attribute(
+											_elm_lang$html$Html_Attributes$src(img_)),
+										_1: {ctor: '[]'}
+									}
+								},
+								{ctor: '[]'}),
+							_1: {
+								ctor: '::',
+								_0: A5(
+									_debois$elm_mdl$Material_Button$render,
+									_comjeito$comjeito$Types$Mdl,
+									{
+										ctor: '::',
+										_0: 7,
+										_1: {ctor: '[]'}
+									},
+									model.mdl,
+									{
+										ctor: '::',
+										_0: A2(_debois$elm_mdl$Material_Options$css, 'position', 'absolute'),
 										_1: {
 											ctor: '::',
-											_0: A2(_debois$elm_mdl$Material_Options$css, 'bottom', '0'),
+											_0: A2(_debois$elm_mdl$Material_Options$css, 'width', '100%'),
 											_1: {
 												ctor: '::',
-												_0: A2(_debois$elm_mdl$Material_Options$css, 'left', '0'),
+												_0: A2(_debois$elm_mdl$Material_Options$css, 'bottom', '0'),
 												_1: {
 													ctor: '::',
-													_0: A2(_debois$elm_mdl$Material_Options$css, 'background-color', 'rgba(0,0,0,0.5)'),
+													_0: A2(_debois$elm_mdl$Material_Options$css, 'left', '0'),
 													_1: {
 														ctor: '::',
-														_0: _debois$elm_mdl$Material_Button$ripple,
+														_0: A2(_debois$elm_mdl$Material_Options$css, 'background-color', 'rgba(0,0,0,0.5)'),
 														_1: {
 															ctor: '::',
-															_0: _debois$elm_mdl$Material_Color$text(_debois$elm_mdl$Material_Color$white),
-															_1: {ctor: '[]'}
+															_0: _debois$elm_mdl$Material_Button$ripple,
+															_1: {
+																ctor: '::',
+																_0: _debois$elm_mdl$Material_Color$text(_debois$elm_mdl$Material_Color$white),
+																_1: {ctor: '[]'}
+															}
 														}
 													}
 												}
 											}
 										}
-									}
-								},
-								{
-									ctor: '::',
-									_0: _elm_lang$html$Html$text(text_),
-									_1: {ctor: '[]'}
-								}),
-							_1: {ctor: '[]'}
-						}
-					}),
-				_1: {ctor: '[]'}
+									},
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html$text(text_),
+										_1: {ctor: '[]'}
+									}),
+								_1: {ctor: '[]'}
+							}
+						}),
+					_1: {ctor: '[]'}
+				}
 			});
 	});
 var _comjeito$comjeito$Page_Showroom$itemsView = function (model) {
@@ -21598,7 +24548,7 @@ var _comjeito$comjeito$Page_Showroom$itemsView = function (model) {
 				function () {
 					var _p0 = _elm_lang$core$List$head(item_.picturesPath);
 					if (_p0.ctor === 'Just') {
-						return _p0._0;
+						return A2(_comjeito$comjeito$Misc_Helpers$set_url, _p0._0, 'w_640,h_640,c_fit');
 					} else {
 						return '';
 					}
@@ -21638,42 +24588,378 @@ var _comjeito$comjeito$Page_Showroom$render = function (model) {
 					_debois$elm_mdl$Material_Options$div,
 					{
 						ctor: '::',
-						_0: A2(
-							_debois$elm_mdl$Material_Options$css,
-							'column-count',
-							_elm_lang$core$Native_Utils.eq(model.viewport, _debois$elm_mdl$Material_Grid$Phone) ? '2' : '3'),
+						_0: model.adminEnabled ? _debois$elm_mdl$Material_Options$center : A2(_debois$elm_mdl$Material_Options$css, 'display', 'none'),
 						_1: {
 							ctor: '::',
-							_0: A2(
-								_debois$elm_mdl$Material_Options$css,
-								'column-gap',
-								_elm_lang$core$Native_Utils.eq(model.viewport, _debois$elm_mdl$Material_Grid$Phone) ? '8px' : '16px'),
-							_1: {ctor: '[]'}
+							_0: A2(_debois$elm_mdl$Material_Options$css, 'margin-top', '16px'),
+							_1: {
+								ctor: '::',
+								_0: A2(_debois$elm_mdl$Material_Options$css, 'margin-bottom', '16px'),
+								_1: {ctor: '[]'}
+							}
 						}
 					},
-					_comjeito$comjeito$Page_Showroom$itemsView(model)),
+					{
+						ctor: '::',
+						_0: A5(
+							_debois$elm_mdl$Material_Button$render,
+							_comjeito$comjeito$Types$Mdl,
+							{
+								ctor: '::',
+								_0: 2001,
+								_1: {ctor: '[]'}
+							},
+							model.mdl,
+							{
+								ctor: '::',
+								_0: _debois$elm_mdl$Material_Button$ripple,
+								_1: {
+									ctor: '::',
+									_0: _debois$elm_mdl$Material_Button$raised,
+									_1: {
+										ctor: '::',
+										_0: _debois$elm_mdl$Material_Dialog$openOn('click'),
+										_1: {
+											ctor: '::',
+											_0: _debois$elm_mdl$Material_Options$onClick(
+												A2(
+													_comjeito$comjeito$Types$ChangeDialogView,
+													_comjeito$comjeito$Types$CreateShowroomItem,
+													_comjeito$comjeito$Types$ItemId(''))),
+											_1: {ctor: '[]'}
+										}
+									}
+								}
+							},
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html$text('Adicionar item'),
+								_1: {ctor: '[]'}
+							}),
+						_1: {ctor: '[]'}
+					}),
 				_1: {
 					ctor: '::',
 					_0: A2(
 						_debois$elm_mdl$Material_Options$div,
 						{
 							ctor: '::',
-							_0: _debois$elm_mdl$Material_Options$center,
-							_1: {ctor: '[]'}
+							_0: A2(
+								_debois$elm_mdl$Material_Options$css,
+								'column-count',
+								_elm_lang$core$Native_Utils.eq(model.viewport, _debois$elm_mdl$Material_Grid$Phone) ? '2' : '3'),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_debois$elm_mdl$Material_Options$css,
+									'column-gap',
+									_elm_lang$core$Native_Utils.eq(model.viewport, _debois$elm_mdl$Material_Grid$Phone) ? '8px' : '16px'),
+								_1: {
+									ctor: '::',
+									_0: A2(_debois$elm_mdl$Material_Options$css, 'transform', 'translateZ(0)'),
+									_1: {ctor: '[]'}
+								}
+							}
 						},
-						{
+						_comjeito$comjeito$Page_Showroom$itemsView(model)),
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_debois$elm_mdl$Material_Options$div,
+							{
+								ctor: '::',
+								_0: _debois$elm_mdl$Material_Options$center,
+								_1: {ctor: '[]'}
+							},
+							{
+								ctor: '::',
+								_0: _debois$elm_mdl$Material_Spinner$spinner(
+									{
+										ctor: '::',
+										_0: _debois$elm_mdl$Material_Spinner$active(model.showroomLoading),
+										_1: {ctor: '[]'}
+									}),
+								_1: {
+									ctor: '::',
+									_0: A3(
+										_debois$elm_mdl$Material_Options$styled,
+										_elm_lang$html$Html$p,
+										{
+											ctor: '::',
+											_0: _debois$elm_mdl$Material_Typography$body2,
+											_1: {
+												ctor: '::',
+												_0: A2(
+													_debois$elm_mdl$Material_Options$when,
+													!model.showroomError,
+													A2(_debois$elm_mdl$Material_Options$css, 'display', 'none')),
+												_1: {ctor: '[]'}
+											}
+										},
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html$text('Houve um problema ao carregar o showroom. Por favor, atualize a página e tente novamente.'),
+											_1: {ctor: '[]'}
+										}),
+									_1: {ctor: '[]'}
+								}
+							}),
+						_1: {
 							ctor: '::',
-							_0: _debois$elm_mdl$Material_Spinner$spinner(
+							_0: A2(
+								_debois$elm_mdl$Material_Options$div,
 								{
 									ctor: '::',
-									_0: _debois$elm_mdl$Material_Spinner$active(model.showroomLoading),
+									_0: (model.showroomLoading || model.showroomEnd) ? A2(_debois$elm_mdl$Material_Options$css, 'display', 'none') : _debois$elm_mdl$Material_Options$center,
+									_1: {ctor: '[]'}
+								},
+								{
+									ctor: '::',
+									_0: A5(
+										_debois$elm_mdl$Material_Button$render,
+										_comjeito$comjeito$Types$Mdl,
+										{
+											ctor: '::',
+											_0: 2002,
+											_1: {ctor: '[]'}
+										},
+										model.mdl,
+										{
+											ctor: '::',
+											_0: _debois$elm_mdl$Material_Button$ripple,
+											_1: {
+												ctor: '::',
+												_0: _debois$elm_mdl$Material_Button$raised,
+												_1: {
+													ctor: '::',
+													_0: _debois$elm_mdl$Material_Options$onClick(_comjeito$comjeito$Types$RequestShowroom),
+													_1: {ctor: '[]'}
+												}
+											}
+										},
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html$text('Carregar mais'),
+											_1: {ctor: '[]'}
+										}),
 									_1: {ctor: '[]'}
 								}),
 							_1: {ctor: '[]'}
-						}),
-					_1: {ctor: '[]'}
+						}
+					}
 				}
 			}
+		});
+};
+
+var _comjeito$comjeito$Page_Admin$render = function (model) {
+	return A2(
+		_debois$elm_mdl$Material_Options$div,
+		{
+			ctor: '::',
+			_0: A2(_debois$elm_mdl$Material_Options$css, 'display', 'flex'),
+			_1: {
+				ctor: '::',
+				_0: A2(_debois$elm_mdl$Material_Options$css, 'flex-direction', 'column'),
+				_1: {
+					ctor: '::',
+					_0: A2(_debois$elm_mdl$Material_Options$css, 'align-items', 'center'),
+					_1: {
+						ctor: '::',
+						_0: A2(_debois$elm_mdl$Material_Options$css, 'justify-content', 'center'),
+						_1: {
+							ctor: '::',
+							_0: A2(_debois$elm_mdl$Material_Options$css, 'flex', '1'),
+							_1: {
+								ctor: '::',
+								_0: A2(_debois$elm_mdl$Material_Options$css, 'margin', '16px'),
+								_1: {ctor: '[]'}
+							}
+						}
+					}
+				}
+			}
+		},
+		{
+			ctor: '::',
+			_0: A2(
+				_debois$elm_mdl$Material_Card$view,
+				{
+					ctor: '::',
+					_0: _debois$elm_mdl$Material_Elevation$e8,
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_debois$elm_mdl$Material_Options$when,
+							_elm_lang$core$Native_Utils.eq(model.viewport, _debois$elm_mdl$Material_Grid$Phone),
+							A2(_debois$elm_mdl$Material_Options$css, 'width', '100%')),
+						_1: {ctor: '[]'}
+					}
+				},
+				{
+					ctor: '::',
+					_0: A2(
+						_debois$elm_mdl$Material_Card$title,
+						{ctor: '[]'},
+						{
+							ctor: '::',
+							_0: A2(
+								_debois$elm_mdl$Material_Card$head,
+								{
+									ctor: '::',
+									_0: _debois$elm_mdl$Material_Color$text(_debois$elm_mdl$Material_Color$accent),
+									_1: {ctor: '[]'}
+								},
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html$text('Modo administrativo'),
+									_1: {ctor: '[]'}
+								}),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_debois$elm_mdl$Material_Card$subhead,
+									{ctor: '[]'},
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html$text('Insira o usuário e senha do administrador para habilitar o modo administrativo'),
+										_1: {ctor: '[]'}
+									}),
+								_1: {ctor: '[]'}
+							}
+						}),
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_debois$elm_mdl$Material_Card$text,
+							{ctor: '[]'},
+							{
+								ctor: '::',
+								_0: A5(
+									_debois$elm_mdl$Material_Textfield$render,
+									_comjeito$comjeito$Types$Mdl,
+									{
+										ctor: '::',
+										_0: 21,
+										_1: {ctor: '[]'}
+									},
+									model.mdl,
+									{
+										ctor: '::',
+										_0: _debois$elm_mdl$Material_Textfield$floatingLabel,
+										_1: {
+											ctor: '::',
+											_0: _debois$elm_mdl$Material_Textfield$label('Usuário'),
+											_1: {
+												ctor: '::',
+												_0: A2(
+													_debois$elm_mdl$Material_Options$when,
+													model.adminError && (!model.adminLoading),
+													_debois$elm_mdl$Material_Textfield$error('')),
+												_1: {
+													ctor: '::',
+													_0: _debois$elm_mdl$Material_Options$onInput(
+														_comjeito$comjeito$Types$SetAdminCredentials(_comjeito$comjeito$Types$Username)),
+													_1: {ctor: '[]'}
+												}
+											}
+										}
+									},
+									{ctor: '[]'}),
+								_1: {
+									ctor: '::',
+									_0: A5(
+										_debois$elm_mdl$Material_Textfield$render,
+										_comjeito$comjeito$Types$Mdl,
+										{
+											ctor: '::',
+											_0: 22,
+											_1: {ctor: '[]'}
+										},
+										model.mdl,
+										{
+											ctor: '::',
+											_0: _debois$elm_mdl$Material_Textfield$floatingLabel,
+											_1: {
+												ctor: '::',
+												_0: _debois$elm_mdl$Material_Textfield$label('Senha'),
+												_1: {
+													ctor: '::',
+													_0: _debois$elm_mdl$Material_Textfield$password,
+													_1: {
+														ctor: '::',
+														_0: A2(
+															_debois$elm_mdl$Material_Options$when,
+															model.adminError && (!model.adminLoading),
+															_debois$elm_mdl$Material_Textfield$error('Usuário ou senha inválidos')),
+														_1: {
+															ctor: '::',
+															_0: _debois$elm_mdl$Material_Options$onInput(
+																_comjeito$comjeito$Types$SetAdminCredentials(_comjeito$comjeito$Types$Password)),
+															_1: {ctor: '[]'}
+														}
+													}
+												}
+											}
+										},
+										{ctor: '[]'}),
+									_1: {
+										ctor: '::',
+										_0: A2(
+											_debois$elm_mdl$Material_Options$div,
+											{
+												ctor: '::',
+												_0: _debois$elm_mdl$Material_Options$center,
+												_1: {ctor: '[]'}
+											},
+											{
+												ctor: '::',
+												_0: _debois$elm_mdl$Material_Spinner$spinner(
+													{
+														ctor: '::',
+														_0: _debois$elm_mdl$Material_Spinner$active(model.adminLoading),
+														_1: {ctor: '[]'}
+													}),
+												_1: {ctor: '[]'}
+											}),
+										_1: {
+											ctor: '::',
+											_0: A5(
+												_debois$elm_mdl$Material_Button$render,
+												_comjeito$comjeito$Types$Mdl,
+												{
+													ctor: '::',
+													_0: 23,
+													_1: {ctor: '[]'}
+												},
+												model.mdl,
+												{
+													ctor: '::',
+													_0: _debois$elm_mdl$Material_Button$ripple,
+													_1: {
+														ctor: '::',
+														_0: _debois$elm_mdl$Material_Button$raised,
+														_1: {
+															ctor: '::',
+															_0: _debois$elm_mdl$Material_Options$onClick(_comjeito$comjeito$Types$LoginAdmin),
+															_1: {ctor: '[]'}
+														}
+													}
+												},
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html$text('Entrar'),
+													_1: {ctor: '[]'}
+												}),
+											_1: {ctor: '[]'}
+										}
+									}
+								}
+							}),
+						_1: {ctor: '[]'}
+					}
+				}),
+			_1: {ctor: '[]'}
 		});
 };
 
@@ -21698,8 +24984,10 @@ var _comjeito$comjeito$View$renderPage = function (model) {
 				return _comjeito$comjeito$Page_Products$render(model);
 			case 'Services':
 				return _comjeito$comjeito$Page_Services$render(model);
-			default:
+			case 'Showroom':
 				return _comjeito$comjeito$Page_Showroom$render(model);
+			default:
+				return _comjeito$comjeito$Page_Admin$render(model);
 		}
 	}();
 	return A2(
@@ -21740,7 +25028,14 @@ var _comjeito$comjeito$View$renderPage = function (model) {
 					_1: {
 						ctor: '::',
 						_0: _comjeito$comjeito$View$loadOnScrollInterop,
-						_1: {ctor: '[]'}
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$map,
+								_comjeito$comjeito$Types$Snackbar,
+								_debois$elm_mdl$Material_Snackbar$view(model.adminToast)),
+							_1: {ctor: '[]'}
+						}
 					}
 				}
 			}

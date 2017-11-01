@@ -6,12 +6,7 @@
     <link rel="shortcut icon" type="image/png" href="favicon.png">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
-    <meta name="description" content="Somos uma empresa de Novo Hamburgo especializada na instalação de pisos de luxo.">
-    <meta property="og:url" content="https://comjeito.com.br" />
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content="ComJeito Ambientes" />
-    <meta property="og:description" content="Somos uma empresa de Novo Hamburgo especializada na instalação de pisos de luxo." />
-    <meta property="og:image" content="https://comjeito.com.br/logo-alt-black.png" />
+    <meta name="description" content="Somos uma empresa de Novo Hamburgo especializada em pisos de lixo.">
     <link rel="stylesheet" type="text/css" href="dialog-polyfill.css">
     <link rel="stylesheet" type="text/css" href="select.css">
     <link rel="stylesheet" href="roboto.css">
@@ -26,7 +21,16 @@
     <script>
       var node = document.querySelector('#main');
       var app = Elm.Main.embed(node);
+      var token = getToken();
 
+      app.ports.token.send(token);
+      app.ports.setToken.subscribe(function(token_) {
+        setToken(token_);
+      });
+      app.ports.fileSelected.subscribe(function(id) {
+        fileSelected(id);
+      });
+      
       loadOnScrollInterop();
 
       function loadOnScrollInterop() {
@@ -39,7 +43,45 @@
         } else {
             setTimeout(loadOnScrollInterop, 500);
         }
-      };
+      }
+
+      function getToken() {
+        try {
+          return localStorage.getItem("__comJeito_TOKEN") || "";
+        } catch (e) {
+            return "";
+        }
+      }
+
+      function setToken(token_) {
+        try {
+            localStorage.setItem("__comJeito_TOKEN", token_);
+            return true;
+        } catch (e) {
+            return false;
+        }
+      }
+
+      function fileSelected(id) {
+        var node = document.getElementById(id);
+
+        if (node === null) { return; }
+
+        var file = node.files[0];
+        var reader = new FileReader();
+
+        reader.onload = (function(event) {
+          var fileString = event.target.result;
+          var portData = {
+            contents: fileString,
+            filename: file.name
+          };
+
+          app.ports.fileContentRead.send(portData);
+        });
+
+        reader.readAsDataURL(file);
+      }
     </script>
   </body>
 </html>
