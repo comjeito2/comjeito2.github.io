@@ -6,6 +6,10 @@ body {
   background-color: #F5F5F5;
 }
 
+.mdl-layout__header {
+  z-index: 1;
+}
+
 dialog[open] {
   width: 80%;
   height: 80%;
@@ -16,11 +20,17 @@ dialog[open] {
   display: flex;
   flex-direction: column;
   top: 10%;
+  position: fixed;
+}
+
+#elm-mdl-singleton-dialog {
+  position: fixed !important;
 }
 
 #elm-mdl-layout-main {
   display: flex;
   flex-direction: column;
+  position: initial;
 }
 
 .mdl-layout__tab-bar {
