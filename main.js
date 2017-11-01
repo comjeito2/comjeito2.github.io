@@ -24652,40 +24652,12 @@ var _comjeito$comjeito$Page_Showroom$render = function (model) {
 								ctor: '::',
 								_0: A2(
 									_debois$elm_mdl$Material_Options$css,
-									'-moz-column-count',
-									_elm_lang$core$Native_Utils.eq(model.viewport, _debois$elm_mdl$Material_Grid$Phone) ? '2' : '3'),
+									'column-gap',
+									_elm_lang$core$Native_Utils.eq(model.viewport, _debois$elm_mdl$Material_Grid$Phone) ? '8px' : '16px'),
 								_1: {
 									ctor: '::',
-									_0: A2(
-										_debois$elm_mdl$Material_Options$css,
-										'-webkit-column-count',
-										_elm_lang$core$Native_Utils.eq(model.viewport, _debois$elm_mdl$Material_Grid$Phone) ? '2' : '3'),
-									_1: {
-										ctor: '::',
-										_0: A2(
-											_debois$elm_mdl$Material_Options$css,
-											'column-gap',
-											_elm_lang$core$Native_Utils.eq(model.viewport, _debois$elm_mdl$Material_Grid$Phone) ? '8px' : '16px'),
-										_1: {
-											ctor: '::',
-											_0: A2(
-												_debois$elm_mdl$Material_Options$css,
-												'-moz-column-gap',
-												_elm_lang$core$Native_Utils.eq(model.viewport, _debois$elm_mdl$Material_Grid$Phone) ? '8px' : '16px'),
-											_1: {
-												ctor: '::',
-												_0: A2(
-													_debois$elm_mdl$Material_Options$css,
-													'-webkit-column-gap',
-													_elm_lang$core$Native_Utils.eq(model.viewport, _debois$elm_mdl$Material_Grid$Phone) ? '8px' : '16px'),
-												_1: {
-													ctor: '::',
-													_0: A2(_debois$elm_mdl$Material_Options$css, 'transform', 'translateZ(0)'),
-													_1: {ctor: '[]'}
-												}
-											}
-										}
-									}
+									_0: A2(_debois$elm_mdl$Material_Options$css, 'transform', 'translateZ(0)'),
+									_1: {ctor: '[]'}
 								}
 							}
 						},

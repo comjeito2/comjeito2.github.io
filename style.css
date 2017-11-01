@@ -55,3 +55,15 @@ dialog[open] {
 .mdl-select > .mdl-textfield {
   width: 100%;
 }
+
+@-moz-document url-prefix() {
+  ._dialog_overlay {
+    display: none;
+  }
+}
+
+@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+  html, body {
+    display: none;
+  }
+}
