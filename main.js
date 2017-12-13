@@ -17438,7 +17438,7 @@ var _comjeito$comjeito$Requests$itemDecoder = A6(
 			_comjeito$comjeito$Types$ItemId,
 			A2(_elm_lang$core$Json_Decode$field, '$oid', _elm_lang$core$Json_Decode$string))));
 var _comjeito$comjeito$Requests$itemsDecoder = _elm_lang$core$Json_Decode$list(_comjeito$comjeito$Requests$itemDecoder);
-var _comjeito$comjeito$Requests$host = 'http://localhost:5000';
+var _comjeito$comjeito$Requests$host = 'https://nameless-hamlet-42933.herokuapp.com';
 var _comjeito$comjeito$Requests$getItem = F2(
 	function (category_, id_) {
 		var msg_ = _elm_lang$core$Native_Utils.eq(category_, 'products') ? _comjeito$comjeito$Types$GetProduct : _comjeito$comjeito$Types$GetService;
