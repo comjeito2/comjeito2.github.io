@@ -17322,64 +17322,10 @@ var _comjeito$comjeito$Requests$loginDecoder = A3(
 	_comjeito$comjeito$Types$LoginStatus,
 	A2(_elm_lang$core$Json_Decode$field, 'status', _elm_lang$core$Json_Decode$int),
 	A2(_elm_lang$core$Json_Decode$field, 'token', _elm_lang$core$Json_Decode$string));
-var _comjeito$comjeito$Requests$doLogin = function (form_) {
-	var url = 'https://nameless-hamlet-42933.herokuapp.com/login';
-	return A2(
-		_elm_lang$http$Http$send,
-		_comjeito$comjeito$Types$DoLogin,
-		A3(
-			_elm_lang$http$Http$post,
-			url,
-			A2(
-				_elm_lang$http$Http$stringBody,
-				'application/json',
-				_comjeito$comjeito$Requests$loginEncoder(form_)),
-			_comjeito$comjeito$Requests$loginDecoder));
-};
 var _comjeito$comjeito$Requests$statusDecoder = A2(
 	_elm_lang$core$Json_Decode$map,
 	_comjeito$comjeito$Types$RequestStatus,
 	A2(_elm_lang$core$Json_Decode$field, 'status', _elm_lang$core$Json_Decode$int));
-var _comjeito$comjeito$Requests$deleteItem = F3(
-	function (category_, item_, model) {
-		var url = A2(
-			_elm_lang$core$Basics_ops['++'],
-			'https://nameless-hamlet-42933.herokuapp.com/deleteitem',
-			A2(
-				_elm_lang$core$Basics_ops['++'],
-				'/',
-				A2(
-					_elm_lang$core$Basics_ops['++'],
-					category_,
-					A2(
-						_elm_lang$core$Basics_ops['++'],
-						'/',
-						A2(
-							_elm_lang$core$Basics_ops['++'],
-							item_.id,
-							A2(_elm_lang$core$Basics_ops['++'], '?token=', model.adminToken))))));
-		return A2(
-			_elm_lang$http$Http$send,
-			_comjeito$comjeito$Types$DoRequest,
-			A2(_elm_lang$http$Http$get, url, _comjeito$comjeito$Requests$statusDecoder));
-	});
-var _comjeito$comjeito$Requests$deleteShowroomItem = F2(
-	function (item_, model) {
-		var url = A2(
-			_elm_lang$core$Basics_ops['++'],
-			'https://nameless-hamlet-42933.herokuapp.com/deleteshowroomitem',
-			A2(
-				_elm_lang$core$Basics_ops['++'],
-				'/',
-				A2(
-					_elm_lang$core$Basics_ops['++'],
-					item_.id,
-					A2(_elm_lang$core$Basics_ops['++'], '?token=', model.adminToken))));
-		return A2(
-			_elm_lang$http$Http$send,
-			_comjeito$comjeito$Types$DoRequest,
-			A2(_elm_lang$http$Http$get, url, _comjeito$comjeito$Requests$statusDecoder));
-	});
 var _comjeito$comjeito$Requests$showroomItemEncoder = function (item_) {
 	return A2(
 		_elm_lang$core$Json_Encode$encode,
@@ -17412,48 +17358,6 @@ var _comjeito$comjeito$Requests$showroomItemEncoder = function (item_) {
 				}
 			}));
 };
-var _comjeito$comjeito$Requests$createShowroomItem = F2(
-	function (item_, model) {
-		var url = A2(
-			_elm_lang$core$Basics_ops['++'],
-			'https://nameless-hamlet-42933.herokuapp.com/insertshowroomitem',
-			A2(_elm_lang$core$Basics_ops['++'], '?token=', model.adminToken));
-		return A2(
-			_elm_lang$http$Http$send,
-			_comjeito$comjeito$Types$ResultUpdateShowroomItem,
-			A3(
-				_elm_lang$http$Http$post,
-				url,
-				A2(
-					_elm_lang$http$Http$stringBody,
-					'application/json',
-					_comjeito$comjeito$Requests$showroomItemEncoder(item_)),
-				_comjeito$comjeito$Requests$statusDecoder));
-	});
-var _comjeito$comjeito$Requests$updateShowroomItem = F2(
-	function (item_, model) {
-		var url = A2(
-			_elm_lang$core$Basics_ops['++'],
-			'https://nameless-hamlet-42933.herokuapp.com/updateshowroomitem',
-			A2(
-				_elm_lang$core$Basics_ops['++'],
-				'/',
-				A2(
-					_elm_lang$core$Basics_ops['++'],
-					item_.item.id,
-					A2(_elm_lang$core$Basics_ops['++'], '?token=', model.adminToken))));
-		return A2(
-			_elm_lang$http$Http$send,
-			_comjeito$comjeito$Types$ResultUpdateShowroomItem,
-			A3(
-				_elm_lang$http$Http$post,
-				url,
-				A2(
-					_elm_lang$http$Http$stringBody,
-					'application/json',
-					_comjeito$comjeito$Requests$showroomItemEncoder(item_)),
-				_comjeito$comjeito$Requests$statusDecoder));
-	});
 var _comjeito$comjeito$Requests$showroomItemDecoder = A5(
 	_elm_lang$core$Json_Decode$map4,
 	_comjeito$comjeito$Types$RequestShowroomItem,
@@ -17471,47 +17375,6 @@ var _comjeito$comjeito$Requests$showroomItemDecoder = A5(
 			_comjeito$comjeito$Types$ItemId,
 			A2(_elm_lang$core$Json_Decode$field, '$oid', _elm_lang$core$Json_Decode$string))));
 var _comjeito$comjeito$Requests$showroomItemsDecoder = _elm_lang$core$Json_Decode$list(_comjeito$comjeito$Requests$showroomItemDecoder);
-var _comjeito$comjeito$Requests$getShowroomItems = F2(
-	function (skip_, limit_) {
-		var url = A2(
-			_elm_lang$core$Basics_ops['++'],
-			'https://nameless-hamlet-42933.herokuapp.com/showroom',
-			A2(
-				_elm_lang$core$Basics_ops['++'],
-				'/',
-				A2(
-					_elm_lang$core$Basics_ops['++'],
-					_elm_lang$core$Basics$toString(skip_),
-					A2(
-						_elm_lang$core$Basics_ops['++'],
-						'/',
-						_elm_lang$core$Basics$toString(limit_)))));
-		return A2(
-			_elm_lang$http$Http$send,
-			_comjeito$comjeito$Types$GetShowroomItems,
-			A2(
-				_elm_lang$http$Http$get,
-				url,
-				A3(
-					_elm_lang$core$Json_Decode$map2,
-					_comjeito$comjeito$Types$ShowroomItemsWithStatus,
-					A2(_elm_lang$core$Json_Decode$field, 'status', _elm_lang$core$Json_Decode$int),
-					A2(_elm_lang$core$Json_Decode$field, 'items', _comjeito$comjeito$Requests$showroomItemsDecoder))));
-	});
-var _comjeito$comjeito$Requests$getShowroomItem = function (id_) {
-	var url = A2(_elm_lang$core$Basics_ops['++'], 'https://nameless-hamlet-42933.herokuapp.com/showroomitem/', id_);
-	return A2(
-		_elm_lang$http$Http$send,
-		_comjeito$comjeito$Types$GetShowroomItem,
-		A2(
-			_elm_lang$http$Http$get,
-			url,
-			A3(
-				_elm_lang$core$Json_Decode$map2,
-				_comjeito$comjeito$Types$ShowroomItemWithStatus,
-				A2(_elm_lang$core$Json_Decode$field, 'status', _elm_lang$core$Json_Decode$int),
-				A2(_elm_lang$core$Json_Decode$field, 'item', _comjeito$comjeito$Requests$showroomItemDecoder))));
-};
 var _comjeito$comjeito$Requests$itemEncoder = F2(
 	function (category_, item_) {
 		return A2(
@@ -17560,48 +17423,6 @@ var _comjeito$comjeito$Requests$itemEncoder = F2(
 					}
 				}));
 	});
-var _comjeito$comjeito$Requests$updateItem = F3(
-	function (category_, item_, model) {
-		var url = A2(
-			_elm_lang$core$Basics_ops['++'],
-			'https://nameless-hamlet-42933.herokuapp.com/updateitem',
-			A2(
-				_elm_lang$core$Basics_ops['++'],
-				'/',
-				A2(
-					_elm_lang$core$Basics_ops['++'],
-					item_.item.id,
-					A2(_elm_lang$core$Basics_ops['++'], '?token=', model.adminToken))));
-		return A2(
-			_elm_lang$http$Http$send,
-			_comjeito$comjeito$Types$ResultUpdateItem,
-			A3(
-				_elm_lang$http$Http$post,
-				url,
-				A2(
-					_elm_lang$http$Http$stringBody,
-					'application/json',
-					A2(_comjeito$comjeito$Requests$itemEncoder, category_, item_)),
-				_comjeito$comjeito$Requests$statusDecoder));
-	});
-var _comjeito$comjeito$Requests$createItem = F3(
-	function (category_, item_, model) {
-		var url = A2(
-			_elm_lang$core$Basics_ops['++'],
-			'https://nameless-hamlet-42933.herokuapp.com/insertitem',
-			A2(_elm_lang$core$Basics_ops['++'], '?token=', model.adminToken));
-		return A2(
-			_elm_lang$http$Http$send,
-			_comjeito$comjeito$Types$ResultUpdateItem,
-			A3(
-				_elm_lang$http$Http$post,
-				url,
-				A2(
-					_elm_lang$http$Http$stringBody,
-					'application/json',
-					A2(_comjeito$comjeito$Requests$itemEncoder, category_, item_)),
-				_comjeito$comjeito$Requests$statusDecoder));
-	});
 var _comjeito$comjeito$Requests$itemDecoder = A6(
 	_elm_lang$core$Json_Decode$map5,
 	_comjeito$comjeito$Types$RequestItem,
@@ -17617,28 +17438,66 @@ var _comjeito$comjeito$Requests$itemDecoder = A6(
 			_comjeito$comjeito$Types$ItemId,
 			A2(_elm_lang$core$Json_Decode$field, '$oid', _elm_lang$core$Json_Decode$string))));
 var _comjeito$comjeito$Requests$itemsDecoder = _elm_lang$core$Json_Decode$list(_comjeito$comjeito$Requests$itemDecoder);
+var _comjeito$comjeito$Requests$host = 'http://localhost:5000';
+var _comjeito$comjeito$Requests$getItem = F2(
+	function (category_, id_) {
+		var msg_ = _elm_lang$core$Native_Utils.eq(category_, 'products') ? _comjeito$comjeito$Types$GetProduct : _comjeito$comjeito$Types$GetService;
+		var url = A2(
+			_elm_lang$core$Basics_ops['++'],
+			_comjeito$comjeito$Requests$host,
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				'/item',
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					'/',
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						category_,
+						A2(_elm_lang$core$Basics_ops['++'], '/', id_)))));
+		return A2(
+			_elm_lang$http$Http$send,
+			msg_,
+			A2(
+				_elm_lang$http$Http$get,
+				url,
+				A3(
+					_elm_lang$core$Json_Decode$map2,
+					_comjeito$comjeito$Types$ItemWithStatus,
+					A2(_elm_lang$core$Json_Decode$field, 'status', _elm_lang$core$Json_Decode$int),
+					A2(_elm_lang$core$Json_Decode$field, 'item', _comjeito$comjeito$Requests$itemDecoder))));
+	});
+var _comjeito$comjeito$Requests$getProduct = function (id_) {
+	return A2(_comjeito$comjeito$Requests$getItem, 'products', id_);
+};
+var _comjeito$comjeito$Requests$getService = function (id_) {
+	return A2(_comjeito$comjeito$Requests$getItem, 'services', id_);
+};
 var _comjeito$comjeito$Requests$getItems = F3(
 	function (category_, skip_, limit_) {
 		var msg_ = _elm_lang$core$Native_Utils.eq(category_, 'products') ? _comjeito$comjeito$Types$GetProducts : _comjeito$comjeito$Types$GetServices;
 		var url = A2(
 			_elm_lang$core$Basics_ops['++'],
-			'https://nameless-hamlet-42933.herokuapp.com/items',
+			_comjeito$comjeito$Requests$host,
 			A2(
 				_elm_lang$core$Basics_ops['++'],
-				'/',
+				'/items',
 				A2(
 					_elm_lang$core$Basics_ops['++'],
-					category_,
+					'/',
 					A2(
 						_elm_lang$core$Basics_ops['++'],
-						'/',
+						category_,
 						A2(
 							_elm_lang$core$Basics_ops['++'],
-							_elm_lang$core$Basics$toString(skip_),
+							'/',
 							A2(
 								_elm_lang$core$Basics_ops['++'],
-								'/',
-								_elm_lang$core$Basics$toString(limit_)))))));
+								_elm_lang$core$Basics$toString(skip_),
+								A2(
+									_elm_lang$core$Basics_ops['++'],
+									'/',
+									_elm_lang$core$Basics$toString(limit_))))))));
 		return A2(
 			_elm_lang$http$Http$send,
 			msg_,
@@ -17659,37 +17518,209 @@ var _comjeito$comjeito$Requests$getServices = F2(
 	function (skip_, limit_) {
 		return A3(_comjeito$comjeito$Requests$getItems, 'services', skip_, limit_);
 	});
-var _comjeito$comjeito$Requests$getItem = F2(
-	function (category_, id_) {
-		var msg_ = _elm_lang$core$Native_Utils.eq(category_, 'products') ? _comjeito$comjeito$Types$GetProduct : _comjeito$comjeito$Types$GetService;
+var _comjeito$comjeito$Requests$getShowroomItem = function (id_) {
+	var url = A2(
+		_elm_lang$core$Basics_ops['++'],
+		_comjeito$comjeito$Requests$host,
+		A2(_elm_lang$core$Basics_ops['++'], '/showroomitem/', id_));
+	return A2(
+		_elm_lang$http$Http$send,
+		_comjeito$comjeito$Types$GetShowroomItem,
+		A2(
+			_elm_lang$http$Http$get,
+			url,
+			A3(
+				_elm_lang$core$Json_Decode$map2,
+				_comjeito$comjeito$Types$ShowroomItemWithStatus,
+				A2(_elm_lang$core$Json_Decode$field, 'status', _elm_lang$core$Json_Decode$int),
+				A2(_elm_lang$core$Json_Decode$field, 'item', _comjeito$comjeito$Requests$showroomItemDecoder))));
+};
+var _comjeito$comjeito$Requests$getShowroomItems = F2(
+	function (skip_, limit_) {
 		var url = A2(
 			_elm_lang$core$Basics_ops['++'],
-			'https://nameless-hamlet-42933.herokuapp.com/item',
+			_comjeito$comjeito$Requests$host,
 			A2(
 				_elm_lang$core$Basics_ops['++'],
-				'/',
+				'/showroom',
 				A2(
 					_elm_lang$core$Basics_ops['++'],
-					category_,
-					A2(_elm_lang$core$Basics_ops['++'], '/', id_))));
+					'/',
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						_elm_lang$core$Basics$toString(skip_),
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							'/',
+							_elm_lang$core$Basics$toString(limit_))))));
 		return A2(
 			_elm_lang$http$Http$send,
-			msg_,
+			_comjeito$comjeito$Types$GetShowroomItems,
 			A2(
 				_elm_lang$http$Http$get,
 				url,
 				A3(
 					_elm_lang$core$Json_Decode$map2,
-					_comjeito$comjeito$Types$ItemWithStatus,
+					_comjeito$comjeito$Types$ShowroomItemsWithStatus,
 					A2(_elm_lang$core$Json_Decode$field, 'status', _elm_lang$core$Json_Decode$int),
-					A2(_elm_lang$core$Json_Decode$field, 'item', _comjeito$comjeito$Requests$itemDecoder))));
+					A2(_elm_lang$core$Json_Decode$field, 'items', _comjeito$comjeito$Requests$showroomItemsDecoder))));
 	});
-var _comjeito$comjeito$Requests$getProduct = function (id_) {
-	return A2(_comjeito$comjeito$Requests$getItem, 'products', id_);
+var _comjeito$comjeito$Requests$deleteItem = F3(
+	function (category_, item_, model) {
+		var url = A2(
+			_elm_lang$core$Basics_ops['++'],
+			_comjeito$comjeito$Requests$host,
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				'/deleteitem',
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					'/',
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						category_,
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							'/',
+							A2(
+								_elm_lang$core$Basics_ops['++'],
+								item_.id,
+								A2(_elm_lang$core$Basics_ops['++'], '?token=', model.adminToken)))))));
+		return A2(
+			_elm_lang$http$Http$send,
+			_comjeito$comjeito$Types$DoRequest,
+			A2(_elm_lang$http$Http$get, url, _comjeito$comjeito$Requests$statusDecoder));
+	});
+var _comjeito$comjeito$Requests$updateItem = F3(
+	function (category_, item_, model) {
+		var url = A2(
+			_elm_lang$core$Basics_ops['++'],
+			_comjeito$comjeito$Requests$host,
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				'/updateitem',
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					'/',
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						item_.item.id,
+						A2(_elm_lang$core$Basics_ops['++'], '?token=', model.adminToken)))));
+		return A2(
+			_elm_lang$http$Http$send,
+			_comjeito$comjeito$Types$ResultUpdateItem,
+			A3(
+				_elm_lang$http$Http$post,
+				url,
+				A2(
+					_elm_lang$http$Http$stringBody,
+					'application/json',
+					A2(_comjeito$comjeito$Requests$itemEncoder, category_, item_)),
+				_comjeito$comjeito$Requests$statusDecoder));
+	});
+var _comjeito$comjeito$Requests$createItem = F3(
+	function (category_, item_, model) {
+		var url = A2(
+			_elm_lang$core$Basics_ops['++'],
+			_comjeito$comjeito$Requests$host,
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				'/insertitem',
+				A2(_elm_lang$core$Basics_ops['++'], '?token=', model.adminToken)));
+		return A2(
+			_elm_lang$http$Http$send,
+			_comjeito$comjeito$Types$ResultUpdateItem,
+			A3(
+				_elm_lang$http$Http$post,
+				url,
+				A2(
+					_elm_lang$http$Http$stringBody,
+					'application/json',
+					A2(_comjeito$comjeito$Requests$itemEncoder, category_, item_)),
+				_comjeito$comjeito$Requests$statusDecoder));
+	});
+var _comjeito$comjeito$Requests$doLogin = function (form_) {
+	var url = A2(_elm_lang$core$Basics_ops['++'], _comjeito$comjeito$Requests$host, '/login');
+	return A2(
+		_elm_lang$http$Http$send,
+		_comjeito$comjeito$Types$DoLogin,
+		A3(
+			_elm_lang$http$Http$post,
+			url,
+			A2(
+				_elm_lang$http$Http$stringBody,
+				'application/json',
+				_comjeito$comjeito$Requests$loginEncoder(form_)),
+			_comjeito$comjeito$Requests$loginDecoder));
 };
-var _comjeito$comjeito$Requests$getService = function (id_) {
-	return A2(_comjeito$comjeito$Requests$getItem, 'services', id_);
-};
+var _comjeito$comjeito$Requests$deleteShowroomItem = F2(
+	function (item_, model) {
+		var url = A2(
+			_elm_lang$core$Basics_ops['++'],
+			_comjeito$comjeito$Requests$host,
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				'/deleteshowroomitem',
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					'/',
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						item_.id,
+						A2(_elm_lang$core$Basics_ops['++'], '?token=', model.adminToken)))));
+		return A2(
+			_elm_lang$http$Http$send,
+			_comjeito$comjeito$Types$DoRequest,
+			A2(_elm_lang$http$Http$get, url, _comjeito$comjeito$Requests$statusDecoder));
+	});
+var _comjeito$comjeito$Requests$createShowroomItem = F2(
+	function (item_, model) {
+		var url = A2(
+			_elm_lang$core$Basics_ops['++'],
+			_comjeito$comjeito$Requests$host,
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				'/insertshowroomitem',
+				A2(_elm_lang$core$Basics_ops['++'], '?token=', model.adminToken)));
+		return A2(
+			_elm_lang$http$Http$send,
+			_comjeito$comjeito$Types$ResultUpdateShowroomItem,
+			A3(
+				_elm_lang$http$Http$post,
+				url,
+				A2(
+					_elm_lang$http$Http$stringBody,
+					'application/json',
+					_comjeito$comjeito$Requests$showroomItemEncoder(item_)),
+				_comjeito$comjeito$Requests$statusDecoder));
+	});
+var _comjeito$comjeito$Requests$updateShowroomItem = F2(
+	function (item_, model) {
+		var url = A2(
+			_elm_lang$core$Basics_ops['++'],
+			_comjeito$comjeito$Requests$host,
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				'/updateshowroomitem',
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					'/',
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						item_.item.id,
+						A2(_elm_lang$core$Basics_ops['++'], '?token=', model.adminToken)))));
+		return A2(
+			_elm_lang$http$Http$send,
+			_comjeito$comjeito$Types$ResultUpdateShowroomItem,
+			A3(
+				_elm_lang$http$Http$post,
+				url,
+				A2(
+					_elm_lang$http$Http$stringBody,
+					'application/json',
+					_comjeito$comjeito$Requests$showroomItemEncoder(item_)),
+				_comjeito$comjeito$Requests$statusDecoder));
+	});
 
 var _comjeito$comjeito$Model$model = {
 	mdl: _debois$elm_mdl$Material$model,
@@ -17959,27 +17990,27 @@ var _comjeito$comjeito$Update$update = F2(
 					};
 				}
 			case 'ChangeDialogView':
-				var _p9 = _p0._1;
-				var _p8 = _p0._0;
+				var _p10 = _p0._1;
+				var _p9 = _p0._0;
 				var request_ = function () {
-					var _p7 = _p8;
+					var _p7 = _p9;
 					switch (_p7.ctor) {
 						case 'ShowroomItem':
-							return _comjeito$comjeito$Requests$getShowroomItem(_p9.id);
+							return _comjeito$comjeito$Requests$getShowroomItem(_p10.id);
 						case 'ProductsItem':
-							return _comjeito$comjeito$Requests$getProduct(_p9.id);
+							return _comjeito$comjeito$Requests$getProduct(_p10.id);
 						case 'ServicesItem':
-							return _comjeito$comjeito$Requests$getService(_p9.id);
+							return _comjeito$comjeito$Requests$getService(_p10.id);
 						case 'EditProductsItem':
-							return _comjeito$comjeito$Requests$getProduct(_p9.id);
+							return _comjeito$comjeito$Requests$getProduct(_p10.id);
 						case 'EditServicesItem':
-							return _comjeito$comjeito$Requests$getService(_p9.id);
+							return _comjeito$comjeito$Requests$getService(_p10.id);
 						case 'CreateProductsItem':
 							return _elm_lang$core$Platform_Cmd$none;
 						case 'CreateServicesItem':
 							return _elm_lang$core$Platform_Cmd$none;
 						case 'EditShowroomItem':
-							return _comjeito$comjeito$Requests$getShowroomItem(_p9.id);
+							return _comjeito$comjeito$Requests$getShowroomItem(_p10.id);
 						default:
 							return _elm_lang$core$Platform_Cmd$none;
 					}
@@ -18016,17 +18047,37 @@ var _comjeito$comjeito$Update$update = F2(
 							{ctor: '[]'},
 							_comjeito$comjeito$Types$ItemId(''))
 					});
+				var model3 = _elm_lang$core$Native_Utils.update(
+					model2,
+					{
+						dialogLoading: function () {
+							var _p8 = _p9;
+							switch (_p8.ctor) {
+								case 'CreateProductsItem':
+									return false;
+								case 'CreateServicesItem':
+									return false;
+								case 'CreateShowroomItem':
+									return false;
+								default:
+									return true;
+							}
+						}()
+					});
+				var model4 = _elm_lang$core$Native_Utils.update(
+					model3,
+					{dialogError: false});
 				return {
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
-						model2,
-						{dialogView: _p8}),
+						model4,
+						{dialogView: _p9}),
 					_1: request_
 				};
 			case 'GetProduct':
 				if (_p0._0.ctor === 'Ok') {
-					var _p10 = _p0._0._0;
-					var item_ = _p10.item;
+					var _p11 = _p0._0._0;
+					var item_ = _p11.item;
 					var model_ = _elm_lang$core$Native_Utils.update(
 						model,
 						{dialogError: false});
@@ -18042,7 +18093,7 @@ var _comjeito$comjeito$Update$update = F2(
 						ctor: '_Tuple2',
 						_0: _elm_lang$core$Native_Utils.update(
 							model___,
-							{productsItem: _p10.item}),
+							{productsItem: _p11.item}),
 						_1: _elm_lang$core$Platform_Cmd$none
 					};
 				} else {
@@ -18059,7 +18110,7 @@ var _comjeito$comjeito$Update$update = F2(
 				}
 			case 'GetProducts':
 				if (_p0._0.ctor === 'Ok') {
-					var _p11 = _p0._0._0;
+					var _p12 = _p0._0._0;
 					var model1 = _elm_lang$core$Native_Utils.update(
 						model,
 						{productsError: false});
@@ -18067,7 +18118,7 @@ var _comjeito$comjeito$Update$update = F2(
 						model1,
 						{productsLoading: false});
 					var model3 = (_elm_lang$core$Native_Utils.cmp(
-						_elm_lang$core$List$length(_p11.items),
+						_elm_lang$core$List$length(_p12.items),
 						12) < 0) ? _elm_lang$core$Native_Utils.update(
 						model2,
 						{productsEnd: true}) : _elm_lang$core$Native_Utils.update(
@@ -18078,7 +18129,7 @@ var _comjeito$comjeito$Update$update = F2(
 						_0: _elm_lang$core$Native_Utils.update(
 							model3,
 							{
-								productsItems: A2(_elm_lang$core$Basics_ops['++'], model.productsItems, _p11.items)
+								productsItems: A2(_elm_lang$core$Basics_ops['++'], model.productsItems, _p12.items)
 							}),
 						_1: _elm_lang$core$Platform_Cmd$none
 					};
@@ -18096,8 +18147,8 @@ var _comjeito$comjeito$Update$update = F2(
 				}
 			case 'GetService':
 				if (_p0._0.ctor === 'Ok') {
-					var _p12 = _p0._0._0;
-					var item_ = _p12.item;
+					var _p13 = _p0._0._0;
+					var item_ = _p13.item;
 					var model_ = _elm_lang$core$Native_Utils.update(
 						model,
 						{dialogError: false});
@@ -18113,11 +18164,11 @@ var _comjeito$comjeito$Update$update = F2(
 						ctor: '_Tuple2',
 						_0: _elm_lang$core$Native_Utils.update(
 							model___,
-							{servicesItem: _p12.item}),
+							{servicesItem: _p13.item}),
 						_1: _elm_lang$core$Platform_Cmd$none
 					};
 				} else {
-					var _p13 = A2(_elm_lang$core$Debug$log, 'teste', _p0._0._0);
+					var _p14 = A2(_elm_lang$core$Debug$log, 'teste', _p0._0._0);
 					var model_ = _elm_lang$core$Native_Utils.update(
 						model,
 						{dialogError: true});
@@ -18131,7 +18182,7 @@ var _comjeito$comjeito$Update$update = F2(
 				}
 			case 'GetServices':
 				if (_p0._0.ctor === 'Ok') {
-					var _p14 = _p0._0._0;
+					var _p15 = _p0._0._0;
 					var model1 = _elm_lang$core$Native_Utils.update(
 						model,
 						{servicesError: false});
@@ -18139,7 +18190,7 @@ var _comjeito$comjeito$Update$update = F2(
 						model1,
 						{servicesLoading: false});
 					var model3 = (_elm_lang$core$Native_Utils.cmp(
-						_elm_lang$core$List$length(_p14.items),
+						_elm_lang$core$List$length(_p15.items),
 						12) < 0) ? _elm_lang$core$Native_Utils.update(
 						model2,
 						{servicesEnd: true}) : _elm_lang$core$Native_Utils.update(
@@ -18150,7 +18201,7 @@ var _comjeito$comjeito$Update$update = F2(
 						_0: _elm_lang$core$Native_Utils.update(
 							model3,
 							{
-								servicesItems: A2(_elm_lang$core$Basics_ops['++'], model.servicesItems, _p14.items)
+								servicesItems: A2(_elm_lang$core$Basics_ops['++'], model.servicesItems, _p15.items)
 							}),
 						_1: _elm_lang$core$Platform_Cmd$none
 					};
@@ -18168,8 +18219,8 @@ var _comjeito$comjeito$Update$update = F2(
 				}
 			case 'GetShowroomItem':
 				if (_p0._0.ctor === 'Ok') {
-					var _p15 = _p0._0._0;
-					var item_ = _p15.item;
+					var _p16 = _p0._0._0;
+					var item_ = _p16.item;
 					var model_ = _elm_lang$core$Native_Utils.update(
 						model,
 						{dialogError: false});
@@ -18185,7 +18236,7 @@ var _comjeito$comjeito$Update$update = F2(
 						ctor: '_Tuple2',
 						_0: _elm_lang$core$Native_Utils.update(
 							model___,
-							{showroomItem: _p15.item}),
+							{showroomItem: _p16.item}),
 						_1: _elm_lang$core$Platform_Cmd$none
 					};
 				} else {
@@ -18202,7 +18253,7 @@ var _comjeito$comjeito$Update$update = F2(
 				}
 			case 'GetShowroomItems':
 				if (_p0._0.ctor === 'Ok') {
-					var _p16 = _p0._0._0;
+					var _p17 = _p0._0._0;
 					var model1 = _elm_lang$core$Native_Utils.update(
 						model,
 						{showroomError: false});
@@ -18210,7 +18261,7 @@ var _comjeito$comjeito$Update$update = F2(
 						model1,
 						{showroomLoading: false});
 					var model3 = (_elm_lang$core$Native_Utils.cmp(
-						_elm_lang$core$List$length(_p16.items),
+						_elm_lang$core$List$length(_p17.items),
 						12) < 0) ? _elm_lang$core$Native_Utils.update(
 						model2,
 						{showroomEnd: true}) : _elm_lang$core$Native_Utils.update(
@@ -18221,7 +18272,7 @@ var _comjeito$comjeito$Update$update = F2(
 						_0: _elm_lang$core$Native_Utils.update(
 							model3,
 							{
-								showroomItems: A2(_elm_lang$core$Basics_ops['++'], model.showroomItems, _p16.items)
+								showroomItems: A2(_elm_lang$core$Basics_ops['++'], model.showroomItems, _p17.items)
 							}),
 						_1: _elm_lang$core$Platform_Cmd$none
 					};
@@ -18239,11 +18290,11 @@ var _comjeito$comjeito$Update$update = F2(
 				}
 			case 'DoLogin':
 				if (_p0._0.ctor === 'Ok') {
-					var _p17 = _p0._0._0;
+					var _p18 = _p0._0._0;
 					var model_ = _elm_lang$core$Native_Utils.update(
 						model,
 						{
-							adminError: _elm_lang$core$Native_Utils.eq(_p17.status, 200)
+							adminError: _elm_lang$core$Native_Utils.eq(_p18.status, 200)
 						});
 					var model__ = _elm_lang$core$Native_Utils.update(
 						model_,
@@ -18255,8 +18306,8 @@ var _comjeito$comjeito$Update$update = F2(
 						ctor: '_Tuple2',
 						_0: _elm_lang$core$Native_Utils.update(
 							model___,
-							{adminToken: _p17.token}),
-						_1: _elm_lang$core$Native_Utils.eq(_p17.status, 200) ? _elm_lang$core$Platform_Cmd$batch(
+							{adminToken: _p18.token}),
+						_1: _elm_lang$core$Native_Utils.eq(_p18.status, 200) ? _elm_lang$core$Platform_Cmd$batch(
 							{
 								ctor: '::',
 								_0: _elm_lang$navigation$Navigation$newUrl('#/showroom'),
@@ -18268,7 +18319,7 @@ var _comjeito$comjeito$Update$update = F2(
 										_comjeito$comjeito$Types$AdminToast('Modo administrativo habilitado')),
 									_1: {
 										ctor: '::',
-										_0: _comjeito$comjeito$Ports$setToken(_p17.token),
+										_0: _comjeito$comjeito$Ports$setToken(_p18.token),
 										_1: {ctor: '[]'}
 									}
 								}
@@ -18320,15 +18371,15 @@ var _comjeito$comjeito$Update$update = F2(
 					_1: _comjeito$comjeito$Requests$doLogin(model.adminCredentials)
 				};
 			case 'AdminToast':
-				var _p18 = A2(
+				var _p19 = A2(
 					_debois$elm_mdl$Material_Snackbar$add,
 					A2(
 						_debois$elm_mdl$Material_Snackbar$toast,
 						{ctor: '_Tuple0'},
 						_p0._0),
 					model.adminToast);
-				var model_ = _p18._0;
-				var cmd_ = _p18._1;
+				var model_ = _p19._0;
+				var cmd_ = _p19._1;
 				return {
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
@@ -18364,8 +18415,8 @@ var _comjeito$comjeito$Update$update = F2(
 						})
 				};
 			case 'Snackbar':
-				var _p19 = _p0._0;
-				if ((_p19.ctor === 'Move') && (_p19._0 === 0)) {
+				var _p20 = _p0._0;
+				if ((_p20.ctor === 'Move') && (_p20._0 === 0)) {
 					return {
 						ctor: '_Tuple2',
 						_0: _elm_lang$core$Native_Utils.update(
@@ -18377,17 +18428,17 @@ var _comjeito$comjeito$Update$update = F2(
 					return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
 				}
 			case 'GetToken':
-				var _p20 = _p0._0;
+				var _p21 = _p0._0;
 				var model_ = _elm_lang$core$Native_Utils.update(
 					model,
 					{
-						adminEnabled: _elm_lang$core$Native_Utils.eq(_p20, '') ? false : true
+						adminEnabled: _elm_lang$core$Native_Utils.eq(_p21, '') ? false : true
 					});
 				return {
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
 						model_,
-						{adminToken: _p20}),
+						{adminToken: _p21}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
 			case 'DoRequest':
@@ -18474,35 +18525,6 @@ var _comjeito$comjeito$Update$update = F2(
 					_1: A3(_comjeito$comjeito$Requests$deleteItem, _p0._0, _p0._1, model)
 				};
 			case 'UpdateItemTitle':
-				var _p21 = _p0._0;
-				if (_elm_lang$core$Native_Utils.eq(model.dialogView, _comjeito$comjeito$Types$EditProductsItem) || _elm_lang$core$Native_Utils.eq(model.dialogView, _comjeito$comjeito$Types$CreateProductsItem)) {
-					var productsItem_ = model.productsItem;
-					return {
-						ctor: '_Tuple2',
-						_0: _elm_lang$core$Native_Utils.update(
-							model,
-							{
-								productsItem: _elm_lang$core$Native_Utils.update(
-									productsItem_,
-									{title: _p21})
-							}),
-						_1: _elm_lang$core$Platform_Cmd$none
-					};
-				} else {
-					var servicesItem_ = model.servicesItem;
-					return {
-						ctor: '_Tuple2',
-						_0: _elm_lang$core$Native_Utils.update(
-							model,
-							{
-								servicesItem: _elm_lang$core$Native_Utils.update(
-									servicesItem_,
-									{title: _p21})
-							}),
-						_1: _elm_lang$core$Platform_Cmd$none
-					};
-				}
-			case 'UpdateItemDescription':
 				var _p22 = _p0._0;
 				if (_elm_lang$core$Native_Utils.eq(model.dialogView, _comjeito$comjeito$Types$EditProductsItem) || _elm_lang$core$Native_Utils.eq(model.dialogView, _comjeito$comjeito$Types$CreateProductsItem)) {
 					var productsItem_ = model.productsItem;
@@ -18513,7 +18535,7 @@ var _comjeito$comjeito$Update$update = F2(
 							{
 								productsItem: _elm_lang$core$Native_Utils.update(
 									productsItem_,
-									{description: _p22})
+									{title: _p22})
 							}),
 						_1: _elm_lang$core$Platform_Cmd$none
 					};
@@ -18526,14 +18548,43 @@ var _comjeito$comjeito$Update$update = F2(
 							{
 								servicesItem: _elm_lang$core$Native_Utils.update(
 									servicesItem_,
-									{description: _p22})
+									{title: _p22})
+							}),
+						_1: _elm_lang$core$Platform_Cmd$none
+					};
+				}
+			case 'UpdateItemDescription':
+				var _p23 = _p0._0;
+				if (_elm_lang$core$Native_Utils.eq(model.dialogView, _comjeito$comjeito$Types$EditProductsItem) || _elm_lang$core$Native_Utils.eq(model.dialogView, _comjeito$comjeito$Types$CreateProductsItem)) {
+					var productsItem_ = model.productsItem;
+					return {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.update(
+							model,
+							{
+								productsItem: _elm_lang$core$Native_Utils.update(
+									productsItem_,
+									{description: _p23})
+							}),
+						_1: _elm_lang$core$Platform_Cmd$none
+					};
+				} else {
+					var servicesItem_ = model.servicesItem;
+					return {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.update(
+							model,
+							{
+								servicesItem: _elm_lang$core$Native_Utils.update(
+									servicesItem_,
+									{description: _p23})
 							}),
 						_1: _elm_lang$core$Platform_Cmd$none
 					};
 				}
 			case 'UpdateItemPrice':
-				var _p23 = _p0._0;
-				if (A2(_elm_lang$core$String$startsWith, 'R$ ', _p23)) {
+				var _p24 = _p0._0;
+				if (A2(_elm_lang$core$String$startsWith, 'R$ ', _p24)) {
 					if (_elm_lang$core$Native_Utils.eq(model.dialogView, _comjeito$comjeito$Types$EditProductsItem) || _elm_lang$core$Native_Utils.eq(model.dialogView, _comjeito$comjeito$Types$CreateProductsItem)) {
 						var productsItem_ = model.productsItem;
 						return {
@@ -18543,7 +18594,7 @@ var _comjeito$comjeito$Update$update = F2(
 								{
 									productsItem: _elm_lang$core$Native_Utils.update(
 										productsItem_,
-										{price: _p23})
+										{price: _p24})
 								}),
 							_1: _elm_lang$core$Platform_Cmd$none
 						};
@@ -18556,7 +18607,7 @@ var _comjeito$comjeito$Update$update = F2(
 								{
 									servicesItem: _elm_lang$core$Native_Utils.update(
 										servicesItem_,
-										{price: _p23})
+										{price: _p24})
 								}),
 							_1: _elm_lang$core$Platform_Cmd$none
 						};
@@ -18571,7 +18622,7 @@ var _comjeito$comjeito$Update$update = F2(
 					_1: _comjeito$comjeito$Ports$fileSelected('--select-image-file')
 				};
 			case 'UpdateItemPicture':
-				var _p24 = _p0._0;
+				var _p25 = _p0._0;
 				if (_elm_lang$core$Native_Utils.eq(model.dialogView, _comjeito$comjeito$Types$EditProductsItem) || _elm_lang$core$Native_Utils.eq(model.dialogView, _comjeito$comjeito$Types$CreateProductsItem)) {
 					var productsItem_ = model.productsItem;
 					return {
@@ -18581,7 +18632,7 @@ var _comjeito$comjeito$Update$update = F2(
 							{
 								productsItem: _elm_lang$core$Native_Utils.update(
 									productsItem_,
-									{picturePath: _p24.contents})
+									{picturePath: _p25.contents})
 							}),
 						_1: _elm_lang$core$Platform_Cmd$none
 					};
@@ -18595,7 +18646,7 @@ var _comjeito$comjeito$Update$update = F2(
 								{
 									servicesItem: _elm_lang$core$Native_Utils.update(
 										servicesItem_,
-										{picturePath: _p24.contents})
+										{picturePath: _p25.contents})
 								}),
 							_1: _elm_lang$core$Platform_Cmd$none
 						};
@@ -18615,7 +18666,7 @@ var _comjeito$comjeito$Update$update = F2(
 												picturesPath_,
 												{
 													ctor: '::',
-													_0: _p24.contents,
+													_0: _p25.contents,
 													_1: {ctor: '[]'}
 												})
 										})
@@ -18832,7 +18883,7 @@ var _comjeito$comjeito$Update$update = F2(
 					};
 				}
 			case 'RemoveShowroomPicture':
-				var _p25 = _p0._0;
+				var _p26 = _p0._0;
 				var showroomItem_ = model.showroomItem;
 				var picturesArray_ = _elm_lang$core$Array$fromList(model.showroomItem.picturesPath);
 				return {
@@ -18846,11 +18897,11 @@ var _comjeito$comjeito$Update$update = F2(
 									picturesPath: A2(
 										_elm_lang$core$Basics_ops['++'],
 										_elm_lang$core$Array$toList(
-											A3(_elm_lang$core$Array$slice, 0, _p25, picturesArray_)),
+											A3(_elm_lang$core$Array$slice, 0, _p26, picturesArray_)),
 										_elm_lang$core$Array$toList(
 											A3(
 												_elm_lang$core$Array$slice,
-												_p25 + 1,
+												_p26 + 1,
 												_elm_lang$core$Array$length(picturesArray_),
 												picturesArray_)))
 								})
@@ -20226,46 +20277,7 @@ var _comjeito$comjeito$Misc_Footer$render = function (model) {
 													})),
 											_1: {ctor: '[]'}
 										}),
-									_1: {
-										ctor: '::',
-										_0: A2(
-											_debois$elm_mdl$Material_Footer$linkItem,
-											{ctor: '[]'},
-											{
-												ctor: '::',
-												_0: _debois$elm_mdl$Material_Footer$html(
-													A2(
-														_debois$elm_mdl$Material_Options$div,
-														{ctor: '[]'},
-														{
-															ctor: '::',
-															_0: A2(
-																_debois$elm_mdl$Material_Options$img,
-																{
-																	ctor: '::',
-																	_0: A2(_debois$elm_mdl$Material_Options$css, 'height', '24px'),
-																	_1: {
-																		ctor: '::',
-																		_0: A2(_debois$elm_mdl$Material_Options$css, 'padding', '8px'),
-																		_1: {
-																			ctor: '::',
-																			_0: _debois$elm_mdl$Material_Options$attribute(
-																				_elm_lang$html$Html_Attributes$src('facebook.svg')),
-																			_1: {ctor: '[]'}
-																		}
-																	}
-																},
-																{ctor: '[]'}),
-															_1: {
-																ctor: '::',
-																_0: _elm_lang$html$Html$text('/ComJeito'),
-																_1: {ctor: '[]'}
-															}
-														})),
-												_1: {ctor: '[]'}
-											}),
-										_1: {ctor: '[]'}
-									}
+									_1: {ctor: '[]'}
 								}),
 							_1: {
 								ctor: '::',
@@ -20703,7 +20715,11 @@ var _comjeito$comjeito$Misc_ProductsDialog$render = function (model) {
 					_1: {
 						ctor: '::',
 						_0: A2(_debois$elm_mdl$Material_Options$css, 'line-height', '1'),
-						_1: {ctor: '[]'}
+						_1: {
+							ctor: '::',
+							_0: A2(_debois$elm_mdl$Material_Options$css, 'word-break', 'break-word'),
+							_1: {ctor: '[]'}
+						}
 					}
 				},
 				{
@@ -20951,7 +20967,11 @@ var _comjeito$comjeito$Misc_ServicesDialog$render = function (model) {
 					_1: {
 						ctor: '::',
 						_0: A2(_debois$elm_mdl$Material_Options$css, 'line-height', '1'),
-						_1: {ctor: '[]'}
+						_1: {
+							ctor: '::',
+							_0: A2(_debois$elm_mdl$Material_Options$css, 'word-break', 'break-word'),
+							_1: {ctor: '[]'}
+						}
 					}
 				},
 				{
@@ -21217,20 +21237,31 @@ var _comjeito$comjeito$Misc_ShowroomDialog$render = function (model) {
 			},
 			{
 				ctor: '::',
-				_0: A2(
-					_debois$elm_mdl$Material_Options$img,
-					{
-						ctor: '::',
-						_0: A2(_debois$elm_mdl$Material_Options$css, 'width', '100%'),
-						_1: {
+				_0: function () {
+					var currentPic_ = _comjeito$comjeito$Misc_ShowroomDialog$getCurrentPic(model);
+					return A2(
+						A2(_elm_lang$core$String$endsWith, '.jpg', currentPic_) ? _elm_lang$html$Html$img : _elm_lang$html$Html$video,
+						{
 							ctor: '::',
-							_0: _debois$elm_mdl$Material_Options$attribute(
-								_elm_lang$html$Html_Attributes$src(
-									_comjeito$comjeito$Misc_ShowroomDialog$getCurrentPic(model))),
-							_1: {ctor: '[]'}
-						}
-					},
-					{ctor: '[]'}),
+							_0: _elm_lang$html$Html_Attributes$style(
+								{
+									ctor: '::',
+									_0: {ctor: '_Tuple2', _0: 'width', _1: '100%'},
+									_1: {ctor: '[]'}
+								}),
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$src(
+									_comjeito$comjeito$Misc_ShowroomDialog$getCurrentPic(model)),
+								_1: {
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$controls(true),
+									_1: {ctor: '[]'}
+								}
+							}
+						},
+						{ctor: '[]'});
+				}(),
 				_1: {
 					ctor: '::',
 					_0: _comjeito$comjeito$Misc_ShowroomDialog$beforeButton(model),
@@ -21251,7 +21282,11 @@ var _comjeito$comjeito$Misc_ShowroomDialog$render = function (model) {
 					_1: {
 						ctor: '::',
 						_0: A2(_debois$elm_mdl$Material_Options$css, 'line-height', '1'),
-						_1: {ctor: '[]'}
+						_1: {
+							ctor: '::',
+							_0: A2(_debois$elm_mdl$Material_Options$css, 'word-break', 'break-word'),
+							_1: {ctor: '[]'}
+						}
 					}
 				},
 				{
@@ -21372,8 +21407,8 @@ var _comjeito$comjeito$Misc_Helpers$set_url = F2(
 				}()));
 		return A2(_elm_lang$core$String$join, '/', joinedUrl);
 	});
-var _comjeito$comjeito$Misc_Helpers$fileButton = F3(
-	function (labelText_, msg_, model) {
+var _comjeito$comjeito$Misc_Helpers$fileButton = F4(
+	function (labelText_, accept_, msg_, model) {
 		return A2(
 			_debois$elm_mdl$Material_Options$div,
 			{ctor: '[]'},
@@ -21388,17 +21423,22 @@ var _comjeito$comjeito$Misc_Helpers$fileButton = F3(
 							_elm_lang$html$Html_Attributes$type_('file')),
 						_1: {
 							ctor: '::',
-							_0: _debois$elm_mdl$Material_Options$id('--select-image-file'),
+							_0: _debois$elm_mdl$Material_Options$attribute(
+								_elm_lang$html$Html_Attributes$accept(accept_)),
 							_1: {
 								ctor: '::',
-								_0: A2(
-									_debois$elm_mdl$Material_Options$on,
-									'change',
-									_elm_lang$core$Json_Decode$succeed(msg_)),
+								_0: _debois$elm_mdl$Material_Options$id('--select-image-file'),
 								_1: {
 									ctor: '::',
-									_0: A2(_debois$elm_mdl$Material_Options$css, 'display', 'none'),
-									_1: {ctor: '[]'}
+									_0: A2(
+										_debois$elm_mdl$Material_Options$on,
+										'change',
+										_elm_lang$core$Json_Decode$succeed(msg_)),
+									_1: {
+										ctor: '::',
+										_0: A2(_debois$elm_mdl$Material_Options$css, 'display', 'none'),
+										_1: {ctor: '[]'}
+									}
 								}
 							}
 						}
@@ -21654,7 +21694,7 @@ var _comjeito$comjeito$Misc_EditDialog$render = function (model) {
 									},
 									{
 										ctor: '::',
-										_0: A3(_comjeito$comjeito$Misc_Helpers$fileButton, 'Selecionar imagem', _comjeito$comjeito$Types$SelectItemPicture, model),
+										_0: A4(_comjeito$comjeito$Misc_Helpers$fileButton, 'Selecionar imagem', 'image/jpeg', _comjeito$comjeito$Types$SelectItemPicture, model),
 										_1: {ctor: '[]'}
 									}),
 								_1: {
@@ -21750,7 +21790,7 @@ var _comjeito$comjeito$Misc_EditDialog$render = function (model) {
 										ctor: '::',
 										_0: A2(
 											_debois$elm_mdl$Material_Options$when,
-											_comjeito$comjeito$Misc_EditDialog$disableForm(item),
+											_comjeito$comjeito$Misc_EditDialog$disableForm(item) || model.editItemLoading,
 											_debois$elm_mdl$Material_Button$disabled),
 										_1: {
 											ctor: '::',
@@ -21840,20 +21880,24 @@ var _comjeito$comjeito$Misc_EditShowroomDialog$listPictures = F2(
 								{
 									ctor: '::',
 									_0: A2(
-										_debois$elm_mdl$Material_Options$img,
+										(A2(_elm_lang$core$String$startsWith, 'data:image', picture_) || A2(_elm_lang$core$String$endsWith, '.jpg', picture_)) ? _elm_lang$html$Html$img : _elm_lang$html$Html$video,
 										{
 											ctor: '::',
-											_0: _debois$elm_mdl$Material_Options$attribute(
-												_elm_lang$html$Html_Attributes$src(
-													A2(_elm_lang$core$String$startsWith, 'data:image', picture_) ? picture_ : A2(_comjeito$comjeito$Misc_Helpers$set_url, picture_, 'w_128,h_256,c_fit'))),
+											_0: _elm_lang$html$Html_Attributes$src(
+												A2(_elm_lang$core$String$startsWith, 'data:', picture_) ? picture_ : A2(_comjeito$comjeito$Misc_Helpers$set_url, picture_, 'w_128,h_256,c_fit')),
 											_1: {
 												ctor: '::',
-												_0: A2(_debois$elm_mdl$Material_Options$css, 'width', '100%'),
-												_1: {
-													ctor: '::',
-													_0: A2(_debois$elm_mdl$Material_Options$css, 'height', '100%'),
-													_1: {ctor: '[]'}
-												}
+												_0: _elm_lang$html$Html_Attributes$style(
+													{
+														ctor: '::',
+														_0: {ctor: '_Tuple2', _0: 'width', _1: '100%'},
+														_1: {
+															ctor: '::',
+															_0: {ctor: '_Tuple2', _0: 'height', _1: '100%'},
+															_1: {ctor: '[]'}
+														}
+													}),
+												_1: {ctor: '[]'}
 											}
 										},
 										{ctor: '[]'}),
@@ -22070,7 +22114,7 @@ var _comjeito$comjeito$Misc_EditShowroomDialog$render = function (model) {
 								},
 								{
 									ctor: '::',
-									_0: A3(_comjeito$comjeito$Misc_Helpers$fileButton, 'Selecionar imagem', _comjeito$comjeito$Types$SelectItemPicture, model),
+									_0: A4(_comjeito$comjeito$Misc_Helpers$fileButton, 'Selecionar mídia', 'image/jpeg, video/mp4', _comjeito$comjeito$Types$SelectItemPicture, model),
 									_1: {ctor: '[]'}
 								}),
 							_1: {
@@ -22138,7 +22182,7 @@ var _comjeito$comjeito$Misc_EditShowroomDialog$render = function (model) {
 										ctor: '::',
 										_0: A2(
 											_debois$elm_mdl$Material_Options$when,
-											_comjeito$comjeito$Misc_EditShowroomDialog$disableForm(item),
+											_comjeito$comjeito$Misc_EditShowroomDialog$disableForm(item) || model.editItemLoading,
 											_debois$elm_mdl$Material_Button$disabled),
 										_1: {
 											ctor: '::',
@@ -22874,7 +22918,7 @@ var _comjeito$comjeito$Page_Home$infoCard = function (title_) {
 	};
 };
 var _comjeito$comjeito$Page_Home$engineerCard = function (model) {
-	return _comjeito$comjeito$Page_Home$infoCard('Arquitetos e engenheiros')('Oferecemos produtos relativos à instalação de pisos e realizamos prestação de\n    serviços para arquitetos e engenheiros. Este perfil de profissional se destaca como um foco da empresa,\n    sendo um cliente característico cujo qual voltamos nossos esforços para cada vez melhor atendê-los;\n    proporcionando serviços de alta qualidade e com riqueza em detalhes.')('toolset.svg')('16px 0')('auto')('128px')(_debois$elm_mdl$Material_Color$white)(
+	return _comjeito$comjeito$Page_Home$infoCard('Arquitetos e engenheiros')('Oferecemos produtos relativos à instalação de pisos e realizamos prestação de\r\n    serviços para arquitetos e engenheiros. Este perfil de profissional se destaca como um foco da empresa,\r\n    sendo um cliente característico cujo qual voltamos nossos esforços para cada vez melhor atendê-los;\r\n    proporcionando serviços de alta qualidade e com riqueza em detalhes.')('toolset.svg')('16px 0')('auto')('128px')(_debois$elm_mdl$Material_Color$white)(
 		{
 			ctor: '::',
 			_0: 3,
@@ -22882,7 +22926,7 @@ var _comjeito$comjeito$Page_Home$engineerCard = function (model) {
 		})('#/produtos')('Saiba mais')(model);
 };
 var _comjeito$comjeito$Page_Home$servicesCard = function (model) {
-	return _comjeito$comjeito$Page_Home$infoCard('Prestação de serviços')('Com 17 anos de experiência no mercado, a ComJeito trabalha com pisos de madeira de luxo e com alta qualidade.\n    Realizamos lixação e sinteco em pisos de madeira. A lixação não emite poeira e os produtos que utilizamos\n    não possuem odor. Trabalhamos com os melhores produtos do mercado, conheça nossos serviços!')('drill-wood.svg')('16px 0')('auto')('128px')(_debois$elm_mdl$Material_Color$white)(
+	return _comjeito$comjeito$Page_Home$infoCard('Prestação de serviços')('Com 17 anos de experiência no mercado, a ComJeito trabalha com pisos de madeira de luxo e com alta qualidade.\r\n    Realizamos lixação e sinteco em pisos de madeira. A lixação não emite poeira e os produtos que utilizamos\r\n    não possuem odor. Trabalhamos com os melhores produtos do mercado, conheça nossos serviços!')('drill-wood.svg')('16px 0')('auto')('128px')(_debois$elm_mdl$Material_Color$white)(
 		{
 			ctor: '::',
 			_0: 4,
@@ -22890,7 +22934,7 @@ var _comjeito$comjeito$Page_Home$servicesCard = function (model) {
 		})('#/servicos')('Saiba mais')(model);
 };
 var _comjeito$comjeito$Page_Home$regionCard = function (model) {
-	return _comjeito$comjeito$Page_Home$infoCard('Atendemos no Vale dos Sinos e na região da Serra Gaúcha')('Somos uma empresa de Novo Hamburgo que atende no Vale dos Sinos\n    e na região da Serra Gaúcha. Você pode entrar em contato conosco por\n    telefone ou WhatsApp. Temos certeza de que você irá adorar o nosso trabalho!')('landscape.svg')('0')('100%')('auto')(_debois$elm_mdl$Material_Color$white)(
+	return _comjeito$comjeito$Page_Home$infoCard('Atendemos no Vale dos Sinos e na região da Serra Gaúcha')('Somos uma empresa de Novo Hamburgo que atende no Vale dos Sinos\r\n    e na região da Serra Gaúcha. Você pode entrar em contato conosco por\r\n    telefone ou WhatsApp. Temos certeza de que você irá adorar o nosso trabalho!')('landscape.svg')('0')('100%')('auto')(_debois$elm_mdl$Material_Color$white)(
 		{
 			ctor: '::',
 			_0: 5,
@@ -22898,7 +22942,7 @@ var _comjeito$comjeito$Page_Home$regionCard = function (model) {
 		})('#/sobre')('Saiba mais')(model);
 };
 var _comjeito$comjeito$Page_Home$shareCard = function (model) {
-	return _comjeito$comjeito$Page_Home$infoCard('Compartilhe esta página no Facebook e ganhe 10% de desconto')('Ajude a divulgar a nossa marca e ganhe 10% de desconto na prestação de serviços.\n    Diga para os seus amigos do Facebook o que você achou do nosso showroom!')('like.svg')('0')('100%')('auto')(_debois$elm_mdl$Material_Color$white)(
+	return _comjeito$comjeito$Page_Home$infoCard('Compartilhe esta página no Facebook e ganhe 10% de desconto')('Ajude a divulgar a nossa marca e ganhe 10% de desconto na prestação de serviços.\r\n    Diga para os seus amigos do Facebook o que você achou do nosso showroom!')('like.svg')('0')('100%')('auto')(_debois$elm_mdl$Material_Color$white)(
 		{
 			ctor: '::',
 			_0: 6,
@@ -23323,7 +23367,7 @@ var _comjeito$comjeito$Page_Home$render = function (model) {
 		});
 };
 
-var _comjeito$comjeito$Page_About$backgroundImage = _debois$elm_mdl$Material_Options$stylesheet('\n      body {\n        background-image: url(\"about-background.svg\");\n        background-size: cover;\n        background-repeat: no-repeat;\n        background-position: top;\n      }\n    ');
+var _comjeito$comjeito$Page_About$backgroundImage = _debois$elm_mdl$Material_Options$stylesheet('\r\n      body {\r\n        background-image: url(\"about-background.svg\");\r\n        background-size: cover;\r\n        background-repeat: no-repeat;\r\n        background-position: top;\r\n      }\r\n    ');
 var _comjeito$comjeito$Page_About$render = function (model) {
 	return A2(
 		_debois$elm_mdl$Material_Options$div,
@@ -23384,7 +23428,7 @@ var _comjeito$comjeito$Page_About$render = function (model) {
 								},
 								{
 									ctor: '::',
-									_0: _elm_lang$html$Html$text('Somos uma empresa de Novo Hamburgo especializada em pisos e renovação de madeira.\n                Temos 17 anos de experiência do mercado, fornecendo serviços de alta qualidade\n                e utilizando os melhores produtos no mercado. Somos uma empresa que trabalha em\n                família. Somos perfeccionistas; buscamos sempre o melhor atendimento ao cliente.\n                A entrega do serviço é garantida: nós levamos os nossos prazos muito à sério!'),
+									_0: _elm_lang$html$Html$text('Somos uma empresa de Novo Hamburgo especializada em pisos e renovação de madeira.\r\n                Temos 17 anos de experiência do mercado, fornecendo serviços de alta qualidade\r\n                e utilizando os melhores produtos no mercado. Somos uma empresa que trabalha em\r\n                família. Somos perfeccionistas; buscamos sempre o melhor atendimento ao cliente.\r\n                A entrega do serviço é garantida: nós levamos os nossos prazos muito à sério!'),
 									_1: {ctor: '[]'}
 								}),
 							_1: {
@@ -23419,7 +23463,7 @@ var _comjeito$comjeito$Page_About$render = function (model) {
 										},
 										{
 											ctor: '::',
-											_0: _elm_lang$html$Html$text('Somos perfeccionistas. Utilizamos sempre os melhores produtos do mercado.\n                O trabalho de lixação dos pisos não emite poeira. Trabalhamos com resina de secagem\n                rápida. Os produtos que utilizamos não possuem cheiro. Mas, o mais importante: temos\n                17 anos de experiência no mercado e, portanto, a qualidade do serviço que oferecemos\n                foi lapidada durante muito tempo. O primor pelos detalhes e a garantia da satisfação\n                do cliente é um requisito dentro da cultura da empresa.'),
+											_0: _elm_lang$html$Html$text('Somos perfeccionistas. Utilizamos sempre os melhores produtos do mercado.\r\n                O trabalho de lixação dos pisos não emite poeira. Trabalhamos com resina de secagem\r\n                rápida. Os produtos que utilizamos não possuem cheiro. Mas, o mais importante: temos\r\n                17 anos de experiência no mercado e, portanto, a qualidade do serviço que oferecemos\r\n                foi lapidada durante muito tempo. O primor pelos detalhes e a garantia da satisfação\r\n                do cliente é um requisito dentro da cultura da empresa.'),
 											_1: {ctor: '[]'}
 										}),
 									_1: {ctor: '[]'}
@@ -23587,7 +23631,7 @@ var _comjeito$comjeito$Misc_ItemCard$adminOptions = F3(
 				_1: {ctor: '[]'}
 			});
 	});
-var _comjeito$comjeito$Misc_ItemCard$adminOptionsHack = _debois$elm_mdl$Material_Options$stylesheet('\n      .mdl-menu__container {\n        top: 0 !important;\n      }\n    ');
+var _comjeito$comjeito$Misc_ItemCard$adminOptionsHack = _debois$elm_mdl$Material_Options$stylesheet('\r\n      .mdl-menu__container {\r\n        top: 0 !important;\r\n      }\r\n    ');
 var _comjeito$comjeito$Misc_ItemCard$render = F7(
 	function (dialogView_, item_, img_, title_, description_, price_, model) {
 		return A2(
@@ -23670,9 +23714,22 @@ var _comjeito$comjeito$Misc_ItemCard$render = F7(
 										_0: A2(_debois$elm_mdl$Material_Options$css, 'width', '100%'),
 										_1: {
 											ctor: '::',
-											_0: _debois$elm_mdl$Material_Options$attribute(
-												_elm_lang$html$Html_Attributes$src(img_)),
-											_1: {ctor: '[]'}
+											_0: A2(_debois$elm_mdl$Material_Options$css, 'cursor', 'pointer'),
+											_1: {
+												ctor: '::',
+												_0: _debois$elm_mdl$Material_Options$attribute(
+													_elm_lang$html$Html_Attributes$src(img_)),
+												_1: {
+													ctor: '::',
+													_0: _debois$elm_mdl$Material_Dialog$openOn('click'),
+													_1: {
+														ctor: '::',
+														_0: _debois$elm_mdl$Material_Options$onClick(
+															A2(_comjeito$comjeito$Types$ChangeDialogView, dialogView_, item_)),
+														_1: {ctor: '[]'}
+													}
+												}
+											}
 										}
 									},
 									{ctor: '[]'}),
@@ -24383,7 +24440,7 @@ var _comjeito$comjeito$Page_Showroom$adminOptions = F3(
 				_1: {ctor: '[]'}
 			});
 	});
-var _comjeito$comjeito$Page_Showroom$adminOptionsHack = _debois$elm_mdl$Material_Options$stylesheet('\n      .mdl-menu__container {\n        top: 0 !important;\n      }\n    ');
+var _comjeito$comjeito$Page_Showroom$adminOptionsHack = _debois$elm_mdl$Material_Options$stylesheet('\r\n      .mdl-menu__container {\r\n        top: 0 !important;\r\n      }\r\n    ');
 var _comjeito$comjeito$Page_Showroom$showCard = F4(
 	function (img_, text_, item_, model) {
 		return A2(
@@ -24548,7 +24605,21 @@ var _comjeito$comjeito$Page_Showroom$itemsView = function (model) {
 				function () {
 					var _p0 = _elm_lang$core$List$head(item_.picturesPath);
 					if (_p0.ctor === 'Just') {
-						return A2(_comjeito$comjeito$Misc_Helpers$set_url, _p0._0, 'w_640,h_640,c_fit');
+						var picturePath_ = A2(_comjeito$comjeito$Misc_Helpers$set_url, _p0._0, 'w_640,h_640,c_fit');
+						var _p1 = _elm_lang$core$List$head(
+							A2(_elm_lang$core$String$split, '.mp4', picturePath_));
+						if (_p1.ctor === 'Just') {
+							var _p2 = _p1._0;
+							return A2(_elm_lang$core$String$endsWith, '.jpg', _p2) ? picturePath_ : A2(
+								F2(
+									function (x, y) {
+										return A2(_elm_lang$core$Basics_ops['++'], x, y);
+									}),
+								_p2,
+								'.jpg');
+						} else {
+							return picturePath_;
+						}
 					} else {
 						return '';
 					}
