@@ -21219,7 +21219,7 @@ var _comjeito$comjeito$Misc_ShowroomDialog$render = function (model) {
 								_0: A2(_debois$elm_mdl$Material_Options$css, 'flex', '1'),
 								_1: {
 									ctor: '::',
-									_0: A2(_debois$elm_mdl$Material_Options$css, 'overflow', 'hidden'),
+									_0: A2(_debois$elm_mdl$Material_Options$css, 'overflow', 'auto'),
 									_1: {
 										ctor: '::',
 										_0: A2(_debois$elm_mdl$Material_Options$css, 'min-height', '40%'),
@@ -21256,7 +21256,19 @@ var _comjeito$comjeito$Misc_ShowroomDialog$render = function (model) {
 								_1: {
 									ctor: '::',
 									_0: _elm_lang$html$Html_Attributes$controls(true),
-									_1: {ctor: '[]'}
+									_1: {
+										ctor: '::',
+										_0: _elm_lang$html$Html_Attributes$autoplay(true),
+										_1: {
+											ctor: '::',
+											_0: _elm_lang$html$Html_Attributes$loop(true),
+											_1: {
+												ctor: '::',
+												_0: _elm_lang$html$Html_Attributes$poster('loading.gif'),
+												_1: {ctor: '[]'}
+											}
+										}
+									}
 								}
 							}
 						},
