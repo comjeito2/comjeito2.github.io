@@ -24456,17 +24456,21 @@ var _comjeito$comjeito$Page_Showroom$showCard = F4(
 						_0: A2(_debois$elm_mdl$Material_Options$css, 'cursor', 'pointer'),
 						_1: {
 							ctor: '::',
-							_0: A2(
-								_debois$elm_mdl$Material_Options$css,
-								'margin-bottom',
-								_elm_lang$core$Native_Utils.eq(model.viewport, _debois$elm_mdl$Material_Grid$Phone) ? '8px' : '16px'),
+							_0: A2(_debois$elm_mdl$Material_Options$css, 'overflow', 'initial'),
 							_1: {
 								ctor: '::',
-								_0: A2(_debois$elm_mdl$Material_Options$css, 'display', 'block'),
+								_0: A2(
+									_debois$elm_mdl$Material_Options$css,
+									'margin-bottom',
+									_elm_lang$core$Native_Utils.eq(model.viewport, _debois$elm_mdl$Material_Grid$Phone) ? '8px' : '16px'),
 								_1: {
 									ctor: '::',
-									_0: A2(_debois$elm_mdl$Material_Options$css, 'position', 'relative'),
-									_1: {ctor: '[]'}
+									_0: A2(_debois$elm_mdl$Material_Options$css, 'display', 'block'),
+									_1: {
+										ctor: '::',
+										_0: A2(_debois$elm_mdl$Material_Options$css, 'position', 'relative'),
+										_1: {ctor: '[]'}
+									}
 								}
 							}
 						}
