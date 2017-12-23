@@ -21265,7 +21265,11 @@ var _comjeito$comjeito$Misc_ShowroomDialog$render = function (model) {
 											_1: {
 												ctor: '::',
 												_0: _elm_lang$html$Html_Attributes$poster('loading.gif'),
-												_1: {ctor: '[]'}
+												_1: {
+													ctor: '::',
+													_0: _elm_lang$html$Html_Attributes$id('showroom-video'),
+													_1: {ctor: '[]'}
+												}
 											}
 										}
 									}
@@ -21323,31 +21327,42 @@ var _comjeito$comjeito$Misc_ShowroomDialog$render = function (model) {
 						{ctor: '[]'},
 						{
 							ctor: '::',
-							_0: A5(
-								_debois$elm_mdl$Material_Button$render,
-								_comjeito$comjeito$Types$Mdl,
+							_0: A2(
+								_elm_lang$html$Html$a,
 								{
 									ctor: '::',
-									_0: 103,
+									_0: _elm_lang$html$Html_Attributes$href('javascript:killVideo()'),
 									_1: {ctor: '[]'}
 								},
-								model.mdl,
 								{
 									ctor: '::',
-									_0: _debois$elm_mdl$Material_Button$ripple,
-									_1: {
-										ctor: '::',
-										_0: _debois$elm_mdl$Material_Button$accent,
-										_1: {
+									_0: A5(
+										_debois$elm_mdl$Material_Button$render,
+										_comjeito$comjeito$Types$Mdl,
+										{
 											ctor: '::',
-											_0: _debois$elm_mdl$Material_Dialog$closeOn('click'),
+											_0: 103,
 											_1: {ctor: '[]'}
-										}
-									}
-								},
-								{
-									ctor: '::',
-									_0: _elm_lang$html$Html$text('Voltar'),
+										},
+										model.mdl,
+										{
+											ctor: '::',
+											_0: _debois$elm_mdl$Material_Button$ripple,
+											_1: {
+												ctor: '::',
+												_0: _debois$elm_mdl$Material_Button$accent,
+												_1: {
+													ctor: '::',
+													_0: _debois$elm_mdl$Material_Dialog$closeOn('click'),
+													_1: {ctor: '[]'}
+												}
+											}
+										},
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html$text('Voltar'),
+											_1: {ctor: '[]'}
+										}),
 									_1: {ctor: '[]'}
 								}),
 							_1: {ctor: '[]'}
