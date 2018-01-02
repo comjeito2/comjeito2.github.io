@@ -21374,11 +21374,27 @@ var _comjeito$comjeito$Misc_ShowroomDialog$render = function (model) {
 	};
 };
 
+var _comjeito$comjeito$Misc_Helpers$listSplit = F2(
+	function (size, list) {
+		var _p0 = A2(_elm_lang$core$List$take, size, list);
+		if (_p0.ctor === '[]') {
+			return {ctor: '[]'};
+		} else {
+			return {
+				ctor: '::',
+				_0: _p0,
+				_1: A2(
+					_comjeito$comjeito$Misc_Helpers$listSplit,
+					size,
+					A2(_elm_lang$core$List$drop, size, list))
+			};
+		}
+	});
 var _comjeito$comjeito$Misc_Helpers$getIndex = function (item_) {
-	var _p0 = _elm_lang$core$String$toInt(
+	var _p1 = _elm_lang$core$String$toInt(
 		A2(_elm_lang$core$String$filter, _elm_lang$core$Char$isDigit, item_.id));
-	if (_p0.ctor === 'Ok') {
-		return _p0._0;
+	if (_p1.ctor === 'Ok') {
+		return _p1._0;
 	} else {
 		return 0;
 	}
@@ -21386,15 +21402,15 @@ var _comjeito$comjeito$Misc_Helpers$getIndex = function (item_) {
 var _comjeito$comjeito$Misc_Helpers$last = function (list) {
 	last:
 	while (true) {
-		var _p1 = list;
-		if (_p1.ctor === '[]') {
+		var _p2 = list;
+		if (_p2.ctor === '[]') {
 			return _elm_lang$core$Maybe$Nothing;
 		} else {
-			if (_p1._1.ctor === '[]') {
-				return _elm_lang$core$Maybe$Just(_p1._0);
+			if (_p2._1.ctor === '[]') {
+				return _elm_lang$core$Maybe$Just(_p2._0);
 			} else {
-				var _v2 = _p1._1;
-				list = _v2;
+				var _v3 = _p2._1;
+				list = _v3;
 				continue last;
 			}
 		}
@@ -21417,11 +21433,11 @@ var _comjeito$comjeito$Misc_Helpers$set_url = F2(
 					_1: {ctor: '[]'}
 				},
 				function () {
-					var _p2 = _comjeito$comjeito$Misc_Helpers$last(list_);
-					if (_p2.ctor === 'Just') {
+					var _p3 = _comjeito$comjeito$Misc_Helpers$last(list_);
+					if (_p3.ctor === 'Just') {
 						return {
 							ctor: '::',
-							_0: _p2._0,
+							_0: _p3._0,
 							_1: {ctor: '[]'}
 						};
 					} else {
@@ -21758,7 +21774,14 @@ var _comjeito$comjeito$Misc_EditDialog$render = function (model) {
 														_1: {
 															ctor: '::',
 															_0: A2(_debois$elm_mdl$Material_Options$css, 'border-radius', '4px'),
-															_1: {ctor: '[]'}
+															_1: {
+																ctor: '::',
+																_0: A2(
+																	_debois$elm_mdl$Material_Options$when,
+																	_elm_lang$core$Native_Utils.eq(item.picturePath, ''),
+																	A2(_debois$elm_mdl$Material_Options$css, 'display', 'none')),
+																_1: {ctor: '[]'}
+															}
 														}
 													}
 												},
@@ -24630,36 +24653,106 @@ var _comjeito$comjeito$Page_Showroom$showCard = F4(
 var _comjeito$comjeito$Page_Showroom$itemsView = function (model) {
 	return A2(
 		_elm_lang$core$List$map,
-		function (item_) {
-			return A4(
-				_comjeito$comjeito$Page_Showroom$showCard,
-				function () {
-					var _p0 = _elm_lang$core$List$head(item_.picturesPath);
-					if (_p0.ctor === 'Just') {
-						var picturePath_ = A2(_comjeito$comjeito$Misc_Helpers$set_url, _p0._0, 'w_640,h_640,c_fit');
-						var _p1 = _elm_lang$core$List$head(
-							A2(_elm_lang$core$String$split, '.mp4', picturePath_));
-						if (_p1.ctor === 'Just') {
-							var _p2 = _p1._0;
-							return A2(_elm_lang$core$String$endsWith, '.jpg', _p2) ? picturePath_ : A2(
-								F2(
-									function (x, y) {
-										return A2(_elm_lang$core$Basics_ops['++'], x, y);
-									}),
-								_p2,
-								'.jpg');
-						} else {
-							return picturePath_;
+		function (items_) {
+			return A2(
+				_debois$elm_mdl$Material_Options$div,
+				{
+					ctor: '::',
+					_0: A2(
+						_debois$elm_mdl$Material_Options$css,
+						'column-count',
+						_elm_lang$core$Native_Utils.eq(model.viewport, _debois$elm_mdl$Material_Grid$Phone) ? '2' : '3'),
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_debois$elm_mdl$Material_Options$css,
+							'column-gap',
+							_elm_lang$core$Native_Utils.eq(model.viewport, _debois$elm_mdl$Material_Grid$Phone) ? '8px' : '16px'),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_debois$elm_mdl$Material_Options$css,
+								'-webkit-column-count',
+								_elm_lang$core$Native_Utils.eq(model.viewport, _debois$elm_mdl$Material_Grid$Phone) ? '2' : '3'),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_debois$elm_mdl$Material_Options$css,
+									'-webkit-column-gap',
+									_elm_lang$core$Native_Utils.eq(model.viewport, _debois$elm_mdl$Material_Grid$Phone) ? '8px' : '16px'),
+								_1: {
+									ctor: '::',
+									_0: A2(
+										_debois$elm_mdl$Material_Options$css,
+										'-moz-column-count',
+										_elm_lang$core$Native_Utils.eq(model.viewport, _debois$elm_mdl$Material_Grid$Phone) ? '2' : '3'),
+									_1: {
+										ctor: '::',
+										_0: A2(
+											_debois$elm_mdl$Material_Options$css,
+											'-moz-column-gap',
+											_elm_lang$core$Native_Utils.eq(model.viewport, _debois$elm_mdl$Material_Grid$Phone) ? '8px' : '16px'),
+										_1: {
+											ctor: '::',
+											_0: A2(_debois$elm_mdl$Material_Options$css, 'transform', 'translateZ(0)'),
+											_1: {
+												ctor: '::',
+												_0: A2(_debois$elm_mdl$Material_Options$css, '-webkit-transform', 'translateZ(0)'),
+												_1: {
+													ctor: '::',
+													_0: A2(_debois$elm_mdl$Material_Options$css, '-moz-transform', 'translateZ(0)'),
+													_1: {
+														ctor: '::',
+														_0: A2(_debois$elm_mdl$Material_Options$css, 'margin-bottom', '64px'),
+														_1: {
+															ctor: '::',
+															_0: _debois$elm_mdl$Material_Options$id('showroom-items'),
+															_1: {ctor: '[]'}
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+							}
 						}
-					} else {
-						return '';
 					}
-				}(),
-				item_.title,
-				item_.item,
-				model);
+				},
+				A2(
+					_elm_lang$core$List$map,
+					function (item_) {
+						return A4(
+							_comjeito$comjeito$Page_Showroom$showCard,
+							function () {
+								var _p0 = _elm_lang$core$List$head(item_.picturesPath);
+								if (_p0.ctor === 'Just') {
+									var picturePath_ = A2(_comjeito$comjeito$Misc_Helpers$set_url, _p0._0, 'w_640,h_640,c_fit');
+									var _p1 = _elm_lang$core$List$head(
+										A2(_elm_lang$core$String$split, '.mp4', picturePath_));
+									if (_p1.ctor === 'Just') {
+										var _p2 = _p1._0;
+										return A2(_elm_lang$core$String$endsWith, '.jpg', _p2) ? picturePath_ : A2(
+											F2(
+												function (x, y) {
+													return A2(_elm_lang$core$Basics_ops['++'], x, y);
+												}),
+											_p2,
+											'.jpg');
+									} else {
+										return picturePath_;
+									}
+								} else {
+									return '';
+								}
+							}(),
+							item_.title,
+							item_.item,
+							model);
+					},
+					items_));
 		},
-		model.showroomItems);
+		A2(_comjeito$comjeito$Misc_Helpers$listSplit, 12, model.showroomItems));
 };
 var _comjeito$comjeito$Page_Showroom$render = function (model) {
 	return A2(
@@ -24744,29 +24837,7 @@ var _comjeito$comjeito$Page_Showroom$render = function (model) {
 					ctor: '::',
 					_0: A2(
 						_debois$elm_mdl$Material_Options$div,
-						{
-							ctor: '::',
-							_0: A2(
-								_debois$elm_mdl$Material_Options$css,
-								'column-count',
-								_elm_lang$core$Native_Utils.eq(model.viewport, _debois$elm_mdl$Material_Grid$Phone) ? '2' : '3'),
-							_1: {
-								ctor: '::',
-								_0: A2(
-									_debois$elm_mdl$Material_Options$css,
-									'column-gap',
-									_elm_lang$core$Native_Utils.eq(model.viewport, _debois$elm_mdl$Material_Grid$Phone) ? '8px' : '16px'),
-								_1: {
-									ctor: '::',
-									_0: A2(_debois$elm_mdl$Material_Options$css, 'transform', 'translateZ(0)'),
-									_1: {
-										ctor: '::',
-										_0: _debois$elm_mdl$Material_Options$id('showroom-items'),
-										_1: {ctor: '[]'}
-									}
-								}
-							}
-						},
+						{ctor: '[]'},
 						_comjeito$comjeito$Page_Showroom$itemsView(model)),
 					_1: {
 						ctor: '::',
